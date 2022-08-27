@@ -10,8 +10,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
 
 public class myController {
+
+    private Stage stage = new Stage();
 
     @FXML
     private BorderPane borderPane;
@@ -61,8 +67,16 @@ public class myController {
     @FXML
     void loadFile(MouseEvent event) {
 
+        // create a File chooser
+        FileChooser fil_chooser = new FileChooser();
 
+        // get the file selected
+        File file = fil_chooser.showOpenDialog(stage);
+        if (file != null) {
 
+            xmlPathLabel.setText(file.getAbsolutePath()
+                    + "  selected");
+        }
     }
-
 }
+

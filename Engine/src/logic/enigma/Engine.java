@@ -177,7 +177,7 @@ public class Engine implements Serializable, Machine {
         int rotorsAmount = rotors.getRotorsAmount();
         int reflectorsAmount = reflectors.getAmountOfReflectors();
 
-        return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount);
+        return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings);
     }
     @Override
     public void resetStatistics() {

@@ -1,5 +1,6 @@
 package uitmp;
 
+import dtos.EngineMinimalDetailsDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class TabOneController {
+
+    private MainController mainController;
 
     @FXML
     private AnchorPane innerTabOneAP;
@@ -100,6 +103,10 @@ public class TabOneController {
     @FXML
     private TextField currentConfigurationTF;
 
+  /*  public TabOneController(myController myController){
+        this.myController = myController;
+    }*/
+
     @FXML
     void TODOinCalibration(ActionEvent event) { /*!!!!!!!!!!!!!!!!*/
 
@@ -115,4 +122,11 @@ public class TabOneController {
 
     }
 
+
+    public void showDetails(EngineMinimalDetailsDTO engineMinimalDetailsDTO) {
+
+        rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
+        reflectorsAmount.setText(String.valueOf(engineMinimalDetailsDTO.getReflectorsAmount()));
+        decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
+    }
 }

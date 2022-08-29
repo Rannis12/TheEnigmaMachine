@@ -28,13 +28,13 @@ public class Dictionary {
             amountOfWords++;
         }
         String[] wordsArr = words.split(" ", amountOfWords);
-        String[] regexes = new String[] {"\\+","\\*","\\^", "\\{", "\\}", "\\?"};
+        //String[] regexes = new String[] {"\\+","\\*","\\^", "\\{", "\\}", "\\?"};
 
         for (int i = 0; i < wordsArr.length; i++) {
             boolean isValidWord = true;
 
             for (int j = 0; j < excludedCharacters.length(); j++) {//remove all excluded characters
-                String tmpString = "";
+                /*String tmpString = "";
                 tmpString += excludedCharacters.charAt(j);
 
                 for (String tmp : regexes) {
@@ -42,11 +42,11 @@ public class Dictionary {
                         tmpString = tmp;
                         break;
                     }
-                }
-
-                wordsArr[i] = wordsArr[i].replaceAll(tmpString, "");
+                }*/
+                wordsArr[i] = wordsArr[i].replace(String.valueOf(excludedCharacters.charAt(j)), "");
 
             }
+            wordsArr[i] = wordsArr[i].toUpperCase();
             for (int j = 0; j < wordsArr[i].length() && isValidWord; j++) {//check if characters of word[i] is in language -- !to check if necessary!
                 if(! keyBoard.isExist(wordsArr[i].charAt(j)))
                     isValidWord = false;

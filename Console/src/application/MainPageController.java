@@ -1,6 +1,5 @@
-package uitmp;
+package application;
 
-import dtos.EngineMinimalDetailsDTO;
 import exceptions.invalidXMLfileException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,14 +16,25 @@ import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
-public class MainController {
+public class MainPageController {
 
+    @FXML private FirstTabController firstTabController;
+    @FXML private SecondTabController secondTabController;
     private Engine engine;
     private Stage stage = new Stage();
 
-    private TabOneController tabOneController;
+    @FXML
+    public void initialize() {
+        if(firstTabController != null && secondTabController != null){
+            firstTabController.setMainController(this);
+            secondTabController.setMainPageController(this);
+        }
+
+    }
+
    /* private TabTwoController tabTwoController;
     private TabThreeController tabThreeController;*/
     @FXML
@@ -57,6 +67,7 @@ public class MainController {
     @FXML
     private Tab tabOne;
 
+
     @FXML
     private AnchorPane tabOneAP;
 
@@ -75,12 +86,12 @@ public class MainController {
     @FXML
     void loadFile(MouseEvent event) {
 
-        FileChooser fil_chooser = new FileChooser();
-
-        File file = fil_chooser.showOpenDialog(stage);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
+        File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             if(loadFileFromXml(file.getAbsolutePath()))
-                tabOneController.showDetails(engine.getEngineMinimalDetails());
+                firstTabController.showDetails(engine.getEngineMinimalDetails());
 
         }
     }
@@ -118,9 +129,8 @@ public class MainController {
         }
     }
 
-    public void setTabs(TabOneController tabOne){
-        this.tabOneController = tabOne;
 
-    }
+
+
 }
 

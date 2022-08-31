@@ -63,6 +63,8 @@ public class SecondTabController {
     void onKeyPressed(KeyEvent event) {
       //  if(event.getCharacter() == )
       int x = 11111;
+      int Y = 11111;
+
     }
 
     @FXML

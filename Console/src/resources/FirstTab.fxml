@@ -149,7 +149,7 @@
                            <VBox.margin>
                               <Insets bottom="20.0" />
                            </VBox.margin></TextField>
-                        <TextField fx:id="userInputInCalibration" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#onEnter" prefHeight="25.0" prefWidth="381.0" promptText="insert Input" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="userInputInCalibration" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#onEnter" prefHeight="25.0" prefWidth="381.0" promptText="insert Input:" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
                         <Label fx:id="machineInitillaziedLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" text="Machine initialize succefully!" textFill="RED" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="30.0" />

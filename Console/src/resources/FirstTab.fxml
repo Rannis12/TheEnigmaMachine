@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="innerTabOneAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FirstTabController">
+   <children>
+      <VBox fx:id="tabOneUpperVB" alignment="TOP_CENTER" layoutX="16.0" layoutY="14.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <Label fx:id="detailsLabel" alignment="CENTER" prefHeight="29.0" prefWidth="62.0" text="Details:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <GridPane fx:id="rowOneInTabOne" prefHeight="35.0" prefWidth="556.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <padding>
+                  <Insets top="4.0" />
+               </padding>
+               <children>
+                  <Label fx:id="rotorsDetails" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="3.0" left="5.0" top="3.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="rotorsLabel" prefHeight="26.0" prefWidth="66.0" text="Rotors:">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <GridPane fx:id="rowTwoInTabOne" prefHeight="37.0" prefWidth="555.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="232.33331298828125" minWidth="225.0" prefWidth="232.33331298828125" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="335.66668701171875" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <padding>
+                  <Insets top="4.0" />
+               </padding>
+               <children>
+                  <Label fx:id="decodedStrings" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.vgrow="NEVER">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="3.0" left="5.0" top="3.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="decodedStringsLabel" minWidth="-Infinity" prefHeight="26.0" text="Amount of decoded strings:">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <GridPane fx:id="rowThreeInTabOne" prefHeight="35.0" prefWidth="556.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="170.0" minWidth="150.0" prefWidth="156.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="412.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <padding>
+                  <Insets top="4.0" />
+               </padding>
+               <children>
+                  <Label fx:id="reflectorsAmount" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="3.0" left="5.0" top="3.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="reflectorsAmountLabel" prefHeight="26.0" text="Reflector Amount:">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <SplitPane fx:id="splitPane" dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="160.0">
+         <items>
+            <AnchorPane fx:id="APLeftInSP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="200.0" prefWidth="300.0">
+               <children>
+                  <VBox fx:id="VBInLeftSP" alignment="TOP_CENTER" layoutY="-9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="266.0" spacing="7.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-9.0">
+                     <children>
+                        <Label fx:id="calibrationLabel" alignment="CENTER" text="Calibration">
+                           <font>
+                              <Font name="Arial Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox fx:id="HBInLeftSP" alignment="CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="60.0" prefWidth="266.0" spacing="50.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="randomBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnRandomBtn" prefHeight="60.0" prefWidth="90.0" text="random">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></Button>
+                              <Button fx:id="manualBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnManualBtn" prefHeight="60.0" prefWidth="90.0" text="manual">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></Button>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <TextField fx:id="instructionToUserTF" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin></TextField>
+                        <TextField fx:id="userInputInCalibration" alignment="CENTER" maxWidth="1.7976931348623157E308" onAction="#onEnter" prefHeight="25.0" prefWidth="381.0" promptText="insert Input:" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="machineInitillaziedLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" text="Machine initialize succefully!" textFill="RED" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="30.0" />
+                           </VBox.margin></Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="APRightInSP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="300.0">
+               <children>
+                  <VBox fx:id="VBInRightSP" alignment="TOP_CENTER" layoutY="-1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="266.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-1.0">
+                     <children>
+                        <Label fx:id="currentMachineLabel" alignment="TOP_CENTER" text="Current machine configuration">
+                           <font>
+                              <Font name="Arial Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="12.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="initializedConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="80.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" text="Initiallize Configuration" VBox.vgrow="ALWAYS">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="currentConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" text="Current Configuration" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="40.0" />
+                           </VBox.margin></TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

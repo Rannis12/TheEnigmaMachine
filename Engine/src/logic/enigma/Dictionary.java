@@ -5,6 +5,7 @@ import resources.jaxb.generated.CTEDictionary;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.MatchResult;
 
 public class Dictionary {
 
@@ -15,7 +16,7 @@ public class Dictionary {
         dictionary = new HashSet<>();
         excludedCharacters = cteDictionary.getExcludeChars();
 
-        String words = cteDictionary.getWords();
+        String words = cteDictionary.getWords().trim();
 
         int amountOfWords = 0;
         for (int i = 0; i < words.length(); i++) {
@@ -27,14 +28,25 @@ public class Dictionary {
             amountOfWords++;
         }
         String[] wordsArr = words.split(" ", amountOfWords);
-
+        //String[] regexes = new String[] {"\\+","\\*","\\^", "\\{", "\\}", "\\?"};
 
         for (int i = 0; i < wordsArr.length; i++) {
             boolean isValidWord = true;
 
             for (int j = 0; j < excludedCharacters.length(); j++) {//remove all excluded characters
-                wordsArr[i] = wordsArr[i].replaceAll(String.valueOf(excludedCharacters.charAt(j)), "");
+                /*String tmpString = "";
+                tmpString += excludedCharacters.charAt(j);
+
+                for (String tmp : regexes) {
+                    if(tmp.equals(tmpString)){
+                        tmpString = tmp;
+                        break;
+                    }
+                }*/
+                wordsArr[i] = wordsArr[i].replace(String.valueOf(excludedCharacters.charAt(j)), "");
+
             }
+            wordsArr[i] = wordsArr[i].toUpperCase();
             for (int j = 0; j < wordsArr[i].length() && isValidWord; j++) {//check if characters of word[i] is in language -- !to check if necessary!
                 if(! keyBoard.isExist(wordsArr[i].charAt(j)))
                     isValidWord = false;

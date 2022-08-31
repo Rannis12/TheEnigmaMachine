@@ -16,19 +16,17 @@ public class SecondTabController {
 
     private MainPageController mainPageController;
 
-    @FXML private AnchorPane tabTwoAP;
-    @FXML private VBox configurationVB;
     @FXML private Label currentConfigurationLabel;
+
+    @FXML private Label enterInputLabel;
+
+    @FXML private Label outputLabel;
     @FXML private TextField currentConfiguration;
-    @FXML private HBox middleHBox;
-    @FXML private AnchorPane leftAP;
-    @FXML private VBox leftVB;
     @FXML private Label encryptDecryptLabel;
     @FXML private Label enterDecodedLabel;
-    @FXML private TextField toDecodeTF;
+    @FXML private TextField enterInputTF;
     @FXML private Label decodedLabel;
     @FXML private TextField decodeResultTF;
-    @FXML private HBox buttonsHB;
     @FXML private Button processBtn;
     @FXML private Button clearBtn;
     @FXML private AnchorPane rightAP;
@@ -45,7 +43,7 @@ public class SecondTabController {
 
     @FXML
     void clearBtnListener(ActionEvent event) { //not working right now, since the button disabled.
-        toDecodeTF.setText("");
+        enterInputTF.setText("");
         decodeResultTF.setText("");
     }
 
@@ -62,10 +60,7 @@ public class SecondTabController {
     @FXML
     void onKeyPressed(KeyEvent event) {
       //  if(event.getCharacter() == )
-      int x = 11111;
-      int Y = 11111;
-      int z = 454545;
-
+      int x = 5;
     }
 
     @FXML
@@ -80,6 +75,10 @@ public class SecondTabController {
 
     public void setMainPageController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
+    }
+
+    public void setCurrentConfigurationLabel(String currConfiguration) {
+        currentConfiguration.setText(currConfiguration);
     }
 
 

@@ -14,6 +14,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
+import java.util.Timer;
+
+import static java.awt.SystemColor.text;
 
 public class FirstTabController {
 
@@ -60,7 +65,7 @@ public class FirstTabController {
 
     @FXML private TextField userInputInCalibration;
 
-    @FXML private Label machineInitillaziedLabel;
+    @FXML private Label machineInitializeLabel;
 
     @FXML private AnchorPane APRightInSP;
 
@@ -91,15 +96,23 @@ public class FirstTabController {
     }
 
     @FXML
-    void actionOnRandomBtn(ActionEvent event) {
+    void randomBtnListener(ActionEvent event) {
 
-         mainPageController.randomConfiguration();
+        mainPageController.randomConfiguration();
+        machineInitializeLabel.setTextFill(Color.RED);
+        //userInputInCalibration.setDisable(false); only in manual
 
          EngineFullDetailsDTO engineFullDetailsDTO = mainPageController.getEngineFullDetails();
-         initializeConfigurationTF.setText(mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString()));
+         String newConfiguration = mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+         initializeConfigurationTF.setText(newConfiguration);
+
+        mainPageController.setTabsConfiguration(newConfiguration);
 
 
+    }
+    public void setCurrentConfigurationLabel(String currentConfiguration) {
+        currentConfigurationTF.setText(currentConfiguration);
     }
 
 

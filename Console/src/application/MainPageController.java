@@ -37,14 +37,6 @@ public class MainPageController {
 
     }
 
-   /* private TabTwoController tabTwoController;
-    private TabThreeController tabThreeController;*/
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private AnchorPane anchorPaneBD;
-
     @FXML
     private VBox titleVB;
 
@@ -52,16 +44,10 @@ public class MainPageController {
     private Label titleLabel;
 
     @FXML
-    private GridPane gridPaneTitleVB;
-
-    @FXML
     private Button loadFileBtn;
 
     @FXML
     private Label xmlPathLabel;
-
-    @FXML
-    private AnchorPane centerAP;
 
     @FXML
     private TabPane tabPane;
@@ -71,19 +57,10 @@ public class MainPageController {
 
 
     @FXML
-    private AnchorPane tabOneAP;
-
-    @FXML
     private Tab tabTwo;
 
     @FXML
-    private AnchorPane tabTwoAP;
-
-    @FXML
     private Tab tabThree;
-
-    @FXML
-    private AnchorPane tabThreeAP;
 
     @FXML
     void loadFile(MouseEvent event) {
@@ -159,6 +136,10 @@ public class MainPageController {
     }
 
 
-
+    public void setTabsConfiguration(String newConfiguration) {
+        firstTabController.setCurrentConfigurationLabel(newConfiguration);
+        secondTabController.setCurrentConfigurationLabel(newConfiguration);
+        //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
+    }
 }
 

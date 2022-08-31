@@ -126,14 +126,14 @@
                         </Label>
                         <HBox fx:id="HBInLeftSP" alignment="CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="60.0" prefWidth="266.0" spacing="50.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button fx:id="randomBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnRandomBtn" prefHeight="60.0" prefWidth="90.0" text="random">
+                              <Button fx:id="randomBtn" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnRandomBtn" prefHeight="60.0" prefWidth="90.0" text="random">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
-                              <Button fx:id="manualBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnManualBtn" prefHeight="60.0" prefWidth="90.0" text="manual">
+                              <Button fx:id="manualBtn" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#actionOnManualBtn" prefHeight="60.0" prefWidth="90.0" text="manual">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
@@ -178,7 +178,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" disable="true" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
                         <Label fx:id="currentConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" text="Current Configuration" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="16.0" />

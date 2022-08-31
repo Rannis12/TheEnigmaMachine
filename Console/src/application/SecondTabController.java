@@ -30,11 +30,13 @@ public class SecondTabController {
     @FXML private TextField decodeResultTF;
     @FXML private HBox buttonsHB;
     @FXML private Button processBtn;
-    @FXML private Button resetBtn;
+    @FXML private Button clearBtn;
     @FXML private AnchorPane rightAP;
     @FXML private VBox rightVB;
     @FXML private Label statisticsLabel;
     @FXML private TextArea statisticsTA;
+    @FXML private Button decodeLinebtn;
+    @FXML private Button decodeCharBtn;
 
     @FXML
     void actionOnProcessBtn(ActionEvent event) {
@@ -42,8 +44,9 @@ public class SecondTabController {
     }
 
     @FXML
-    void actionOnResetBtn(ActionEvent event) {
-
+    void clearBtnListener(ActionEvent event) { //not working right now, since the button disabled.
+        toDecodeTF.setText("");
+        decodeResultTF.setText("");
     }
 
     @FXML
@@ -62,9 +65,19 @@ public class SecondTabController {
       int x = 5;
     }
 
+    @FXML
+    void decodeCharListener(ActionEvent event) {
 
+    }
+
+    @FXML
+    void decodeLineListener(ActionEvent event) {
+
+    }
 
     public void setMainPageController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package application;
 
+import dtos.EngineFullDetailsDTO;
 import dtos.EngineMinimalDetailsDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,6 +93,13 @@ public class FirstTabController {
     @FXML
     void actionOnRandomBtn(ActionEvent event) {
 
+         mainPageController.randomConfiguration();
+
+         EngineFullDetailsDTO engineFullDetailsDTO = mainPageController.getEngineFullDetails();
+         initializeConfigurationTF.setText(mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString()));
+
+
     }
 
 
@@ -110,6 +118,11 @@ public class FirstTabController {
 
     public void setMainController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
+    }
+
+    public void enableButtons() {
+        randomBtn.setDisable(false);
+        manualBtn.setDisable(false);
     }
 
 }

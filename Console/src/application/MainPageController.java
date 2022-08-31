@@ -1,5 +1,6 @@
 package application;
 
+import dtos.EngineFullDetailsDTO;
 import exceptions.invalidXMLfileException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import logic.enigma.EngineLoader;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainPageController {
 
@@ -90,9 +92,10 @@ public class MainPageController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-            if(loadFileFromXml(file.getAbsolutePath()))
+            if(loadFileFromXml(file.getAbsolutePath())) {
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
-
+                firstTabController.enableButtons();
+            }
         }
     }
 
@@ -129,6 +132,31 @@ public class MainPageController {
         }
     }
 
+
+    public void randomConfiguration() {
+        engine.randomEngine();
+    }
+
+    public EngineFullDetailsDTO getEngineFullDetails(){
+        return engine.getEngineFullDetails();
+    }
+
+    public String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
+                                String rotorsPositions, String chosenReflector, String plugBoardString) {
+        String finalInfoToPrint = "<";
+
+        for (int i = 0; i < notchesPlaces.size(); i++) {
+            if (i + 1 != notchesPlaces.size())
+                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + "),");
+            else
+                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + ")");
+        }
+        finalInfoToPrint = finalInfoToPrint + "><" + rotorsPositions + "><" + chosenReflector + ">";
+        if (!plugBoardString.equals("")) {
+            finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
+        }
+        return finalInfoToPrint;
+    }
 
 
 

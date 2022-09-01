@@ -195,7 +195,7 @@ public class Rotors implements Serializable {
     }
     public void checkRotorsFirstPositionsValidity(String firstPositions, KeyBoard keyBoard) throws invalidInputException {
         if(usedRotors != firstPositions.length()) {
-            throw new invalidInputException("First positions rotors input should be in length " + usedRotors + ". Please try again." );
+            throw new invalidInputException("First positions rotors input should be in length " + usedRotors);
         }
         for (int i = 0; i < firstPositions.length(); i++) {
             if(!keyBoard.isExist(firstPositions.charAt(i))) {

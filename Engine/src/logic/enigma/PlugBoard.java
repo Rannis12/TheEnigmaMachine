@@ -95,7 +95,7 @@ public class PlugBoard implements Serializable {
         uiCables.clear();
 
         if(!(plugBoardString.length() % 2 == 0)){
-            throw new invalidInputException("This string doesn't contains even amount of letters. Please try again.");
+            throw new invalidInputException("Input doesn't contains even amount of letters.");
         }
         else{
             for (int i = 0; i < plugBoardString.length(); i+=2) {
@@ -104,7 +104,7 @@ public class PlugBoard implements Serializable {
 
                 if(keyBoard.isExist(left) && keyBoard.isExist(right)) {
                     if (left == right) {//same letter with means no cable needed
-                        throw new invalidInputException("Error: trying to map the letter " + left + " to itself. Please try again.");
+                        throw new invalidInputException("Trying to map the letter " + left + " to itself");
                     }
                     else if(!uiCables.containsKey(left) && !uiCables.containsKey(right)) {
                         uiCables.put(left, right);
@@ -112,17 +112,17 @@ public class PlugBoard implements Serializable {
                     }
                     else {
                         if(uiCables.containsKey(left))
-                            throw new invalidInputException("Error: trying to initialize the letter " + left + " twice. Please try again.");
+                            throw new invalidInputException("Trying to initialize the letter " + left + " twice.");
                         if(uiCables.containsKey(right))
-                            throw new invalidInputException("Error: trying to initialize the letter " + right + " twice. Please try again.");
+                            throw new invalidInputException("Trying to initialize the letter " + right + " twice.");
                     }
                 }
                 else {
                     if(!keyBoard.isExist(left)) {
-                        throw new invalidInputException("Error: letter " + left + " doesn't exist in keyBoard");
+                        throw new invalidInputException("Letter " + left + " doesn't exist in keyBoard");
                     }
                     if(!keyBoard.isExist(right)) {
-                        throw new invalidInputException("Error: letter " + right + " doesn't exist in keyBoard");
+                        throw new invalidInputException("Letter " + right + " doesn't exist in keyBoard");
                     }
                 }
             }

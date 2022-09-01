@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 public class SecondTabController {
 
     private MainPageController mainPageController;
+    private boolean shouldDecodeLine; //false = should decode char
 
     @FXML private Label currentConfigurationLabel;
 
@@ -56,7 +57,6 @@ public class SecondTabController {
             decodeResultTF.setText(event.getText());
         }
     }
-
     @FXML
     void onKeyPressed(KeyEvent event) {
       //  if(event.getCharacter() == )
@@ -66,13 +66,13 @@ public class SecondTabController {
     @FXML
     void decodeCharListener(ActionEvent event) {
         enterInputTF.setDisable(false);
-
-
+        shouldDecodeLine = false;
     }
 
     @FXML
     void decodeLineListener(ActionEvent event) {
         enterInputTF.setDisable(false);
+        shouldDecodeLine = true;
     }
 
     public void setMainPageController(MainPageController mainPageController) {

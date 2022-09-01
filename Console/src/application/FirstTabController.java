@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -22,8 +23,6 @@ public class FirstTabController {
         private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
         private ReflectorDTO reflectorDTO = null;
         private MainPageController mainPageController;
-        private int switchOption = 1;
-
 
         @FXML
         private AnchorPane innerTabOneAP;
@@ -58,23 +57,16 @@ public class FirstTabController {
         @FXML
         private Label reflectorsAmount;
 
+        @FXML private ToggleButton setMachineBtn;
+
+
+
         @FXML
         private Label reflectorsAmountLabel;
 
-        @FXML
-        private SplitPane splitPane;
-
-        @FXML
-        private AnchorPane APLeftInSP;
-
-        @FXML
-        private VBox VBInLeftSP;
 
         @FXML
         private Label calibrationLabel;
-
-        @FXML
-        private HBox HBInLeftSP;
 
         @FXML
         private Button randomBtn;
@@ -98,12 +90,6 @@ public class FirstTabController {
         private Label machineInitializeLabel;
 
         @FXML
-        private AnchorPane APRightInSP;
-
-        @FXML
-        private VBox VBInRightSP;
-
-        @FXML
         private Label currentMachineLabel;
 
         @FXML
@@ -118,10 +104,10 @@ public class FirstTabController {
         @FXML
         private TextField currentConfigurationTF;
 
-    @FXML
-    void TODOinCalibration(ActionEvent event) { /*!!!!!!!!!!!!!!!!*/
+        @FXML
+        void TODOinCalibration(ActionEvent event) { /*!!!!!!!!!!!!!!!!*/
 
-    }
+        }
 
     @FXML
     void actionOnManualBtn(ActionEvent event) {
@@ -130,6 +116,20 @@ public class FirstTabController {
         userInitPlaces.setDisable(true);
         userInitPlugBoard.setDisable(true);
         reflectorCB.setDisable(true);
+
+        machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
+    }
+
+    @FXML
+    void setMachine(ActionEvent event) {
+        //reflectorCB.getItems().removeAll(reflectorCB.getItems());//////////// to fucking check!!!
+        setReflectorsCB(mainPageController.getReflectorsIDs());
+
+        mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
+        operationsAfterValidInput();
+
+        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
+
     }
 
     @FXML
@@ -137,24 +137,7 @@ public class FirstTabController {
         mainPageController.randomConfiguration();
 
         operationsAfterValidInput();
-
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
-
-        mainPageController.enableDecodingAndClearButtons();
-
-    }
-
-    @FXML
-    void reflectorCBListener(ActionEvent event) {
-        int chosenReflector = (Integer)reflectorCB.getValue() - 1;
-        reflectorDTO = new ReflectorDTO(chosenReflector);
-        reflectorCB.setDisable(true);
-        mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
-
-        operationsAfterValidInput();
-
-        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
-
     }
 
     @FXML
@@ -180,13 +163,12 @@ public class FirstTabController {
             tmpString = tmpString.toUpperCase();
             plugBoardDTO = new PlugBoardDTO();
             mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
-            //engine.checkPlugBoardValidity(tmpString, plugBoardDTO.getUICables());
             plugBoardDTO.setInitString(tmpString);
             userInitPlugBoard.setDisable(true);
             reflectorCB.setDisable(false);
         } catch (invalidInputException ex) {
             userInitPlugBoard.clear();
-            System.out.println(ex.getMessage());
+            mainPageController.popUpError(ex.getMessage());
         }
     }
 
@@ -208,6 +190,15 @@ public class FirstTabController {
 
     }
 
+    @FXML
+    void setReflectorID(ActionEvent event) {
+        int chosenReflector = (Integer)reflectorCB.getValue();
+
+        reflectorDTO = new ReflectorDTO(chosenReflector);
+        reflectorCB.setDisable(true);
+        setMachineBtn.setDisable(false);
+    }
+
 
     public void setCurrentConfigurationLabel(String currentConfiguration) {
         currentConfigurationTF.setText(currentConfiguration);
@@ -221,40 +212,14 @@ public class FirstTabController {
         decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
     }
 
- /*   @FXML
-    void onEnter(ActionEvent event) { //when the user enters 'enter', we can get the input using the method below.
-
-        switch(switchOption){
-            case 1:
-                String instruction = "Please enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's." +
-                        "\nInsert the most left rotor at first, and the Rightest rotor at the end - " +
-                        "divided by comma. for example: 23,542,231,545.";
-                instructionToUserTF.setText(instruction);
-
-                String rotorsPosition = userInputInCalibration.getText();
-                try {
-                    rotorsIndexesDTO = new RotorsIndexesDTO();
-                    mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
-                    //isValidRotors = true;
-                } catch (invalidInputException ex) {
-                    // System.out.println(ex.getMessage()); ///open error stage instead.
-                }
-
-                    case 2:
-
-            case 3:
-
-            case 4:
-
-
-
-        }
-}*/
 
     public void setReflectorsCB(ArrayList<Integer> reflectorsIDs){
+
             ObservableList observableList = FXCollections.observableArrayList(reflectorsIDs);
+
+            reflectorCB.getItems().removeAll(reflectorCB.getItems());//ofek - exception
+
             reflectorCB.setItems(observableList);
-            //tilePane.getChildren().add(reflectorCB);
         }
 
     public void setMainController(MainPageController mainPageController) {
@@ -276,12 +241,13 @@ public class FirstTabController {
         String newConfiguration = mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
         initializeConfigurationTF.setText(newConfiguration);
+
+        mainPageController.enableDecodingAndClearButtons();
     }
     public void clearAllUsersTextFields(){
         userInitPlaces.clear();
         userRotorsInput.clear();
         userInitPlugBoard.clear();
-        //reflectorCB.getSelectionModel().clearSelection();
     }
 
 }

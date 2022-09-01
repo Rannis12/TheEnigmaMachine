@@ -29,8 +29,8 @@
                   </Label>
                   <GridPane fx:id="gridPaneTitleVB" prefHeight="35.0" prefWidth="584.0">
                     <columnConstraints>
-                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="70.0" percentWidth="17.0" prefWidth="135.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" percentWidth="83.0" prefWidth="420.6666259765625" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="70.0" percentWidth="21.0" prefWidth="135.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" percentWidth="79.0" prefWidth="420.6666259765625" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -39,7 +39,7 @@
                         <Insets top="4.0" />
                      </padding>
                      <children>
-                        <Button fx:id="loadFileBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#loadFile" prefHeight="31.0" prefWidth="108.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-radius: 6px; -fx-font-weight: bold; -fx-border-width: 1.5px;" text="Button">
+                        <Button fx:id="loadFileBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="90.0" mnemonicParsing="false" onMouseClicked="#loadFile" prefHeight="31.0" prefWidth="108.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-radius: 6px; -fx-font-weight: bold; -fx-border-width: 1.5px;" text="Load xml file">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -47,7 +47,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Label maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="462.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="Please insert an XML file:" GridPane.columnIndex="1" fx:id="xmlPathLabel">
+                        <Label maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="400.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="Please insert an XML file:" GridPane.columnIndex="1" fx:id="xmlPathLabel">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>

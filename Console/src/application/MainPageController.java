@@ -3,10 +3,10 @@ package application;
 import dtos.EngineFullDetailsDTO;
 import exceptions.invalidXMLfileException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -19,12 +19,16 @@ import logic.enigma.EngineLoader;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainPageController {
 
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
+
+    //private ErrorApplication errorApp;
     private Engine engine;
     private Stage stage = new Stage();
 
@@ -33,6 +37,8 @@ public class MainPageController {
         if(firstTabController != null && secondTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
+
+            //ErrorMsgController.setMainPageController(this);
         }
 
     }
@@ -63,7 +69,7 @@ public class MainPageController {
     private Tab tabThree;
 
     @FXML
-    void loadFile(MouseEvent event) {
+    void loadFile(MouseEvent event) throws IOException {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
@@ -77,7 +83,7 @@ public class MainPageController {
     }
 
 
-    public boolean loadFileFromXml(String fileDestination){
+    public boolean loadFileFromXml(String fileDestination) throws IOException {
 
         try {
             if (isFileExistAndXML(fileDestination)) {
@@ -89,7 +95,7 @@ public class MainPageController {
                 return true;
             }
         } catch (invalidXMLfileException e) {
-            xmlPathLabel.setText(e.getMessage());
+            popUpError(e.getMessage());
         }
         return false;
     }
@@ -109,6 +115,12 @@ public class MainPageController {
         }
     }
 
+    public void popUpError(String errorMsg) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Invalid input");
+        errorAlert.setContentText(errorMsg);
+        errorAlert.showAndWait();
+    }
 
     public void randomConfiguration() {
         engine.randomEngine();

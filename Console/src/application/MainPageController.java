@@ -1,44 +1,30 @@
 package application;
 
-import dtos.EngineFullDetailsDTO;
+import dtos.*;
+import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class MainPageController {
-
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
-
-    //private ErrorApplication errorApp;
     private Engine engine;
-    private Stage stage = new Stage();
 
     @FXML
     public void initialize() {
         if(firstTabController != null && secondTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
-
-            //ErrorMsgController.setMainPageController(this);
         }
 
     }
@@ -69,11 +55,11 @@ public class MainPageController {
     private Tab tabThree;
 
     @FXML
-    void loadFile(MouseEvent event) throws IOException {
+    void loadFile(MouseEvent event) {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-        File file = fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             if(loadFileFromXml(file.getAbsolutePath())) {
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
@@ -83,13 +69,14 @@ public class MainPageController {
     }
 
 
-    public boolean loadFileFromXml(String fileDestination) throws IOException {
+    public boolean loadFileFromXml(String fileDestination){
 
         try {
             if (isFileExistAndXML(fileDestination)) {
                 EngineLoader engineLoader = new EngineLoader(fileDestination);
                 engine = engineLoader.loadEngineFromXml(fileDestination);
 
+                firstTabController.setReflectorsCB(getReflectorsIDs());
                 engine.resetStatistics();
                 xmlPathLabel.setText(fileDestination + " selected");
                 return true;
@@ -115,12 +102,6 @@ public class MainPageController {
         }
     }
 
-    public void popUpError(String errorMsg) {
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText("Invalid input");
-        errorAlert.setContentText(errorMsg);
-        errorAlert.showAndWait();
-    }
 
     public void randomConfiguration() {
         engine.randomEngine();
@@ -153,5 +134,46 @@ public class MainPageController {
         secondTabController.setCurrentConfigurationLabel(newConfiguration);
         //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
     }
+
+    public void enableDecodingAndClearButtons() {
+        secondTabController.enableDecodingAndClearButtons();
+    }
+
+    public int getUsedAmountOfRotors() {
+        return engine.getEngineMinimalDetails().getUsedAmountOfRotors();
+    }
+
+    public void checkRotorIndexesValidity(String rotorsPosition, RotorsIndexesDTO rotorsIndexesDTO) throws invalidInputException {
+        engine.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO.getUIRotorsIndexes());
+    }
+
+    public void checkRotorsFirstPositionsValidity(String rotorsFirstPositions) throws invalidInputException {
+        engine.checkRotorsFirstPositionsValidity(rotorsFirstPositions, engine.getKeyBoard());
+    }
+
+    public void checkSelectedReflectorValidity(String tmpString) throws invalidInputException {
+        engine.checkSelectedReflectorValidity(tmpString);
+    }
+
+    public void checkPlugBoardValidity(String tmpString, PlugBoardDTO plugBoardDTO) throws invalidInputException {
+        engine.checkPlugBoardValidity(tmpString, plugBoardDTO.getUICables());
+    }
+
+    public void setNewMachine(RotorsFirstPositionDTO rotorsFirstPositionDTO, PlugBoardDTO plugBoardDTO, ReflectorDTO reflectorDTO, RotorsIndexesDTO rotorsIndexesDTO) {
+        engine.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
+    }
+
+    public ArrayList<Integer> getReflectorsIDs(){
+        return engine.getReflectorsIDs();
+    }
+    public void popUpError(String errorMsg) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Invalid input");
+        errorAlert.setContentText(errorMsg);
+        errorAlert.showAndWait();
+    }
+
+
+
 }
 

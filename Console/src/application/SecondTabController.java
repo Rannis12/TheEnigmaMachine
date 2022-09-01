@@ -65,12 +65,14 @@ public class SecondTabController {
 
     @FXML
     void decodeCharListener(ActionEvent event) {
+        enterInputTF.setDisable(false);
+
 
     }
 
     @FXML
     void decodeLineListener(ActionEvent event) {
-
+        enterInputTF.setDisable(false);
     }
 
     public void setMainPageController(MainPageController mainPageController) {
@@ -82,4 +84,9 @@ public class SecondTabController {
     }
 
 
+    public void enableDecodingAndClearButtons() {
+        decodeLinebtn.setDisable(false);
+        decodeCharBtn.setDisable(false);
+        clearBtn.setDisable(false);
+    }
 }

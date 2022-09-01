@@ -74,6 +74,16 @@ public class Reflectors implements Serializable {
         requestedReflector = rand;
     }
 
+    public ArrayList<Integer> getReflectorsIDs(){
+        ArrayList<Integer> arrOfIDs = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            if(reflectorsMap.containsKey(i)){
+                arrOfIDs.add(i + 1);
+            }
+        }
+        return arrOfIDs;
+    }
 
     private class Reflector implements Serializable{
         private Map<Integer,Integer> wiring;

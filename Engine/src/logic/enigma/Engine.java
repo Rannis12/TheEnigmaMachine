@@ -5,6 +5,7 @@ import enigma.machine.Machine;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
 
+import javax.lang.model.type.ArrayType;
 import java.io.Serializable;
 import java.util.*;
 
@@ -147,7 +148,9 @@ public class Engine implements Serializable, Machine {
         rotors.resetRotorsFirstPositions();
     }
 
-
+    public ArrayList<Integer> getReflectorsIDs(){
+        return reflectors.getReflectorsIDs();
+    }
 
     @Override
     public MachineStatisticsDTO getMachineStatistics() {

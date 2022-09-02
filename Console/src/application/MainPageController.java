@@ -72,36 +72,23 @@ public class MainPageController {
     public boolean loadFileFromXml(String fileDestination){
 
         try {
-            if (isFileExistAndXML(fileDestination)) {
-                EngineLoader engineLoader = new EngineLoader(fileDestination);
-                engine = engineLoader.loadEngineFromXml(fileDestination);
 
-                firstTabController.setReflectorsCB(getReflectorsIDs());
-                engine.resetStatistics();
-                xmlPathLabel.setText(fileDestination + " selected");
-                return true;
-            }
+           EngineLoader engineLoader = new EngineLoader(fileDestination);
+           engine = engineLoader.loadEngineFromXml(fileDestination);
+
+          firstTabController.setReflectorsCB(getReflectorsIDs());
+          engine.resetStatistics();
+
+          xmlPathLabel.setText(fileDestination + " selected");
+          secondTabController.setDecodingAndClearButtonsDisable(true);
+
+          return true;
+
         } catch (invalidXMLfileException e) {
             popUpError(e.getMessage());
         }
         return false;
     }
-
-    public boolean isFileExistAndXML(String fullPath) throws invalidXMLfileException {
-        if(fullPath.endsWith(".xml")){
-            File tmpFile = new File(fullPath);
-            if(tmpFile.exists()){
-                return true;
-            }
-            else{
-                throw new invalidXMLfileException("File doesn't exists.");
-            }
-        }
-        else{
-            throw new invalidXMLfileException(fullPath +" isn't a xml file.");
-        }
-    }
-
 
     public void randomConfiguration() {
         engine.randomEngine();
@@ -135,8 +122,8 @@ public class MainPageController {
         //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
     }
 
-    public void enableDecodingAndClearButtons() {
-        secondTabController.enableDecodingAndClearButtons();
+    public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
+        secondTabController.setDecodingAndClearButtonsDisable(setToDisable);
     }
 
     public int getUsedAmountOfRotors() {

@@ -36,6 +36,8 @@ public class EnigmaApplication extends Application {
         Scene scene = new Scene(root, 500, 550);
         primaryStage.setTitle("The Enigma Machine!");
         primaryStage.setScene(scene);
+        primaryStage.setMinHeight(550);
+        primaryStage.setMinWidth(400);
         primaryStage.show();
     }
 }

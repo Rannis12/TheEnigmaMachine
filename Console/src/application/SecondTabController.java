@@ -84,9 +84,9 @@ public class SecondTabController {
     }
 
 
-    public void enableDecodingAndClearButtons() {
-        decodeLinebtn.setDisable(false);
-        decodeCharBtn.setDisable(false);
-        clearBtn.setDisable(false);
+    public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
+        decodeLinebtn.setDisable(setToDisable);
+        decodeCharBtn.setDisable(setToDisable);
+        clearBtn.setDisable(setToDisable);
     }
 }

@@ -7,14 +7,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class FirstTabController {
@@ -75,6 +71,9 @@ public class FirstTabController {
         private Button manualBtn;
 
         @FXML
+        private TextArea instructionTF;
+
+        @FXML
         private TextField userRotorsInput;
 
         @FXML
@@ -110,20 +109,10 @@ public class FirstTabController {
         }
 
     @FXML
-    void actionOnManualBtn(ActionEvent event) {
-        userRotorsInput.setDisable(false);
-
-        userInitPlaces.setDisable(true);
-        userInitPlugBoard.setDisable(true);
-        reflectorCB.setDisable(true);
-
-        machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
-    }
-
-    @FXML
     void setMachine(ActionEvent event) {
         //reflectorCB.getItems().removeAll(reflectorCB.getItems());//////////// to fucking check!!!
         setReflectorsCB(mainPageController.getReflectorsIDs());
+        setMachineBtn.setSelected(false);
 
         mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
         operationsAfterValidInput();
@@ -138,56 +127,6 @@ public class FirstTabController {
 
         operationsAfterValidInput();
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
-    }
-
-    @FXML
-    void userInitPlacesListener(ActionEvent event) {
-        String rotorsFirstPositions = userInitPlaces.getText();
-        rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
-        try {
-            //engine.checkRotorsFirstPositionsValidity(rotorsFirstPositions, engine.getKeyBoard());
-            mainPageController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
-            rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
-            userInitPlaces.setDisable(true);
-            userInitPlugBoard.setDisable(false);
-        } catch (invalidInputException ex) {
-            userInitPlaces.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-    }
-
-    @FXML
-    void userInitPlugBoardListener(ActionEvent event) {
-        try {
-            String tmpString = userInitPlugBoard.getText();
-            tmpString = tmpString.toUpperCase();
-            plugBoardDTO = new PlugBoardDTO();
-            mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
-            plugBoardDTO.setInitString(tmpString);
-            userInitPlugBoard.setDisable(true);
-            reflectorCB.setDisable(false);
-        } catch (invalidInputException ex) {
-            userInitPlugBoard.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-    }
-
-    @FXML
-    void userRotorsInputListener(ActionEvent event) {
-
-
-        String rotorsPosition = userRotorsInput.getText();
-        System.out.println(userRotorsInput.getText());
-        try {
-            rotorsIndexesDTO = new RotorsIndexesDTO();
-            mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
-            userRotorsInput.setDisable(true);
-            userInitPlaces.setDisable(false);
-        } catch (invalidInputException ex) {
-            userRotorsInput.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-
     }
 
     @FXML
@@ -212,16 +151,6 @@ public class FirstTabController {
         decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
     }
 
-
-    public void setReflectorsCB(ArrayList<Integer> reflectorsIDs){
-
-            ObservableList observableList = FXCollections.observableArrayList(reflectorsIDs);
-
-            reflectorCB.getItems().removeAll(reflectorCB.getItems());//ofek - exception
-
-            reflectorCB.setItems(observableList);
-        }
-
     public void setMainController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
     }
@@ -234,20 +163,100 @@ public class FirstTabController {
 
     public void operationsAfterValidInput(){
         clearAllUsersTextFields();
-
         machineInitializeLabel.setTextFill(Color.RED);
+
 
         EngineFullDetailsDTO engineFullDetailsDTO = mainPageController.getEngineFullDetails();
         String newConfiguration = mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
-        initializeConfigurationTF.setText(newConfiguration);
 
-        mainPageController.enableDecodingAndClearButtons();
+        initializeConfigurationTF.setText(newConfiguration);
+        mainPageController.setDecodingAndClearButtonsDisable(false);
     }
     public void clearAllUsersTextFields(){
         userInitPlaces.clear();
         userRotorsInput.clear();
         userInitPlugBoard.clear();
+        instructionTF.clear();
     }
 
+    @FXML
+    void manualBtnListener(ActionEvent event) {
+        userRotorsInput.setDisable(false);
+        instructionTF.setPromptText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
+                "from left to right divided by comma. for example 23,542,231");
+
+
+        userInitPlaces.setDisable(true);
+        userInitPlugBoard.setDisable(true);
+        reflectorCB.setDisable(true);
+
+        machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
+    }
+    @FXML
+    void userRotorsInputListener(ActionEvent event) {
+
+
+        String rotorsPosition = userRotorsInput.getText();
+        System.out.println(userRotorsInput.getText());
+        try {
+            rotorsIndexesDTO = new RotorsIndexesDTO();
+            mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
+            userRotorsInput.setDisable(true);
+
+            userInitPlaces.setDisable(false);
+            instructionTF.setPromptText("Enter first positions of rotors from left to right without spaces. For example: 4D8A.");
+
+        } catch (invalidInputException ex) {
+            userRotorsInput.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+
+    }
+
+    @FXML
+    void userInitPlacesListener(ActionEvent event) {
+        String rotorsFirstPositions = userInitPlaces.getText();
+        rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
+        try {
+            mainPageController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
+            rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
+            userInitPlaces.setDisable(true);
+
+            userInitPlugBoard.setDisable(false);
+
+            instructionTF.setPromptText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
+        } catch (invalidInputException ex) {
+            userInitPlaces.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+    }
+
+    @FXML
+    void userInitPlugBoardListener(ActionEvent event) {
+        try {
+            String tmpString = userInitPlugBoard.getText();
+            tmpString = tmpString.toUpperCase();
+            plugBoardDTO = new PlugBoardDTO();
+            mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
+            plugBoardDTO.setInitString(tmpString);
+            userInitPlugBoard.setDisable(true);
+
+            reflectorCB.setDisable(false);
+            instructionTF.setPromptText("Choose reflectors from the following:");
+        } catch (invalidInputException ex) {
+            userInitPlugBoard.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+    }
+
+
+    public void setReflectorsCB(ArrayList<Integer> reflectorsIDs){
+
+        ObservableList observableList = FXCollections.observableArrayList(reflectorsIDs);
+
+        reflectorCB.getItems().removeAll(reflectorCB.getItems());//ofek - exception
+
+        reflectorCB.setItems(observableList);
+    }
 }

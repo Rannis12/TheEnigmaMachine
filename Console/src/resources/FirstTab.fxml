@@ -148,21 +148,28 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="25.0" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="302.0">
+                        <VBox spacing="30.0">
                            <children>
-                              <Label alignment="CENTER" maxHeight="20.0" maxWidth="70.0" minHeight="17.0" minWidth="70.0" prefHeight="17.0" prefWidth="70.0" text="instractions:" HBox.hgrow="ALWAYS" />
-                              <TextArea fx:id="instructionTF" editable="false" maxHeight="37.0" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="235.0" HBox.hgrow="ALWAYS" />
+                              <HBox alignment="CENTER_LEFT" maxHeight="25.0" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="302.0" spacing="10.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="125.0" minHeight="17.0" minWidth="51.0" prefHeight="20.0" prefWidth="125.0" text="Instrusctions:" HBox.hgrow="ALWAYS" />
+                                    <TextArea fx:id="instructionTF" editable="false" maxHeight="37.0" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="235.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <TextField fx:id="userRotorsInput" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userRotorsInputListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors input" style="-fx-border-color: #1C2833;" />
+                              <TextField fx:id="userInitPlaces" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlacesListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors first positions input" style="-fx-border-color: #1C2833;" />
+                              <TextField fx:id="userInitPlugBoard" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlugBoardListener" prefHeight="25.0" prefWidth="381.0" promptText="Plugboard input" style="-fx-border-color: #1C2833;" />
                            </children>
-                        </HBox>
-                        <TextField fx:id="userRotorsInput" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userRotorsInputListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors input" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
-                        <TextField fx:id="userInitPlaces" alignment="CENTER" disable="true" layoutX="10.0" layoutY="132.0" maxWidth="1.7976931348623157E308" onAction="#userInitPlacesListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors first positions input" style="-fx-border-color: #1C2833;" />
-                        <TextField fx:id="userInitPlugBoard" alignment="CENTER" disable="true" layoutX="10.0" layoutY="165.0" maxWidth="1.7976931348623157E308" onAction="#userInitPlugBoardListener" prefHeight="25.0" prefWidth="381.0" promptText="Plugboard input" style="-fx-border-color: #1C2833;" />
+                        </VBox>
                         <HBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Label minHeight="20.0" minWidth="57.0" prefHeight="20.0" prefWidth="57.0" text="Reflector:" />
+                              <Label minHeight="20.0" minWidth="57.0" prefHeight="20.0" prefWidth="66.0" text="Reflector:" />
                               <ComboBox fx:id="reflectorCB" disable="true" onAction="#setReflectorID" prefHeight="25.0" prefWidth="54.0" />
                               <ToggleButton fx:id="setMachineBtn" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!" />
                            </children>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
                         </HBox>
                         <Label fx:id="machineInitializeLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" styleClass="machineInitSuccessLabel" stylesheets="@firstTabStyleSheet.css" text="Machine initialize succefully!" textFill="#faf2f2" />
                      </children>
@@ -190,7 +197,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="initializeConfigurationTF" alignment="CENTER" disable="true" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="currentConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" text="Current Configuration" VBox.vgrow="ALWAYS">
+                        <Label fx:id="currentConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="301.0" text="Current Configuration" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="16.0" />
                            </font></Label>

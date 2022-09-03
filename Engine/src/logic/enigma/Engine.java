@@ -48,7 +48,6 @@ public class Engine implements Serializable, Machine {
     }
 
 
-
     public DecodeStringInfo decodeStr(String toEncodeString) throws invalidInputException {
         toEncodeString = toEncodeString.toUpperCase();
         checkStringValidity(toEncodeString);
@@ -65,7 +64,7 @@ public class Engine implements Serializable, Machine {
 
         return new DecodeStringInfo(toEncodeString, decodedString, end - start);
     }
-    private char decodeChar(Character toDecode) {
+    public char decodeChar(Character toDecode) {
         int rowNum;
         char newChar;
 

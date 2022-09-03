@@ -2,6 +2,7 @@ package application;
 
 import dtos.*;
 import exceptions.invalidInputException;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,10 +57,8 @@ public class FirstTabController {
         @FXML private ToggleButton setMachineBtn;
 
 
-
         @FXML
         private Label reflectorsAmountLabel;
-
 
         @FXML
         private Label calibrationLabel;
@@ -131,7 +130,7 @@ public class FirstTabController {
 
     @FXML
     void setReflectorID(ActionEvent event) {
-        int chosenReflector = (Integer)reflectorCB.getValue();
+        int chosenReflector = (Integer) reflectorCB.getValue();
 
         reflectorDTO = new ReflectorDTO(chosenReflector);
         reflectorCB.setDisable(true);
@@ -149,6 +148,9 @@ public class FirstTabController {
         rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
         reflectorsAmount.setText(String.valueOf(engineMinimalDetailsDTO.getReflectorsAmount()));
         decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
+
+//        IntegerProperty counter = mainPageController.getDecodedStringsCounterDTO();
+
     }
 
     public void setMainController(MainPageController mainPageController) {
@@ -258,5 +260,14 @@ public class FirstTabController {
         reflectorCB.getItems().removeAll(reflectorCB.getItems());//ofek - exception
 
         reflectorCB.setItems(observableList);
+    }
+
+    public void reLoadInitialize() {
+        rotorsDetails.setText("...");
+        decodedStrings.setText("...");
+        reflectorsAmount.setText("...");
+
+        initializeConfigurationTF.setText("");
+        currentConfigurationTF.setText("");
     }
 }

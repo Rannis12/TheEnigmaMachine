@@ -6,14 +6,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MachineStatisticsDTO implements Serializable {
-
     private ArrayList<ConfigurationStatisticsDTO> statisticsArrayList;
-
 
     public MachineStatisticsDTO() {
         statisticsArrayList = new ArrayList<>();
     }
-
 
     public ArrayList<ConfigurationStatisticsDTO> getStatisticsArrayList() {
         return statisticsArrayList;
@@ -29,8 +26,10 @@ public class MachineStatisticsDTO implements Serializable {
         if(size < 1) {
             throw new invalidInputException("Please define machine first!");
         }
-        statisticsArrayList.get(size -  1).insertInfo(decodedStringInfo);
+        statisticsArrayList.get(size - 1).insertInfo(decodedStringInfo);
     }
+
+
     public void resetStatistics() {
         statisticsArrayList.clear();
     }

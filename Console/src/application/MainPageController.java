@@ -20,39 +20,23 @@ public class MainPageController {
     @FXML private SecondTabController secondTabController;
     private Engine engine;
 
-    @FXML
-    public void initialize() {
+//    private int decodedStringsCounter = 0;
+
+    @FXML public void initialize() {
         if(firstTabController != null && secondTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
         }
 
     }
-
-    @FXML
-    private VBox titleVB;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Button loadFileBtn;
-
-    @FXML
-    private Label xmlPathLabel;
-
-    @FXML
-    private TabPane tabPane;
-
-    @FXML
-    private Tab tabOne;
-
-
-    @FXML
-    private Tab tabTwo;
-
-    @FXML
-    private Tab tabThree;
+    @FXML private VBox titleVB;
+    @FXML private Label titleLabel;
+    @FXML private Button loadFileBtn;
+    @FXML private Label xmlPathLabel;
+    @FXML private TabPane tabPane;
+    @FXML private Tab tabOne;
+    @FXML private Tab tabTwo;
+    @FXML private Tab tabThree;
 
     @FXML
     void loadFile(MouseEvent event) {
@@ -80,7 +64,9 @@ public class MainPageController {
           engine.resetStatistics();
 
           xmlPathLabel.setText(fileDestination + " selected");
-          secondTabController.setDecodingAndClearButtonsDisable(true);
+          secondTabController.setDecodingButtonsDisable(true);
+
+          reLoadInitialize();  //initializing in case of loading file again
 
           return true;
 
@@ -90,8 +76,15 @@ public class MainPageController {
         return false;
     }
 
+    private void reLoadInitialize() {
+        firstTabController.reLoadInitialize();
+        secondTabController.reLoadInitialize();
+//        thirdTabController.reLoadInitialized();
+    }
+
     public void randomConfiguration() {
         engine.randomEngine();
+
     }
 
     public EngineFullDetailsDTO getEngineFullDetails(){
@@ -120,10 +113,12 @@ public class MainPageController {
         firstTabController.setCurrentConfigurationLabel(newConfiguration);
         secondTabController.setCurrentConfigurationLabel(newConfiguration);
         //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
+
+        secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }
 
     public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
-        secondTabController.setDecodingAndClearButtonsDisable(setToDisable);
+        secondTabController.setDecodingButtonsDisable(setToDisable);
     }
 
     public int getUsedAmountOfRotors() {
@@ -161,6 +156,13 @@ public class MainPageController {
     }
 
 
+    public String decodeString(String text) throws invalidInputException {
+        DecodeStringInfo decodeStringInfo =  engine.decodeStr(text);
+        return decodeStringInfo.getDecodedString();
+    }
 
+    public char decodeChar(char character){
+        return engine.decodeChar(character);
+    }
 }
 

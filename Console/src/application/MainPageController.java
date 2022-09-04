@@ -23,9 +23,28 @@ public class MainPageController {
 //    private int decodedStringsCounter = 0;
 
     @FXML public void initialize() {
+
         if(firstTabController != null && secondTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
+
+
+            // Ran: Bind number of decodes to counter.
+            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecoding().asObject().asString());
+
+            //Ran: everytime that integerProperty(amount of decoded strings) is changes, we "listening" to event, and updates the relevant fields.
+            // in this case, we update configuration label.
+            secondTabController.getAmountOfDecoding().addListener(e -> {
+
+            EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
+            String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                    engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+
+            firstTabController.setCurrentConfigurationLabel(newConfiguration);
+            secondTabController.setCurrentConfigurationLabel(newConfiguration);
+
+            });
+
         }
 
     }

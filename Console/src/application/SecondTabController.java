@@ -2,7 +2,9 @@ package application;
 
 import exceptions.invalidInputException;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +24,8 @@ public class SecondTabController {
     private boolean shouldDecodeLine; //false = should decode char
 
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
+
+    private IntegerProperty integerProperty;
 
 
 /*    @FXML private Label currentConfigurationLabel;
@@ -51,6 +55,10 @@ public class SecondTabController {
 
     @FXML private TextArea statisticsTA;
 
+    public SecondTabController() {
+        integerProperty = new SimpleIntegerProperty(0);
+    }
+
     @FXML
     void actionOnProcessBtn(ActionEvent event) {
         decodedCorrectly.set(false);
@@ -58,6 +66,8 @@ public class SecondTabController {
         if(!tmp.equals("")){
             String decodedString;
             try {
+
+                integerProperty.set(integerProperty.get()+1); // update times of decode.
                 decodedString = mainPageController.decodeString(lineInputTF.getText());
                 decodeResultTF.setText(decodedString);
                 decodedCorrectly.set(true);
@@ -78,6 +88,7 @@ public class SecondTabController {
     void doneBtnListener(ActionEvent event) {
         decodedCorrectly.set(false);
         if(!charInputTF.getText().equals("")) {
+            integerProperty.set(integerProperty.get()+1); // update times of decode.
             decodedCorrectly.set(true);
             statisticsTA.appendText("   The string " + charInputTF.getText() + " decoded to: "+ decodeResultTF.getText() + '\n');
         }
@@ -131,6 +142,9 @@ public class SecondTabController {
         shouldDecodeLine = true;
     }
 
+    public IntegerProperty getAmountOfDecoding() {
+        return this.integerProperty;
+    }
 
 
 

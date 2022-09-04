@@ -3,18 +3,24 @@ package application;
 import dtos.*;
 import exceptions.invalidInputException;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 
-public class FirstTabController {
+public class FirstTabController implements Initializable {
         private RotorsIndexesDTO rotorsIndexesDTO = null;
         private PlugBoardDTO plugBoardDTO = null;
         private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
@@ -102,10 +108,13 @@ public class FirstTabController {
         @FXML
         private TextField currentConfigurationTF;
 
+
+
         @FXML
         void TODOinCalibration(ActionEvent event) { /*!!!!!!!!!!!!!!!!*/
 
         }
+
 
     @FXML
     void setMachine(ActionEvent event) {
@@ -142,12 +151,16 @@ public class FirstTabController {
         currentConfigurationTF.setText(currentConfiguration);
     }
 
+    public Label getDecodedStrings() {
+            return this.decodedStrings;
+    }
+
 
     public void showDetails(EngineMinimalDetailsDTO engineMinimalDetailsDTO) {
 
         rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
         reflectorsAmount.setText(String.valueOf(engineMinimalDetailsDTO.getReflectorsAmount()));
-        decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
+        //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
 
 //        IntegerProperty counter = mainPageController.getDecodedStringsCounterDTO();
 
@@ -264,10 +277,16 @@ public class FirstTabController {
 
     public void reLoadInitialize() {
         rotorsDetails.setText("...");
-        decodedStrings.setText("...");
+        //decodedStrings.setText("...");
         reflectorsAmount.setText("...");
 
-        initializeConfigurationTF.setText("");
-        currentConfigurationTF.setText("");
+        initializeConfigurationTF.clear();
+        currentConfigurationTF.clear();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

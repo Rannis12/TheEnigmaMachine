@@ -18,7 +18,7 @@ public class Engine implements Serializable, Machine {
     private int amountOfDecodedStrings;
 
     private Dictionary dictionary;
-    Engine(List < CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, CTEDictionary cteDictionary) {
+    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, CTEDictionary cteDictionary) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
         dictionary = new Dictionary(keyBoard, cteDictionary);
@@ -30,6 +30,9 @@ public class Engine implements Serializable, Machine {
 
         amountOfDecodedStrings = 0;
     }
+
+
+
 
     public void initRotorIndexes(ArrayList<Integer> uiRotorsIndexes) {
         rotors.initRotorsIndexes(uiRotorsIndexes);

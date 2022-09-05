@@ -198,6 +198,7 @@ public class FirstTabController implements Initializable {
     @FXML
     void manualBtnListener(ActionEvent event) {
         userRotorsInput.setDisable(false);
+        clearAllUsersTextFields();
         instructionTF.setPromptText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
                 "from left to right divided by comma. for example 23,542,231");
 

@@ -20,7 +20,6 @@ public class MainPageController {
     @FXML private SecondTabController secondTabController;
     private Engine engine;
 
-//    private int decodedStringsCounter = 0;
 
     @FXML public void initialize() {
 
@@ -67,6 +66,9 @@ public class MainPageController {
             if(loadFileFromXml(file.getAbsolutePath())) {
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
                 firstTabController.enableButtons();
+
+                secondTabController.disableAllButtonsAndTextFields();
+                secondTabController.clearAllTextFields();
             }
         }
     }

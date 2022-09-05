@@ -3,11 +3,12 @@ package logic.enigma;
 import resources.jaxb.generated.CTEDecipher;
 import resources.jaxb.generated.CTEDictionary;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.MatchResult;
 
-public class Dictionary {
+public class Dictionary implements Serializable {
 
     private Set<String> dictionary;
 

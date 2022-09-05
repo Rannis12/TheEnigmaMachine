@@ -189,4 +189,20 @@ public class SecondTabController {
         statisticsTA.clear();
 
     }
+
+    public void disableAllButtonsAndTextFields() {
+        decodeCharBtn.setDisable(true);
+        charInputTF.setDisable(true);
+        doneBtn.setDisable(true);
+        decodeLinebtn.setDisable(true);
+        lineInputTF.setDisable(true);
+        processBtn.setDisable(true);
+        clearBtn.setDisable(true);
+    }
+
+    public void clearAllTextFields() {
+        charInputTF.clear();
+        lineInputTF.clear();
+        decodeResultTF.clear();
+    }
 }

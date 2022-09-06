@@ -20,6 +20,8 @@ public class Engine implements Serializable, Machine {
 
     //we need to use it. in Agent im calling this whole path, instead calling LOADED_ENGINE_PATH.
     public final String LOADED_ENGINE_PATH = "C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml";
+
+
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, CTEDictionary cteDictionary) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);

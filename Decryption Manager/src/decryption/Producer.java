@@ -27,6 +27,7 @@ public class Producer {
         //for example, initialize the initString to - "AAAAAAAA".
         for (int i = 0; i < queueMaxSize; i++) {
 
+
             /*for (int j = 0; j < alphaBet.length(); j++) {
                 initString += alphaBet.charAt(0);
 
@@ -50,10 +51,6 @@ public class Producer {
         }
 
 
-
-
-
-
         /*blockingQueue.add("AAA");*/
     }
 
@@ -62,3 +59,24 @@ public class Producer {
         producer.createMissions();
     }*/
 
+
+
+
+/*
+for (int i = size - 1; i >= 0; i--) {
+
+        if(i == size - 1) {//rightest rotor
+        rotors.get(rotorsIndexes.get(i) - 1).steerRotor();
+
+        for (int j = i; j > 0; j--) {//check notch locations and steer other rotors if needed
+        if(rotors.get(rotorsIndexes.get(j) - 1).isFullCycle()){
+        rotors.get(rotorsIndexes.get(j-1) - 1).steerRotor();
+        }
+        else
+        break;
+        }
+        }
+        currRowNum = rotors.get(rotorsIndexes.get(i) - 1).getRowNumberFromRightToLeft(currRowNum);//inside rotor
+        }
+        return currRowNum;
+        }*/

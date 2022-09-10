@@ -20,8 +20,10 @@ public class MainPageController {
     @FXML private SecondTabController secondTabController;
     private Engine engine;
 
+    private int currConfigurationDecodedAmount;
 
     @FXML public void initialize() {
+        resetCurrConfigurationDecodedAmount();
 
         if(firstTabController != null && secondTabController != null){
             firstTabController.setMainController(this);
@@ -68,7 +70,9 @@ public class MainPageController {
                 firstTabController.enableButtons();
 
                 secondTabController.disableAllButtonsAndTextFields();
-                secondTabController.clearAllTextFields();
+                secondTabController.clearTextFields();
+
+                secondTabController.getStatisticsTA().clear();
             }
         }
     }
@@ -87,7 +91,7 @@ public class MainPageController {
           xmlPathLabel.setText(fileDestination + " selected");
           secondTabController.setDecodingButtonsDisable(true);
 
-          reLoadInitialize();  //initializing in case of loading file again
+          //reLoadInitialize();  //initializing in case of loading file again     ofek: why do we need this?
 
           return true;
 
@@ -177,13 +181,29 @@ public class MainPageController {
     }
 
 
-    public String decodeString(String text) throws invalidInputException {
-        DecodeStringInfo decodeStringInfo =  engine.decodeStr(text);
-        return decodeStringInfo.getDecodedString();
+    public DecodeStringInfo decodeString(String text) throws invalidInputException {
+
+        DecodeStringInfo decodeStringInfo = engine.decodeStr(text);
+        return decodeStringInfo;
     }
 
     public char decodeChar(char character){
         return engine.decodeChar(character);
+    }
+
+
+    public void increaseDecodedStringAmount(){
+        currConfigurationDecodedAmount++;
+    }
+    public int getCurrConfigurationDecodedAmount() {
+        return currConfigurationDecodedAmount;
+    }
+    public void resetCurrConfigurationDecodedAmount() {
+        currConfigurationDecodedAmount = 0;
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }
 

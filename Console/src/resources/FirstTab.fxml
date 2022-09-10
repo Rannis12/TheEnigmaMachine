@@ -196,12 +196,12 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" disable="true" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
                         <Label fx:id="currentConfigurationLabel" alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="301.0" text="Current Configuration" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="16.0" />
                            </font></Label>
-                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="40.0" />
                            </VBox.margin></TextField>

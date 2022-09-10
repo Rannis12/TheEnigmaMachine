@@ -27,93 +27,80 @@ public class FirstTabController implements Initializable {
         private ReflectorDTO reflectorDTO = null;
         private MainPageController mainPageController;
 
-        @FXML
-        private AnchorPane innerTabOneAP;
+    @FXML
+    private AnchorPane innerTabOneAP;
 
-        @FXML
-        private VBox tabOneUpperVB;
+    @FXML
+    private VBox tabOneUpperVB;
 
-        @FXML
-        private Label detailsLabel;
+    @FXML
+    private Label detailsLabel;
 
-        @FXML
-        private GridPane rowOneInTabOne;
+    @FXML
+    private GridPane rowOneInTabOne;
 
-        @FXML
-        private Label rotorsDetails;
+    @FXML
+    private Label rotorsDetails;
 
-        @FXML
-        private Label rotorsLabel;
+    @FXML
+    private Label rotorsLabel;
 
-        @FXML
-        private GridPane rowTwoInTabOne;
+    @FXML
+    private Label decodedStrings;
 
-        @FXML
-        private Label decodedStrings;
+    @FXML
+    private Label decodedStringsLabel;
 
-        @FXML
-        private Label decodedStringsLabel;
+    @FXML
+    private Label reflectorsAmount;
 
-        @FXML
-        private GridPane rowThreeInTabOne;
-
-        @FXML
-        private Label reflectorsAmount;
-
-        @FXML private ToggleButton setMachineBtn;
+    @FXML private ToggleButton setMachineBtn;
 
 
-        @FXML
-        private Label reflectorsAmountLabel;
+    @FXML
+    private Label reflectorsAmountLabel;
 
-        @FXML
-        private Label calibrationLabel;
+    @FXML
+    private Label calibrationLabel;
 
-        @FXML
-        private Button randomBtn;
+    @FXML
+    private Button randomBtn;
 
-        @FXML
-        private Button manualBtn;
+    @FXML
+    private Button manualBtn;
 
-        @FXML
-        private TextArea instructionTF;
+    @FXML
+    private TextArea instructionTF;
 
-        @FXML
-        private TextField userRotorsInput;
+    @FXML
+    private TextField userRotorsInput;
 
-        @FXML
-        private TextField userInitPlaces;
+    @FXML
+    private TextField userInitPlaces;
 
-        @FXML
-        private TextField userInitPlugBoard;
+    @FXML
+    private TextField userInitPlugBoard;
 
-        @FXML
-        private ComboBox<?> reflectorCB;
+    @FXML
+    private ComboBox<?> reflectorCB;
 
-        @FXML
-        private Label machineInitializeLabel;
+    @FXML
+    private Label machineInitializeLabel;
 
-        @FXML
-        private Label currentMachineLabel;
+    @FXML
+    private Label currentMachineLabel;
 
-        @FXML
-        private Label initializedConfigurationLabel;
+    @FXML
+    private Label initializedConfigurationLabel;
 
-        @FXML
-        private TextField initializeConfigurationTF;
+    @FXML
+    private TextField initializeConfigurationTF;
 
-        @FXML
-        private Label currentConfigurationLabel;
+    @FXML
+    private Label currentConfigurationLabel;
 
-        @FXML
-        private TextField currentConfigurationTF;
-
-
-
-        @FXML
-        void TODOinCalibration(ActionEvent event) { /*!!!!!!!!!!!!!!!!*/
-
-        }
+    @FXML
+    private TextField currentConfigurationTF;
 
 
     @FXML
@@ -124,6 +111,7 @@ public class FirstTabController implements Initializable {
 
         mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
         operationsAfterValidInput();
+        mainPageController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
 
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
 
@@ -132,8 +120,10 @@ public class FirstTabController implements Initializable {
     @FXML
     void randomBtnListener(ActionEvent event) {
         mainPageController.randomConfiguration();
+        mainPageController.randomConfiguration();
 
         operationsAfterValidInput();
+        mainPageController.resetCurrConfigurationDecodedAmount();
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
 

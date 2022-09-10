@@ -33,10 +33,10 @@ public class EnigmaApplication extends Application {
         fxmlLoader.setLocation(url);
         AnchorPane tabThree = fxmlLoader.load(url.openStream());*/
 
-        Scene scene = new Scene(root, 500, 550);
+        Scene scene = new Scene(root, 500, 620);
         primaryStage.setTitle("The Enigma Machine!");
         primaryStage.setScene(scene);
-        primaryStage.setMinHeight(550);
+        primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(400);
         primaryStage.show();
     }

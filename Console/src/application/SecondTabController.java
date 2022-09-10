@@ -1,5 +1,6 @@
 package application;
 
+import dtos.DecodeStringInfo;
 import exceptions.invalidInputException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -60,18 +61,20 @@ public class SecondTabController {
     }
 
     @FXML
-    void actionOnProcessBtn(ActionEvent event) {
+    void processBtnListener(ActionEvent event) {
         decodedCorrectly.set(false);
         String tmp = lineInputTF.getText();
         if(!tmp.equals("")){
-            String decodedString;
             try {
-
-                integerProperty.set(integerProperty.get()+1); // update times of decode.
-                decodedString = mainPageController.decodeString(lineInputTF.getText());
-                decodeResultTF.setText(decodedString);
+                DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
+                decodeResultTF.setText(newInfo.getDecodedString());
+                //mainPageController.getEngine().getMachineStatistics().addDecodedStringInfo(newInfo);
+                mainPageController.increaseDecodedStringAmount();
                 decodedCorrectly.set(true);
-                statisticsTA.appendText("   The string " + lineInputTF.getText() + " decoded to: "+ decodeResultTF.getText() + '\n');
+                integerProperty.set(integerProperty.get()+1); // update times of decode.
+
+                statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
             } catch (invalidInputException e) {
                 mainPageController.popUpError(e.getMessage());
             }
@@ -90,18 +93,24 @@ public class SecondTabController {
         if(!charInputTF.getText().equals("")) {
             integerProperty.set(integerProperty.get()+1); // update times of decode.
             decodedCorrectly.set(true);
-            statisticsTA.appendText("   The string " + charInputTF.getText() + " decoded to: "+ decodeResultTF.getText() + '\n');
+            mainPageController.increaseDecodedStringAmount();
+            statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+                    ". <" + charInputTF.getText().toUpperCase() + "> ----> <" + decodeResultTF.getText() + "> ( NO nano seconds)\n");
         }
 
-        decodeResultTF.setText("");
-        charInputTF.setText("");
+        clearTextFields();
     }
 
     @FXML
     void charInputListener(KeyEvent event) {
-
+        char nextChar = 0;
         if(!event.getText().equals("")) {
-            decodeResultTF.setText(decodeResultTF.getText() + mainPageController.decodeChar(event.getText().toUpperCase().charAt(0)));
+            try {
+                nextChar = event.getText().toUpperCase().charAt(0);
+                decodeResultTF.setText(decodeResultTF.getText() + mainPageController.decodeChar(nextChar));
+            }catch (RuntimeException ex) {//edge scenario - input from user is invalid so pop up msg
+                mainPageController.popUpError("The letter " + nextChar + " doesn't exist in the language. Please try again.\n");
+            }
         }
         //charInputTF.setText(charInputTF.getText() + event.getCharacter());
     }
@@ -132,12 +141,6 @@ public class SecondTabController {
         doneBtn.setDisable(true);
 
         charInputTF.setDisable(!lineInputTF.isDisable());
-
-
-
-
-
-
 
         shouldDecodeLine = true;
     }
@@ -174,7 +177,7 @@ public class SecondTabController {
     }
 
 
-    private void clearTextFields(){
+    public void clearTextFields(){
         charInputTF.clear();
         lineInputTF.clear();
         decodeResultTF.clear();
@@ -200,9 +203,4 @@ public class SecondTabController {
         clearBtn.setDisable(true);
     }
 
-    public void clearAllTextFields() {
-        charInputTF.clear();
-        lineInputTF.clear();
-        decodeResultTF.clear();
-    }
 }

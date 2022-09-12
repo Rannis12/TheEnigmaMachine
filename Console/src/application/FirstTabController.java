@@ -98,7 +98,6 @@ public class FirstTabController implements Initializable {
     @FXML
     void setMachine(ActionEvent event) throws invalidInputException {
         setMachineBtn.setSelected(false);
-
         try {
             int chosenReflector = (Integer) reflectorChoiceBox.getValue();
             reflectorDTO = new ReflectorDTO(chosenReflector);

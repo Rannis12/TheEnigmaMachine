@@ -189,7 +189,7 @@
                               <Blend />
                            </effect>
                         </Label>
-                        <TextArea fx:id="statisticsTA" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="339.0" prefWidth="257.0" style="-fx-border-color: #DE3163; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                        <TextArea fx:id="statisticsTA" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="341.0" prefWidth="247.0" style="-fx-border-color: #DE3163; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="22.0" />
                            </font></TextArea>

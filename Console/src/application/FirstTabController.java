@@ -2,19 +2,16 @@ package application;
 
 import dtos.*;
 import exceptions.invalidInputException;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -52,6 +49,9 @@ public class FirstTabController implements Initializable {
     private Label decodedStringsLabel;
 
     @FXML
+    private Label chooseReflectorLabel;
+
+    @FXML
     private Label reflectorsAmount;
 
     @FXML private ToggleButton setMachineBtn;
@@ -82,60 +82,62 @@ public class FirstTabController implements Initializable {
     private TextField userInitPlugBoard;
 
     @FXML
-    private ComboBox<?> reflectorCB;
+    private ChoiceBox<?> reflectorChoiceBox;
+
 
     @FXML
     private Label machineInitializeLabel;
 
     @FXML
-    private Label currentMachineLabel;
-
-    @FXML
-    private Label initializedConfigurationLabel;
-
-    @FXML
     private TextField initializeConfigurationTF;
-
-    @FXML
-    private Label currentConfigurationLabel;
 
     @FXML
     private TextField currentConfigurationTF;
 
 
     @FXML
-    void setMachine(ActionEvent event) {
-        //reflectorCB.getItems().removeAll(reflectorCB.getItems());//////////// to fucking check!!!
-        setReflectorsCB(mainPageController.getReflectorsIDs());
+    void setMachine(ActionEvent event) throws invalidInputException {
         setMachineBtn.setSelected(false);
 
-        mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
-        operationsAfterValidInput();
-        mainPageController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
+        try {
+            int chosenReflector = (Integer) reflectorChoiceBox.getValue();
+            reflectorDTO = new ReflectorDTO(chosenReflector);
 
-        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
+            mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
+            operationsAfterValidInput();
+            mainPageController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
+            mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
+
+            chooseReflectorLabel.setVisible(false);
+            reflectorChoiceBox.setVisible(false);
+            setMachineBtn.setDisable(true);
+        }
+        catch (RuntimeException ex) {
+            mainPageController.popUpError("Please choose reflector before setting a new machine!");
+        }
+
 
     }
 
     @FXML
     void randomBtnListener(ActionEvent event) {
         mainPageController.randomConfiguration();
-        mainPageController.randomConfiguration();
 
         operationsAfterValidInput();
         mainPageController.resetCurrConfigurationDecodedAmount();
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @FXML
-    void setReflectorID(ActionEvent event) {
-        int chosenReflector = (Integer) reflectorCB.getValue();
-
-        reflectorDTO = new ReflectorDTO(chosenReflector);
-        reflectorCB.setDisable(true);
-        setMachineBtn.setDisable(false);
+    public void setReflectorsCB(int amount){
+        ObservableList observableList = FXCollections.observableArrayList();
+        for (int i = 0; i < amount; i++) {
+            observableList.add(i+1);
+        }
+        reflectorChoiceBox.getItems().clear();
+        reflectorChoiceBox.setItems(observableList);
     }
-
+////////////////////////////////////////////////////////////////////////////////////
 
     public void setCurrentConfigurationLabel(String currentConfiguration) {
         currentConfigurationTF.setText(currentConfiguration);
@@ -189,13 +191,12 @@ public class FirstTabController implements Initializable {
     void manualBtnListener(ActionEvent event) {
         userRotorsInput.setDisable(false);
         clearAllUsersTextFields();
-        instructionTF.setPromptText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
+        instructionTF.setText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
                 "from left to right divided by comma. for example 23,542,231");
 
 
         userInitPlaces.setDisable(true);
         userInitPlugBoard.setDisable(true);
-        reflectorCB.setDisable(true);
 
         machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
     }
@@ -204,14 +205,13 @@ public class FirstTabController implements Initializable {
 
 
         String rotorsPosition = userRotorsInput.getText();
-        System.out.println(userRotorsInput.getText());
         try {
             rotorsIndexesDTO = new RotorsIndexesDTO();
             mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
             userRotorsInput.setDisable(true);
 
             userInitPlaces.setDisable(false);
-            instructionTF.setPromptText("Enter first positions of rotors from left to right without spaces. For example: 4D8A.");
+            instructionTF.setText("Enter first positions of rotors from left to right without spaces. For example: 4D8A.");
 
         } catch (invalidInputException ex) {
             userRotorsInput.clear();
@@ -231,7 +231,7 @@ public class FirstTabController implements Initializable {
 
             userInitPlugBoard.setDisable(false);
 
-            instructionTF.setPromptText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
+            instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
         } catch (invalidInputException ex) {
             userInitPlaces.clear();
             mainPageController.popUpError(ex.getMessage());
@@ -239,7 +239,7 @@ public class FirstTabController implements Initializable {
     }
 
     @FXML
-    void userInitPlugBoardListener(ActionEvent event) {
+    void userInitPlugBoardListener(ActionEvent event) {//////////////////////////////////////
         try {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();
@@ -248,22 +248,15 @@ public class FirstTabController implements Initializable {
             plugBoardDTO.setInitString(tmpString);
             userInitPlugBoard.setDisable(true);
 
-            reflectorCB.setDisable(false);
-            instructionTF.setPromptText("Choose reflectors from the following:");
+            chooseReflectorLabel.setVisible(true);
+            reflectorChoiceBox.setVisible(true);
+            setMachineBtn.setDisable(false);
+
+            instructionTF.setText("Choose reflectors from the following:");
         } catch (invalidInputException ex) {
             userInitPlugBoard.clear();
             mainPageController.popUpError(ex.getMessage());
         }
-    }
-
-
-    public void setReflectorsCB(ArrayList<Integer> reflectorsIDs){
-
-        ObservableList observableList = FXCollections.observableArrayList(reflectorsIDs);
-
-        reflectorCB.getItems().removeAll(reflectorCB.getItems());//ofek - exception
-
-        reflectorCB.setItems(observableList);
     }
 
     public void reLoadInitialize() {
@@ -279,5 +272,10 @@ public class FirstTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public void clearConfigurationTextFields() {
+        initializeConfigurationTF.clear();
+        currentConfigurationTF.clear();
     }
 }

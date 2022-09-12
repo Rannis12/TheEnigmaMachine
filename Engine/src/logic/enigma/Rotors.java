@@ -285,7 +285,7 @@ public class Rotors implements Serializable {
             return count;
         }
         private int getNotchCurrentPlace() {
-            int count = 1;
+            int count = 0;
             boolean foundNotch = false;
             for (int i = 0; i < wiring.size() && !foundNotch ; i++) {
                 if(wiring.get(i).getRight() != notch.getRight()) {

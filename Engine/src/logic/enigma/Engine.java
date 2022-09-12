@@ -154,7 +154,7 @@ public class Engine implements Serializable, Machine {
         rotors.resetRotorsFirstPositions();
     }
 
-    public ArrayList<Integer> getReflectorsIDs(){
+    public int getReflectorsIDs(){
         return reflectors.getReflectorsIDs();
     }
 

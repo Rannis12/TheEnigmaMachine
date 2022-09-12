@@ -36,18 +36,20 @@ public class MainPageController {
             //Ran: everytime that integerProperty(amount of decoded strings) is changes, we "listening" to event, and updates the relevant fields.
             // in this case, we update configuration label.
             secondTabController.getAmountOfDecoding().addListener(e -> {
-
-            EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
-            String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                    engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
-
-            firstTabController.setCurrentConfigurationLabel(newConfiguration);
-            secondTabController.setCurrentConfigurationLabel(newConfiguration);
-
+            updateConfigurationLabel();
             });
+
 
         }
 
+    }
+    public void updateConfigurationLabel() {
+        EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
+        String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+
+        firstTabController.setCurrentConfigurationLabel(newConfiguration);
+        secondTabController.setCurrentConfigurationLabel(newConfiguration);
     }
     @FXML private VBox titleVB;
     @FXML private Label titleLabel;
@@ -57,6 +59,8 @@ public class MainPageController {
     @FXML private Tab tabOne;
     @FXML private Tab tabTwo;
     @FXML private Tab tabThree;
+
+
 
     @FXML
     void loadFile(MouseEvent event) {
@@ -68,10 +72,11 @@ public class MainPageController {
             if(loadFileFromXml(file.getAbsolutePath())) {
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
                 firstTabController.enableButtons();
+                firstTabController.clearConfigurationTextFields();
+
 
                 secondTabController.disableAllButtonsAndTextFields();
-                secondTabController.clearTextFields();
-
+                secondTabController.clearCurrentConfigurationTA();
                 secondTabController.getStatisticsTA().clear();
             }
         }
@@ -86,12 +91,12 @@ public class MainPageController {
            engine = engineLoader.loadEngineFromXml(fileDestination);
 
           firstTabController.setReflectorsCB(getReflectorsIDs());
-          engine.resetStatistics();
+          //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
+
+            engine.resetStatistics();
 
           xmlPathLabel.setText(fileDestination + " selected");
           secondTabController.setDecodingButtonsDisable(true);
-
-          //reLoadInitialize();  //initializing in case of loading file again     ofek: why do we need this?
 
           return true;
 
@@ -101,15 +106,8 @@ public class MainPageController {
         return false;
     }
 
-    private void reLoadInitialize() {
-        firstTabController.reLoadInitialize();
-        secondTabController.reLoadInitialize();
-//        thirdTabController.reLoadInitialized();
-    }
-
     public void randomConfiguration() {
         engine.randomEngine();
-
     }
 
     public EngineFullDetailsDTO getEngineFullDetails(){
@@ -120,13 +118,21 @@ public class MainPageController {
                                 String rotorsPositions, String chosenReflector, String plugBoardString) {
         String finalInfoToPrint = "<";
 
-        for (int i = 0; i < notchesPlaces.size(); i++) {
-            if (i + 1 != notchesPlaces.size())
-                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + "),");
+        for (int i = 0; i < RotorsOrganization.size(); i++) {
+            if (i + 1 != RotorsOrganization.size())
+                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
             else
-                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + ")");
+                finalInfoToPrint += RotorsOrganization.get(i);
         }
-        finalInfoToPrint = finalInfoToPrint + "><" + rotorsPositions + "><" + chosenReflector + ">";
+        finalInfoToPrint = finalInfoToPrint + "><";
+        for (int i = 0; i < rotorsPositions.length(); i++) {
+            if (i + 1 != notchesPlaces.size())
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
+            else
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
+        }
+        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
+
         if (!plugBoardString.equals("")) {
             finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
         }
@@ -158,10 +164,6 @@ public class MainPageController {
         engine.checkRotorsFirstPositionsValidity(rotorsFirstPositions, engine.getKeyBoard());
     }
 
-    public void checkSelectedReflectorValidity(String tmpString) throws invalidInputException {
-        engine.checkSelectedReflectorValidity(tmpString);
-    }
-
     public void checkPlugBoardValidity(String tmpString, PlugBoardDTO plugBoardDTO) throws invalidInputException {
         engine.checkPlugBoardValidity(tmpString, plugBoardDTO.getUICables());
     }
@@ -170,7 +172,7 @@ public class MainPageController {
         engine.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
     }
 
-    public ArrayList<Integer> getReflectorsIDs(){
+    public int getReflectorsIDs(){
         return engine.getReflectorsIDs();
     }
     public void popUpError(String errorMsg) {
@@ -191,7 +193,6 @@ public class MainPageController {
         return engine.decodeChar(character);
     }
 
-
     public void increaseDecodedStringAmount(){
         currConfigurationDecodedAmount++;
     }
@@ -204,6 +205,10 @@ public class MainPageController {
 
     public Engine getEngine() {
         return engine;
+    }
+
+    public void resetEngineToUserInitChoice() {
+        engine.resetEngineToUserInitChoice();
     }
 }
 

@@ -150,7 +150,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="resetBtn" disable="true" mnemonicParsing="false" onAction="#resetBtnListener" text="Reset configuration" />
+                              <Button fx:id="resetBtn" disable="true" mnemonicParsing="false" onAction="#resetBtnListener" text="Reset settings" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" />

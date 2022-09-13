@@ -25,7 +25,7 @@ public class SecondTabController {
 
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
 
-    private IntegerProperty integerProperty;
+    private IntegerProperty amountOfDecodedStrings;
 
 
 /*    @FXML private Label currentConfigurationLabel;
@@ -42,7 +42,6 @@ public class SecondTabController {
     @FXML private Button processBtn;
     @FXML private Button clearBtn;
 
-   // @FXML private Label statisticsLabel;
    @FXML private Button resetBtn;
     @FXML private Button decodeLineBtn;
     @FXML private Button doneBtn;
@@ -55,7 +54,7 @@ public class SecondTabController {
     @FXML private TextArea statisticsTA;
 
     public SecondTabController() {
-        integerProperty = new SimpleIntegerProperty(0);
+        amountOfDecodedStrings = new SimpleIntegerProperty(0);
     }
 
     @FXML
@@ -68,7 +67,7 @@ public class SecondTabController {
                 decodeResultTF.setText(newInfo.getDecodedString());
                 mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
                 decodedCorrectly.set(true);
-                integerProperty.set(integerProperty.get()+1); // update times of decode.
+                amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
 
                 statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
                         ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
@@ -106,7 +105,7 @@ public class SecondTabController {
     void doneBtnListener(ActionEvent event) {
         decodedCorrectly.set(false);
         if(!charInputTF.getText().equals("")) {
-            integerProperty.set(integerProperty.get()+1); // update times of decode.
+            amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
             decodedCorrectly.set(true);
             mainPageController.increaseDecodedStringAmount();
             statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
@@ -161,8 +160,8 @@ public class SecondTabController {
     }
 
 
-    public IntegerProperty getAmountOfDecoding() {
-        return this.integerProperty;
+    public IntegerProperty getAmountOfDecodedStrings() {
+        return this.amountOfDecodedStrings;
     }
 
     public void setMainPageController(MainPageController mainPageController) {

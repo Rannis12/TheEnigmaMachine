@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class MainPageController {
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
+
+    @FXML private ThirdTabController thirdTabController;
     private Engine engine;
 
     private int currConfigurationDecodedAmount;
@@ -25,17 +27,18 @@ public class MainPageController {
     @FXML public void initialize() {
         resetCurrConfigurationDecodedAmount();
 
-        if(firstTabController != null && secondTabController != null){
+        if(firstTabController != null && secondTabController != null && thirdTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
+            thirdTabController.setMainPageController(this);
 
 
             // Ran: Bind number of decodes to counter.
-            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecoding().asObject().asString());
+            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecodedStrings().asObject().asString());
 
             //Ran: everytime that integerProperty(amount of decoded strings) is changes, we "listening" to event, and updates the relevant fields.
             // in this case, we update configuration label.
-            secondTabController.getAmountOfDecoding().addListener(e -> {
+            secondTabController.getAmountOfDecodedStrings().addListener(e -> {
             updateConfigurationLabel();
             });
 

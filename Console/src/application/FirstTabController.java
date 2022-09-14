@@ -23,28 +23,11 @@ public class FirstTabController implements Initializable {
         private MainPageController mainPageController;
 
     @FXML
-    private AnchorPane innerTabOneAP;
-
-    @FXML
-    private VBox tabOneUpperVB;
-
-    @FXML
-    private Label detailsLabel;
-
-    @FXML
-    private GridPane rowOneInTabOne;
-
-    @FXML
     private Label rotorsDetails;
 
-    @FXML
-    private Label rotorsLabel;
 
     @FXML
     private Label decodedStrings;
-
-    @FXML
-    private Label decodedStringsLabel;
 
     @FXML
     private Label chooseReflectorLabel;
@@ -53,13 +36,6 @@ public class FirstTabController implements Initializable {
     private Label reflectorsAmount;
 
     @FXML private ToggleButton setMachineBtn;
-
-
-    @FXML
-    private Label reflectorsAmountLabel;
-
-    @FXML
-    private Label calibrationLabel;
 
     @FXML
     private Button randomBtn;
@@ -124,7 +100,6 @@ public class FirstTabController implements Initializable {
         mainPageController.resetCurrConfigurationDecodedAmount();
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void setReflectorsCB(int amount){
         ObservableList observableList = FXCollections.observableArrayList();
@@ -134,9 +109,9 @@ public class FirstTabController implements Initializable {
         reflectorChoiceBox.getItems().clear();
         reflectorChoiceBox.setItems(observableList);
     }
-////////////////////////////////////////////////////////////////////////////////////
 
-    public void setCurrentConfigurationLabel(String currentConfiguration) {
+
+    public void setCurrentConfigurationTF(String currentConfiguration) {
         currentConfigurationTF.setText(currentConfiguration);
     }
 

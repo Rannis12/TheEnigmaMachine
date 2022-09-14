@@ -2,7 +2,6 @@ package application;
 
 import dtos.DecodeStringInfo;
 import exceptions.invalidInputException;
-import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -10,12 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 
 public class SecondTabController {
@@ -28,29 +22,16 @@ public class SecondTabController {
     private IntegerProperty amountOfDecodedStrings;
 
 
-/*    @FXML private Label currentConfigurationLabel;
-
-    @FXML private Label enterInputLabel;
-
-    @FXML private Label outputLabel;*/
     @FXML private TextField currentConfiguration;
-/*    @FXML private Label encryptDecryptLabel;
-    @FXML private Label enterDecodedLabel;
-
-    @FXML private Label decodedLabel;*/
     @FXML private TextField decodeResultTF;
     @FXML private Button processBtn;
     @FXML private Button clearBtn;
-
-   @FXML private Button resetBtn;
+    @FXML private Button resetBtn;
     @FXML private Button decodeLineBtn;
     @FXML private Button doneBtn;
     @FXML private Button decodeCharBtn;
-    @FXML
-    private TextField lineInputTF;
-    @FXML
-    private TextField charInputTF;
-
+    @FXML private TextField lineInputTF;
+    @FXML private TextField charInputTF;
     @FXML private TextArea statisticsTA;
 
     public SecondTabController() {
@@ -168,7 +149,7 @@ public class SecondTabController {
         this.mainPageController = mainPageController;
     }
 
-    public void setCurrentConfigurationLabel(String currConfiguration) {
+    public void setCurrentConfigurationTF(String currConfiguration) {
         currentConfiguration.setText(currConfiguration);
     }
 

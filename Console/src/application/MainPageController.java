@@ -36,7 +36,7 @@ public class MainPageController {
             // Ran: Bind number of decodes to counter.
             firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecodedStrings().asObject().asString());
 
-            //Ran: everytime that integerProperty(amount of decoded strings) is changes, we "listening" to event, and updates the relevant fields.
+            //Ran: everytime that amountOfDecodedStrings is changes, we "listening" to event, and updates the relevant fields.
             // in this case, we update configuration label.
             secondTabController.getAmountOfDecodedStrings().addListener(e -> {
             updateConfigurationLabel();
@@ -51,11 +51,10 @@ public class MainPageController {
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
 
-        firstTabController.setCurrentConfigurationLabel(newConfiguration);
-        secondTabController.setCurrentConfigurationLabel(newConfiguration);
+        firstTabController.setCurrentConfigurationTF(newConfiguration);
+        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        thirdTabController.setCurrentConfigurationTF(newConfiguration);
     }
-    @FXML private VBox titleVB;
-    @FXML private Label titleLabel;
     @FXML private Button loadFileBtn;
     @FXML private Label xmlPathLabel;
     @FXML private TabPane tabPane;
@@ -144,9 +143,9 @@ public class MainPageController {
 
 
     public void setTabsConfiguration(String newConfiguration) {
-        firstTabController.setCurrentConfigurationLabel(newConfiguration);
-        secondTabController.setCurrentConfigurationLabel(newConfiguration);
-        //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
+        firstTabController.setCurrentConfigurationTF(newConfiguration);
+        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        thirdTabController.setCurrentConfigurationTF(newConfiguration);
 
         secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }

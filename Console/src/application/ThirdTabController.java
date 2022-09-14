@@ -110,5 +110,8 @@ public class ThirdTabController {
         this.mainPageController = mainPageController;
     }
 
+    public void setCurrentConfigurationTF(String currConfiguration) {
+        currentConfiguration.setText(currConfiguration);
+    }
 }
 

@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.effect.Shadow?>
@@ -17,11 +16,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="tabTwoAP" maxHeight="1.7976931348623157E308" minWidth="100.0" prefHeight="465.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SecondTabController">
+<AnchorPane maxHeight="1.7976931348623157E308" minWidth="100.0" prefHeight="465.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SecondTabController">
    <children>
-      <VBox fx:id="configurationVB" alignment="TOP_CENTER" layoutX="79.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="73.0" prefWidth="446.0" spacing="5.0" AnchorPane.bottomAnchor="326.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+      <VBox alignment="TOP_CENTER" layoutX="79.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="73.0" prefWidth="446.0" spacing="5.0" AnchorPane.bottomAnchor="326.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
          <children>
-            <Label fx:id="currentConfigurationLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="299.0" style="-fx-text-fill: #DE3163;" text="Current Machine Configuration">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="299.0" style="-fx-text-fill: #DE3163;" text="Current Machine Configuration">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -33,9 +32,9 @@
          <children>
           <AnchorPane fx:id="leftAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="290.0" minWidth="210.0" prefHeight="384.0" prefWidth="361.0">
                <children>
-                  <VBox fx:id="leftVB" alignment="TOP_CENTER" layoutX="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="300.0" prefHeight="368.0" prefWidth="332.0" style="-fx-border-width: 2; -fx-border-color: #DE3163;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="TOP_CENTER" layoutX="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="300.0" prefHeight="368.0" prefWidth="332.0" style="-fx-border-width: 2; -fx-border-color: #DE3163;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="encryptDecryptLabel" alignment="TOP_CENTER" maxHeight="100.0" maxWidth="250.0" prefWidth="172.0" style="-fx-text-fill: #f4978e;" text="Encrypt/Decrypt" VBox.vgrow="NEVER">
+                        <Label alignment="TOP_CENTER" maxHeight="100.0" maxWidth="250.0" prefWidth="172.0" style="-fx-text-fill: #f4978e;" text="Encrypt/Decrypt" VBox.vgrow="NEVER">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -43,7 +42,7 @@
                               <Insets top="8.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="enterInputLabel1" alignment="BOTTOM_CENTER" layoutX="20.0" layoutY="106.0" maxHeight="120.0" maxWidth="250.0" minWidth="20.0" prefHeight="20.0" prefWidth="94.0" text="                 Enter Input:" VBox.vgrow="ALWAYS">
+                        <Label alignment="BOTTOM_CENTER" layoutX="20.0" layoutY="106.0" maxHeight="120.0" maxWidth="250.0" minWidth="20.0" prefHeight="20.0" prefWidth="94.0" text="                 Enter Input:" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -60,7 +59,7 @@
                               <TextField fx:id="charInputTF" alignment="CENTER" disable="true" maxHeight="1.7976931348623157E308" maxWidth="250.0" minWidth="100.0" onKeyPressed="#charInputListener" prefHeight="25.0" prefWidth="200.0" />
                            </children>
                         </HBox>
-                        <HBox fx:id="buttonsHB1" alignment="CENTER_LEFT" layoutX="20.0" layoutY="265.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="250.0">
+                        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="265.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="250.0">
                            <children>
                               <Button fx:id="doneBtn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#doneBtnListener" text="Done">
                                  <cursor>
@@ -84,7 +83,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="enterInputLabel" alignment="BOTTOM_CENTER" maxHeight="120.0" maxWidth="250.0" minWidth="20.0" prefHeight="20.0" prefWidth="94.0" text="                 Enter Input:" VBox.vgrow="ALWAYS">
+                        <Label alignment="BOTTOM_CENTER" maxHeight="120.0" maxWidth="250.0" minWidth="20.0" prefHeight="20.0" prefWidth="94.0" text="                 Enter Input:" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -101,7 +100,7 @@
                               <TextField fx:id="lineInputTF" disable="true" maxHeight="1.7976931348623157E308" maxWidth="250.0" minWidth="100.0" prefHeight="25.0" prefWidth="200.0" />
                            </children>
                         </HBox>
-                        <HBox fx:id="buttonsHB" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="315.0" spacing="30.0" VBox.vgrow="NEVER">
+                        <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="315.0" spacing="30.0" VBox.vgrow="NEVER">
                            <children>
                               <Button fx:id="processBtn" disable="true" mnemonicParsing="false" onAction="#processBtnListener" text="Process">
                                  <cursor>
@@ -119,7 +118,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="outputLabel" alignment="BOTTOM_CENTER" maxHeight="170.0" maxWidth="250.0" prefHeight="36.0" prefWidth="183.0" text="Output:" VBox.vgrow="ALWAYS">
+                        <Label alignment="BOTTOM_CENTER" maxHeight="170.0" maxWidth="250.0" prefHeight="36.0" prefWidth="183.0" text="Output:" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -169,9 +168,6 @@
                                  </input>
                               </Reflection>
                            </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
                         </Lighting>
                      </effect>
                   </VBox>
@@ -179,9 +175,9 @@
             </AnchorPane>
             <AnchorPane fx:id="rightAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="271.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="rightVB" alignment="TOP_CENTER" layoutX="-7.0" layoutY="-5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="TOP_CENTER" layoutX="-7.0" layoutY="-5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="statisticsLabel" alignment="TOP_CENTER" lineSpacing="10.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="72.0" style="-fx-text-fill: #f4978e;" text="Statistics">
+                        <Label alignment="TOP_CENTER" lineSpacing="10.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="72.0" style="-fx-text-fill: #f4978e;" text="Statistics">
                            <font>
                               <Font size="18.0" />
                            </font>

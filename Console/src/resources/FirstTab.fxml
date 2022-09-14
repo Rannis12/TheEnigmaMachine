@@ -20,7 +20,7 @@
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FirstTabController">
    <children>
-      <VBox fx:id="tabOneUpperVB" alignment="TOP_CENTER" layoutX="16.0" layoutY="-1.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="640.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="-1.0">
+      <VBox fx:id="tabOneUpperVB" alignment="TOP_CENTER" layoutX="16.0" layoutY="-1.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="656.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
          <children>
             <Label fx:id="detailsLabel" alignment="CENTER" prefHeight="14.0" prefWidth="62.0" text="Details:">
                <font>

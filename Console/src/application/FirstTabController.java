@@ -211,7 +211,7 @@ public class FirstTabController implements Initializable {
     }
 
     @FXML
-    void userInitPlugBoardListener(ActionEvent event) {//////////////////////////////////////
+    void userInitPlugBoardListener(ActionEvent event) {
         try {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();

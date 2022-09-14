@@ -1,5 +1,6 @@
 package application;
 
+import dtos.DecodeStringInfo;
 import exceptions.invalidInputException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -7,15 +8,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 
 public class SecondTabController {
@@ -25,53 +19,39 @@ public class SecondTabController {
 
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
 
-    private IntegerProperty integerProperty;
+    private IntegerProperty amountOfDecodedStrings;
 
 
-/*    @FXML private Label currentConfigurationLabel;
-
-    @FXML private Label enterInputLabel;
-
-    @FXML private Label outputLabel;*/
     @FXML private TextField currentConfiguration;
-/*    @FXML private Label encryptDecryptLabel;
-    @FXML private Label enterDecodedLabel;
-
-    @FXML private Label decodedLabel;*/
     @FXML private TextField decodeResultTF;
     @FXML private Button processBtn;
     @FXML private Button clearBtn;
-/*    @FXML private AnchorPane rightAP;
-    @FXML private VBox rightVB;
-    @FXML private Label statisticsLabel;
-    @FXML private TextArea statisticsTA;*/
-    @FXML private Button decodeLinebtn;
+    @FXML private Button resetBtn;
+    @FXML private Button decodeLineBtn;
     @FXML private Button doneBtn;
     @FXML private Button decodeCharBtn;
-    @FXML
-    private TextField lineInputTF;
-    @FXML
-    private TextField charInputTF;
-
+    @FXML private TextField lineInputTF;
+    @FXML private TextField charInputTF;
     @FXML private TextArea statisticsTA;
 
     public SecondTabController() {
-        integerProperty = new SimpleIntegerProperty(0);
+        amountOfDecodedStrings = new SimpleIntegerProperty(0);
     }
 
     @FXML
-    void actionOnProcessBtn(ActionEvent event) {
+    void processBtnListener(ActionEvent event) {
         decodedCorrectly.set(false);
         String tmp = lineInputTF.getText();
         if(!tmp.equals("")){
-            String decodedString;
             try {
-
-                integerProperty.set(integerProperty.get()+1); // update times of decode.
-                decodedString = mainPageController.decodeString(lineInputTF.getText());
-                decodeResultTF.setText(decodedString);
+                DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
+                decodeResultTF.setText(newInfo.getDecodedString());
+                mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
                 decodedCorrectly.set(true);
-                statisticsTA.appendText("   The string " + lineInputTF.getText() + " decoded to: "+ decodeResultTF.getText() + '\n');
+                amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
+
+                statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
             } catch (invalidInputException e) {
                 mainPageController.popUpError(e.getMessage());
             }
@@ -81,34 +61,58 @@ public class SecondTabController {
 
     @FXML
     void clearBtnListener(ActionEvent event) {
-        clearTextFields();
+        clearEncryptTextFields();
+    }
+    public void clearCurrentConfigurationTA() {
+        currentConfiguration.clear();
+    }
+
+    @FXML
+    void resetBtnListener(ActionEvent event) throws InterruptedException {
+        mainPageController.resetEngineToUserInitChoice();
+        mainPageController.updateConfigurationLabel();/*instead of this we can do ++ and then -- to
+        the integerProperty and the listener will update automatically, but it's weird*/
+
+        clearEncryptTextFields();
+        charInputTF.setDisable(true);
+        doneBtn.setDisable(true);
+        lineInputTF.setDisable(true);
+        processBtn.setDisable(true);
+        decodeResultTF.setText("Reset has been made successfully!!");
+
     }
 
     @FXML
     void doneBtnListener(ActionEvent event) {
         decodedCorrectly.set(false);
         if(!charInputTF.getText().equals("")) {
-            integerProperty.set(integerProperty.get()+1); // update times of decode.
+            amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
             decodedCorrectly.set(true);
-            statisticsTA.appendText("   The string " + charInputTF.getText() + " decoded to: "+ decodeResultTF.getText() + '\n');
+            mainPageController.increaseDecodedStringAmount();
+            statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+                    ". <" + charInputTF.getText().toUpperCase() + "> ----> <" + decodeResultTF.getText() + "> ( NO nano seconds)\n");
         }
 
-        decodeResultTF.setText("");
-        charInputTF.setText("");
+        clearEncryptTextFields();
+
     }
 
     @FXML
     void charInputListener(KeyEvent event) {
-
+        char nextChar = 0;
         if(!event.getText().equals("")) {
-            decodeResultTF.setText(decodeResultTF.getText() + mainPageController.decodeChar(event.getText().toUpperCase().charAt(0)));
+            try {
+                nextChar = event.getText().toUpperCase().charAt(0);
+                decodeResultTF.setText(decodeResultTF.getText() + mainPageController.decodeChar(nextChar));
+            }catch (RuntimeException ex) {//edge scenario - input from user is invalid so pop up msg
+                mainPageController.popUpError("The letter " + nextChar + " doesn't exist in the language. Please try again.\n");
+            }
         }
-        //charInputTF.setText(charInputTF.getText() + event.getCharacter());
     }
 
     @FXML
     void decodeCharListener(ActionEvent event) {
-        clearTextFields();
+        clearEncryptTextFields();
 
         lineInputTF.setDisable(true);
         processBtn.setDisable(true);
@@ -123,7 +127,7 @@ public class SecondTabController {
 
     @FXML
     void decodeLineListener(ActionEvent event) {
-        clearTextFields();
+        clearEncryptTextFields();
 
         lineInputTF.setDisable(false);
         processBtn.setDisable(false);
@@ -133,48 +137,32 @@ public class SecondTabController {
 
         charInputTF.setDisable(!lineInputTF.isDisable());
 
-
-
-
-
-
-
         shouldDecodeLine = true;
     }
 
-    public IntegerProperty getAmountOfDecoding() {
-        return this.integerProperty;
+
+    public IntegerProperty getAmountOfDecodedStrings() {
+        return this.amountOfDecodedStrings;
     }
-
-
-
-    /*@FXML
-    void lineInputListener(ActionEvent event) {
-
-        String decodedString *//*= mainPageController.decodeString(lineInputTF.getText());*//* = "";
-        decodeResultTF.setText(decodedString);
-    }*/
-
-
 
     public void setMainPageController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
     }
 
-    public void setCurrentConfigurationLabel(String currConfiguration) {
+    public void setCurrentConfigurationTF(String currConfiguration) {
         currentConfiguration.setText(currConfiguration);
     }
 
 
     public void setDecodingButtonsDisable(boolean setToDisable) {
-        decodeLinebtn.setDisable(setToDisable);
+        decodeLineBtn.setDisable(setToDisable);
         decodeCharBtn.setDisable(setToDisable);
-        //clearBtn.setDisable(setToDisable);
+        resetBtn.setDisable(setToDisable);
 
     }
 
 
-    private void clearTextFields(){
+    public void clearEncryptTextFields(){
         charInputTF.clear();
         lineInputTF.clear();
         decodeResultTF.clear();
@@ -184,25 +172,13 @@ public class SecondTabController {
         return statisticsTA;
     }
 
-    public void reLoadInitialize() {
-        currentConfiguration.clear();
-        statisticsTA.clear();
-
-    }
-
     public void disableAllButtonsAndTextFields() {
         decodeCharBtn.setDisable(true);
         charInputTF.setDisable(true);
         doneBtn.setDisable(true);
-        decodeLinebtn.setDisable(true);
+        decodeLineBtn.setDisable(true);
         lineInputTF.setDisable(true);
         processBtn.setDisable(true);
         clearBtn.setDisable(true);
-    }
-
-    public void clearAllTextFields() {
-        charInputTF.clear();
-        lineInputTF.clear();
-        decodeResultTF.clear();
     }
 }

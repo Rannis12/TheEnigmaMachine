@@ -18,43 +18,51 @@ import java.util.ArrayList;
 public class MainPageController {
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
+
+    @FXML private ThirdTabController thirdTabController;
     private Engine engine;
 
+    private int currConfigurationDecodedAmount;
 
     @FXML public void initialize() {
+        resetCurrConfigurationDecodedAmount();
 
-        if(firstTabController != null && secondTabController != null){
+        if(firstTabController != null && secondTabController != null && thirdTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
+            thirdTabController.setMainPageController(this);
 
 
             // Ran: Bind number of decodes to counter.
-            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecoding().asObject().asString());
+            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecodedStrings().asObject().asString());
 
-            //Ran: everytime that integerProperty(amount of decoded strings) is changes, we "listening" to event, and updates the relevant fields.
+            //Ran: everytime that amountOfDecodedStrings is changes, we "listening" to event, and updates the relevant fields.
             // in this case, we update configuration label.
-            secondTabController.getAmountOfDecoding().addListener(e -> {
-
-            EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
-            String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                    engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
-
-            firstTabController.setCurrentConfigurationLabel(newConfiguration);
-            secondTabController.setCurrentConfigurationLabel(newConfiguration);
-
+            secondTabController.getAmountOfDecodedStrings().addListener(e -> {
+            updateConfigurationLabel();
             });
+
 
         }
 
     }
-    @FXML private VBox titleVB;
-    @FXML private Label titleLabel;
+    public void updateConfigurationLabel() {
+        EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
+        String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+
+        firstTabController.setCurrentConfigurationTF(newConfiguration);
+        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        thirdTabController.setCurrentConfigurationTF(newConfiguration);
+    }
     @FXML private Button loadFileBtn;
     @FXML private Label xmlPathLabel;
     @FXML private TabPane tabPane;
     @FXML private Tab tabOne;
     @FXML private Tab tabTwo;
     @FXML private Tab tabThree;
+
+
 
     @FXML
     void loadFile(MouseEvent event) {
@@ -66,9 +74,12 @@ public class MainPageController {
             if(loadFileFromXml(file.getAbsolutePath())) {
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
                 firstTabController.enableButtons();
+                firstTabController.clearConfigurationTextFields();
+
 
                 secondTabController.disableAllButtonsAndTextFields();
-                secondTabController.clearAllTextFields();
+                secondTabController.clearCurrentConfigurationTA();
+                secondTabController.getStatisticsTA().clear();
             }
         }
     }
@@ -82,12 +93,12 @@ public class MainPageController {
            engine = engineLoader.loadEngineFromXml(fileDestination);
 
           firstTabController.setReflectorsCB(getReflectorsIDs());
-          engine.resetStatistics();
+          //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
+
+            engine.resetStatistics();
 
           xmlPathLabel.setText(fileDestination + " selected");
           secondTabController.setDecodingButtonsDisable(true);
-
-          reLoadInitialize();  //initializing in case of loading file again
 
           return true;
 
@@ -97,15 +108,8 @@ public class MainPageController {
         return false;
     }
 
-    private void reLoadInitialize() {
-        firstTabController.reLoadInitialize();
-        secondTabController.reLoadInitialize();
-//        thirdTabController.reLoadInitialized();
-    }
-
     public void randomConfiguration() {
         engine.randomEngine();
-
     }
 
     public EngineFullDetailsDTO getEngineFullDetails(){
@@ -116,13 +120,21 @@ public class MainPageController {
                                 String rotorsPositions, String chosenReflector, String plugBoardString) {
         String finalInfoToPrint = "<";
 
-        for (int i = 0; i < notchesPlaces.size(); i++) {
-            if (i + 1 != notchesPlaces.size())
-                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + "),");
+        for (int i = 0; i < RotorsOrganization.size(); i++) {
+            if (i + 1 != RotorsOrganization.size())
+                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
             else
-                finalInfoToPrint += (RotorsOrganization.get(i) + "(" + notchesPlaces.get(i) + ")");
+                finalInfoToPrint += RotorsOrganization.get(i);
         }
-        finalInfoToPrint = finalInfoToPrint + "><" + rotorsPositions + "><" + chosenReflector + ">";
+        finalInfoToPrint = finalInfoToPrint + "><";
+        for (int i = 0; i < rotorsPositions.length(); i++) {
+            if (i + 1 != notchesPlaces.size())
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
+            else
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
+        }
+        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
+
         if (!plugBoardString.equals("")) {
             finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
         }
@@ -131,9 +143,9 @@ public class MainPageController {
 
 
     public void setTabsConfiguration(String newConfiguration) {
-        firstTabController.setCurrentConfigurationLabel(newConfiguration);
-        secondTabController.setCurrentConfigurationLabel(newConfiguration);
-        //thirdTabController.setCurrentConfigurationLabel(newConfiguration);
+        firstTabController.setCurrentConfigurationTF(newConfiguration);
+        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        thirdTabController.setCurrentConfigurationTF(newConfiguration);
 
         secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }
@@ -154,10 +166,6 @@ public class MainPageController {
         engine.checkRotorsFirstPositionsValidity(rotorsFirstPositions, engine.getKeyBoard());
     }
 
-    public void checkSelectedReflectorValidity(String tmpString) throws invalidInputException {
-        engine.checkSelectedReflectorValidity(tmpString);
-    }
-
     public void checkPlugBoardValidity(String tmpString, PlugBoardDTO plugBoardDTO) throws invalidInputException {
         engine.checkPlugBoardValidity(tmpString, plugBoardDTO.getUICables());
     }
@@ -166,7 +174,7 @@ public class MainPageController {
         engine.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
     }
 
-    public ArrayList<Integer> getReflectorsIDs(){
+    public int getReflectorsIDs(){
         return engine.getReflectorsIDs();
     }
     public void popUpError(String errorMsg) {
@@ -177,13 +185,32 @@ public class MainPageController {
     }
 
 
-    public String decodeString(String text) throws invalidInputException {
-        DecodeStringInfo decodeStringInfo =  engine.decodeStr(text);
-        return decodeStringInfo.getDecodedString();
+    public DecodeStringInfo decodeString(String text) throws invalidInputException {
+
+        DecodeStringInfo decodeStringInfo = engine.decodeStr(text);
+        return decodeStringInfo;
     }
 
     public char decodeChar(char character){
         return engine.decodeChar(character);
+    }
+
+    public void increaseDecodedStringAmount(){
+        currConfigurationDecodedAmount++;
+    }
+    public int getCurrConfigurationDecodedAmount() {
+        return currConfigurationDecodedAmount;
+    }
+    public void resetCurrConfigurationDecodedAmount() {
+        currConfigurationDecodedAmount = 0;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void resetEngineToUserInitChoice() {
+        engine.resetEngineToUserInitChoice();
     }
 }
 

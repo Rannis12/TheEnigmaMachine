@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="borderPane" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainPageController">
+<BorderPane id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="150.0" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #FFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainPageController">
    <top>
-      <AnchorPane fx:id="anchorPaneBD" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="82.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="82.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox id="titleVB" fx:id="titleVB" alignment="CENTER" layoutX="3.0" layoutY="3.0" prefHeight="63.0" prefWidth="582.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="3.0">
+            <VBox id="titleVB" alignment="CENTER" layoutX="3.0" layoutY="3.0" prefHeight="63.0" prefWidth="582.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="3.0">
                <children>
-                  <Label fx:id="titleLabel" alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="The Enigma Machine">
+                  <Label alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="The Enigma Machine">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -27,10 +27,10 @@
                         <Insets bottom="3.0" />
                      </padding>
                   </Label>
-                  <GridPane fx:id="gridPaneTitleVB" prefHeight="35.0" prefWidth="584.0">
+                  <GridPane prefHeight="35.0" prefWidth="584.0">
                     <columnConstraints>
-                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="70.0" percentWidth="21.0" prefWidth="135.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" percentWidth="79.0" prefWidth="420.6666259765625" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="21.0" prefWidth="108.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" percentWidth="80.0" prefWidth="420.6666259765625" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -39,9 +39,9 @@
                         <Insets top="4.0" />
                      </padding>
                      <children>
-                        <Button fx:id="loadFileBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="90.0" mnemonicParsing="false" onMouseClicked="#loadFile" prefHeight="31.0" prefWidth="108.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-radius: 6px; -fx-font-weight: bold; -fx-border-width: 1.5px;" text="Load xml file">
+                        <Button fx:id="loadFileBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" onMouseClicked="#loadFile" prefHeight="31.0" prefWidth="108.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-radius: 6px; -fx-font-weight: bold; -fx-border-width: 1.5px;" text="Load xml file">
                            <GridPane.margin>
-                              <Insets />
+                              <Insets right="5.0" />
                            </GridPane.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -49,7 +49,7 @@
                         </Button>
                         <Label maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="400.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="Please insert an XML file:" GridPane.columnIndex="1" fx:id="xmlPathLabel">
                            <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
+                              <Insets left="5.0" right="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="3.0" left="5.0" top="3.0" />
@@ -66,13 +66,13 @@
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane id="centerAP" fx:id="centerAP" prefHeight="200.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <AnchorPane id="centerAP" prefHeight="200.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <TabPane fx:id="tabPane" layoutY="-20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="428.0" prefWidth="600.0" styleClass="myTabPane" stylesheets="@tabStyleSheet.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-20.0">
               <tabs>
                 <Tab fx:id="tabOne" text="Initialization">
                   <content>
-                    <AnchorPane fx:id="tabOneAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="395.0" prefWidth="600.0">
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="395.0" prefWidth="600.0">
                            <children>
                               <fx:include fx:id="firstTab" source="FirstTab.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
@@ -81,15 +81,18 @@
                 </Tab>
                 <Tab fx:id="tabTwo" text="Encrypt/Decrypt">
                   <content>
-                    <AnchorPane fx:id="tabTwoAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="390.0" prefWidth="600.0">
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="390.0" prefWidth="600.0">
                            <children>
-                              <fx:include fx:id="secondTab" source="secondTab.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <fx:include fx:id="secondTab" source="SecondTab.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
                   <Tab fx:id="tabThree" text="Brute Force">
                     <content>
-                      <AnchorPane fx:id="tabThreeAP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <fx:include fx:id="thirdTab" source="ThirdTab.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>

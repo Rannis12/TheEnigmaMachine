@@ -17,27 +17,12 @@ public class EnigmaApplication extends Application {
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 
-       /* fxmlLoader = new FXMLLoader();
-        url = getClass().getResource("../resources/FirstTab.fxml");
-        fxmlLoader.setLocation(url);
-        Tab tabOne = fxmlLoader.load(url.openStream());
-        FirstTabController firstTabController = fxmlLoader.getController();*/
 
-       /* fxmlLoader = new FXMLLoader();
-        url = getClass().getResource("../resources/secondTab.fxml");
-        fxmlLoader.setLocation(url);
-        AnchorPane tabTwo = fxmlLoader.load(url.openStream());
-
-        fxmlLoader = new FXMLLoader();
-        url = getClass().getResource("../resources/thirdTab.fxml");
-        fxmlLoader.setLocation(url);
-        AnchorPane tabThree = fxmlLoader.load(url.openStream());*/
-
-        Scene scene = new Scene(root, 500, 550);
+        Scene scene = new Scene(root, 500, 620);
         primaryStage.setTitle("The Enigma Machine!");
         primaryStage.setScene(scene);
-        primaryStage.setMinHeight(550);
-        primaryStage.setMinWidth(400);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(500);
         primaryStage.show();
     }
 }

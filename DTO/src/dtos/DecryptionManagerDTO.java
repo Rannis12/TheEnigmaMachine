@@ -2,6 +2,7 @@ package dtos;
 
 public class DecryptionManagerDTO {
 
+    //int queueMaxSize, int amountOfRotors, String alphaBet
     private int amountOfAgents;
     private int sizeOfMission; // amount of missions that each agent need to do
     private String toEncode;

@@ -1,5 +1,6 @@
 package application;
 
+import decryption.dm.DecryptionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,56 +11,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 
 public class ThirdTabController {
-
-    @FXML
-    private TextField currentConfiguration;
-
-    @FXML
-    private Button processBtn;
-
-    @FXML
-    private Button resetBtn;
-
-    @FXML
-    private TextField encodeMsgTF;
-
-    @FXML
-    private TextField outputTF;
-
-    @FXML
-    private TextField searchInDictionaryTF;
-
-    @FXML
-    private Button clearBtn;
-
-    @FXML
-    private TextArea dictionaryTA;
-
-    @FXML
-    private Slider agentAmountSlider;
-
-    @FXML
-    private ChoiceBox<?> difficultyChoiceBox;
-
-    @FXML
-    private TextField taskSizeTF;
-
-    @FXML
-    private Button startBtn;
-
-    @FXML
-    private ToggleButton stopBtn;
-
-    @FXML
-    private ToggleButton pauseBtn;
-
-    @FXML
-    private ToggleButton resumeBtn;
-
-    @FXML
-    private TextArea candidatesTA;
+    @FXML private TextField currentConfiguration;
+    @FXML private Button processBtn;
+    @FXML private Button resetBtn;
+    @FXML private TextField encodeMsgTF;
+    @FXML private TextField outputTF;
+    @FXML private TextField searchInDictionaryTF;
+    @FXML private Button clearBtn;
+    @FXML private TextArea dictionaryTA;
+    @FXML private Slider agentAmountSlider;
+    @FXML private ChoiceBox<?> difficultyChoiceBox;
+    @FXML private TextField taskSizeTF;
+    @FXML private Button startBtn;
+    @FXML private ToggleButton stopBtn;
+    @FXML private ToggleButton pauseBtn;
+    @FXML private ToggleButton resumeBtn;
+    @FXML private TextArea candidatesTA;
 
     private MainPageController mainPageController;
+    private DecryptionManager decryptionManager;
 
     @FXML
     void encodeMsgListener(ActionEvent event) {

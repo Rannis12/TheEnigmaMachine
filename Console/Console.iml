@@ -10,5 +10,6 @@
     <orderEntry type="module" module-name="DTO" exported="" />
     <orderEntry type="module" module-name="Engine" exported="" />
     <orderEntry type="module" module-name="Machine" />
+    <orderEntry type="module" module-name="Decryption Manager" />
   </component>
 </module>

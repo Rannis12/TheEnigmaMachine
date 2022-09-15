@@ -49,7 +49,7 @@ public class EngineLoader {
         CTEDecipher cteDecipher = cteEnigma.getCTEDecipher();
 
         if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher) == true) {
-            return new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getCTEDictionary());
+            return new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE/*, cteDecipher.getCTEDictionary()*/);
         }
         return null;
     }

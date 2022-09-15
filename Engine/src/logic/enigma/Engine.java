@@ -16,16 +16,17 @@ public class Engine implements Serializable, Machine {
     private KeyBoard keyBoard;
     private MachineStatisticsDTO machineStatisticsDTO;
     private int amountOfDecodedStrings;
-    private Dictionary dictionary;
+
+    //private Dictionary dictionary;        engine shouldn't include Dictionary.
 
     //we need to use it. in Agent im calling this whole path, instead calling LOADED_ENGINE_PATH.
     public final String LOADED_ENGINE_PATH = "C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml";
 
 
-    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, CTEDictionary cteDictionary) {
+    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE/*, CTEDictionary cteDictionary*/) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
-        dictionary = new Dictionary(keyBoard, cteDictionary);
+//        dictionary = new Dictionary(keyBoard, cteDictionary);
 
         reflectors = new Reflectors(cteReflectors);
         rotors = new Rotors(cteRotors, rotorCountFromCTE);
@@ -89,8 +90,6 @@ public class Engine implements Serializable, Machine {
 
         return newChar;
     }
-
-
 
     public void checkRotorIndexesValidity(String rotorsPosition, ArrayList<Integer> uiRotorsIndexes) throws invalidInputException {
         rotors.checkRotorIndexesValidity(rotorsPosition, uiRotorsIndexes);
@@ -192,6 +191,10 @@ public class Engine implements Serializable, Machine {
     public void resetStatistics() {
         machineStatisticsDTO.resetStatistics();
         amountOfDecodedStrings = 0;
+    }
+
+    public void steerRotors() {
+        rotors.steerRotors();
     }
 }
 

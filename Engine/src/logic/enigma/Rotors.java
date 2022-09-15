@@ -317,4 +317,21 @@ public class Rotors implements Serializable {
             wiring.addLast(wiring.removeFirst());
         }
     }
+
+    /**
+     * this method should steer all the rotors (in case the rightest rotor finished full cycle.)
+     * this method is written for the DM.
+     */
+    public void steerRotors(){
+        int size = rotorsIndexes.size();
+        rotors.get(rotorsIndexes.get(size - 1) - 1).steerRotor();
+
+        for (int j = size - 1; j > 0; j--) {//check notch locations and steer other rotors if needed
+            if(rotors.get(rotorsIndexes.get(j) - 1).isFullCycle()){
+                rotors.get(rotorsIndexes.get(j-1) - 1).steerRotor();
+            }
+            else
+                break;
+        }
+    }
 }

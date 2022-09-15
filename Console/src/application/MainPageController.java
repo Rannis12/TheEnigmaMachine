@@ -18,10 +18,8 @@ import java.util.ArrayList;
 public class MainPageController {
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
-
     @FXML private ThirdTabController thirdTabController;
     private Engine engine;
-
     private int currConfigurationDecodedAmount;
 
     @FXML public void initialize() {

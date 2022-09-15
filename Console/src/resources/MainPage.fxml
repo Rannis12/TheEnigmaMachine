@@ -17,7 +17,7 @@
    <top>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="82.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox id="titleVB" alignment="CENTER" layoutX="3.0" layoutY="3.0" prefHeight="63.0" prefWidth="582.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="3.0">
+            <VBox id="titleVB" alignment="CENTER" layoutX="3.0" layoutY="3.0" prefHeight="66.0" prefWidth="600.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="3.0">
                <children>
                   <Label alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="The Enigma Machine">
                      <VBox.margin>
@@ -27,10 +27,10 @@
                         <Insets bottom="3.0" />
                      </padding>
                   </Label>
-                  <GridPane prefHeight="35.0" prefWidth="584.0">
+                  <GridPane prefHeight="35.0" prefWidth="589.0">
                     <columnConstraints>
                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="21.0" prefWidth="108.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="80.0" percentWidth="80.0" prefWidth="420.6666259765625" />
+                      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="80.0" prefWidth="420.6666259765625" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -49,7 +49,7 @@
                         </Button>
                         <Label maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="400.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="Please insert an XML file:" GridPane.columnIndex="1" fx:id="xmlPathLabel">
                            <GridPane.margin>
-                              <Insets left="5.0" right="10.0" />
+                              <Insets left="5.0" right="12.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="3.0" left="5.0" top="3.0" />

@@ -15,6 +15,9 @@ public class Engine implements Serializable, Machine {
     private PlugBoard plugBoard;
     private KeyBoard keyBoard;
     private MachineStatisticsDTO machineStatisticsDTO;
+
+    private int agentMaxAmount;
+
     private int amountOfDecodedStrings;
 
     //private Dictionary dictionary;        engine shouldn't include Dictionary.
@@ -23,10 +26,11 @@ public class Engine implements Serializable, Machine {
     public final String LOADED_ENGINE_PATH = "C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml";
 
 
-    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE/*, CTEDictionary cteDictionary*/) {
+    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount/*, CTEDictionary cteDictionary*/) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
 //        dictionary = new Dictionary(keyBoard, cteDictionary);
+        this.agentMaxAmount = agentMaxAmount;
 
         reflectors = new Reflectors(cteReflectors);
         rotors = new Rotors(cteRotors, rotorCountFromCTE);
@@ -186,6 +190,10 @@ public class Engine implements Serializable, Machine {
         int reflectorsAmount = reflectors.getAmountOfReflectors();
 
         return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings);
+    }
+
+    public int getAgentMaxAmount() {
+        return agentMaxAmount;
     }
     @Override
     public void resetStatistics() {

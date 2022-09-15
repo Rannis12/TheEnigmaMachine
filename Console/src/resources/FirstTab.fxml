@@ -183,7 +183,13 @@
                                     <Insets bottom="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <ToggleButton fx:id="setMachineBtn" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!" />
+                              <ToggleButton fx:id="setMachineBtn" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></ToggleButton>
                            </children>
                         </VBox>
                         <Label fx:id="machineInitializeLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" styleClass="machineInitSuccessLabel" stylesheets="@firstTabStyleSheet.css" text="Machine initialize successfully!" textFill="#faf2f2" />
@@ -195,7 +201,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" layoutY="-1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="266.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-1.0">
                      <children>
-                        <Label alignment="TOP_CENTER" text="Current machine configuration">
+                        <Label alignment="TOP_CENTER" style="-fx-text-fill: #DE3163;" text="Current machine configuration">
                            <font>
                               <Font name="Arial Bold" size="18.0" />
                            </font>
@@ -203,7 +209,7 @@
                               <Insets top="12.0" />
                            </VBox.margin>
                         </Label>
-                        <Label alignment="BOTTOM_CENTER" maxHeight="80.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" text="Initiallize Configuration" VBox.vgrow="ALWAYS">
+                        <Label alignment="BOTTOM_CENTER" maxHeight="80.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" style="-fx-text-fill: #DE3163;" text="Initiallize Configuration" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -212,7 +218,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="initializeConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
-                        <Label alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="301.0" text="Current Configuration" VBox.vgrow="ALWAYS">
+                        <Label alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="301.0" style="-fx-text-fill: #DE3163;" text="Current Configuration" VBox.vgrow="ALWAYS">
                            <font>
                               <Font size="16.0" />
                            </font></Label>

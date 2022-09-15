@@ -16,7 +16,6 @@ public class EngineLoader {
         this.FileDestination = fileDestination;
     }
 
-
     public Engine loadEngineFromXml(String filePath) throws invalidXMLfileException {
         CTEEnigma cteEnigma = null;
         try {
@@ -49,7 +48,8 @@ public class EngineLoader {
         CTEDecipher cteDecipher = cteEnigma.getCTEDecipher();
 
         if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher) == true) {
-            return new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE/*, cteDecipher.getCTEDictionary()*/);
+
+            return new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getAgents() /*, cteDecipher.getCTEDictionary()*/);
         }
         return null;
     }

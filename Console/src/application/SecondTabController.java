@@ -17,9 +17,8 @@ public class SecondTabController {
     private MainPageController mainPageController;
     private boolean shouldDecodeLine; //false = should decode char
 
-    private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
 
-    private IntegerProperty amountOfDecodedStrings;
+
 
 
     @FXML private TextField currentConfiguration;
@@ -34,23 +33,22 @@ public class SecondTabController {
     @FXML private TextField charInputTF;
     @FXML private TextArea statisticsTA;
 
-    public SecondTabController() {
-        amountOfDecodedStrings = new SimpleIntegerProperty(0);
-    }
-
     @FXML
     void processBtnListener(ActionEvent event) {
-        decodedCorrectly.set(false);
+        mainPageController.setDecodedCorrectly(false);
+
         String tmp = lineInputTF.getText();
         if(!tmp.equals("")){
             try {
                 DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
                 decodeResultTF.setText(newInfo.getDecodedString());
                 mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
-                decodedCorrectly.set(true);
-                amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
+                mainPageController.setDecodedCorrectly(true);
 
-                statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+
+                mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
+
+                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
                         ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
             } catch (invalidInputException e) {
                 mainPageController.popUpError(e.getMessage());
@@ -84,12 +82,14 @@ public class SecondTabController {
 
     @FXML
     void doneBtnListener(ActionEvent event) {
-        decodedCorrectly.set(false);
+        mainPageController.setDecodedCorrectly(false);
         if(!charInputTF.getText().equals("")) {
-            amountOfDecodedStrings.set(amountOfDecodedStrings.get()+1); // update times of decode.
-            decodedCorrectly.set(true);
+            mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
+
+            mainPageController.setDecodedCorrectly(true);
+
             mainPageController.increaseDecodedStringAmount();
-            statisticsTA.appendText("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+            appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
                     ". <" + charInputTF.getText().toUpperCase() + "> ----> <" + decodeResultTF.getText() + "> ( NO nano seconds)\n");
         }
 
@@ -140,11 +140,6 @@ public class SecondTabController {
         shouldDecodeLine = true;
     }
 
-
-    public IntegerProperty getAmountOfDecodedStrings() {
-        return this.amountOfDecodedStrings;
-    }
-
     public void setMainPageController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
     }
@@ -180,5 +175,9 @@ public class SecondTabController {
         lineInputTF.setDisable(true);
         processBtn.setDisable(true);
         clearBtn.setDisable(true);
+    }
+
+    public void appendToStatistics(String statisticNewString) {
+        statisticsTA.appendText(statisticNewString);
     }
 }

@@ -151,6 +151,7 @@ public class FirstTabController implements Initializable {
 
         initializeConfigurationTF.setText(newConfiguration);
         mainPageController.setDecodingAndClearButtonsDisable(false);
+
     }
     public void clearAllUsersTextFields(){
         userInitPlaces.clear();

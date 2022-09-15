@@ -3,6 +3,10 @@ package application;
 import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
+import resources.jaxb.generated.CTEDecipher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +27,10 @@ public class MainPageController {
     private Engine engine;
     private int currConfigurationDecodedAmount;
 
+    private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
+    private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty(0);
+
+
     @FXML public void initialize() {
         resetCurrConfigurationDecodedAmount();
 
@@ -32,15 +41,21 @@ public class MainPageController {
 
 
             // Ran: Bind number of decodes to counter.
-            firstTabController.getDecodedStrings().textProperty().bind(secondTabController.getAmountOfDecodedStrings().asObject().asString());
+            firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
 
             //Ran: everytime that amountOfDecodedStrings is changes, we "listening" to event, and updates the relevant fields.
             // in this case, we update configuration label.
-            secondTabController.getAmountOfDecodedStrings().addListener(e -> {
+            amountOfDecodedStrings.addListener(e -> {
             updateConfigurationLabel();
             });
         }
     }
+
+    private void setAgentAmountSlider() {
+        int agentMaxAmount = engine.getAgentMaxAmount();
+        thirdTabController.setAgentAmountSlider(agentMaxAmount);
+    }
+
     public void updateConfigurationLabel() {
         EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
@@ -66,6 +81,7 @@ public class MainPageController {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             if(loadFileFromXml(file.getAbsolutePath())) {
+                setAgentAmountSlider();
                 firstTabController.showDetails(engine.getEngineMinimalDetails());
                 firstTabController.enableButtons();
                 firstTabController.clearConfigurationTextFields();
@@ -74,6 +90,8 @@ public class MainPageController {
                 secondTabController.disableAllButtonsAndTextFields();
                 secondTabController.clearCurrentConfigurationTA();
                 secondTabController.getStatisticsTA().clear();
+
+                thirdTabController.DisableAllButtonsAndTextFields();
             }
         }
     }
@@ -86,10 +104,10 @@ public class MainPageController {
            EngineLoader engineLoader = new EngineLoader(fileDestination);
            engine = engineLoader.loadEngineFromXml(fileDestination);
 
-          firstTabController.setReflectorsCB(getReflectorsIDs());
+           firstTabController.setReflectorsCB(getReflectorsIDs());
           //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
 
-            engine.resetStatistics();
+           engine.resetStatistics();
 
           xmlPathLabel.setText(fileDestination + " selected");
           secondTabController.setDecodingButtonsDisable(true);
@@ -146,6 +164,7 @@ public class MainPageController {
 
     public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
         secondTabController.setDecodingButtonsDisable(setToDisable);
+        thirdTabController.setDecodingButtonsDisable(setToDisable);
     }
 
     public int getUsedAmountOfRotors() {
@@ -199,12 +218,24 @@ public class MainPageController {
         currConfigurationDecodedAmount = 0;
     }
 
-    public Engine getEngine() {
-        return engine;
-    }
-
     public void resetEngineToUserInitChoice() {
         engine.resetEngineToUserInitChoice();
+    }
+
+    public void setDecodedCorrectly(boolean value) {
+        decodedCorrectly.set(value);
+    }
+
+    public void appendToStatistics(String statisticNewString) {
+        secondTabController.appendToStatistics(statisticNewString);
+    }
+
+    public int getAmountOfDecodedStrings() {
+        return amountOfDecodedStrings.get();
+    }
+
+    public void setAmountOfDecodedStrings(int amountOfDecodedStrings) {
+        this.amountOfDecodedStrings.set(amountOfDecodedStrings);
     }
 }
 

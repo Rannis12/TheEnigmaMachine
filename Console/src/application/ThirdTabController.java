@@ -1,6 +1,7 @@
 package application;
 
 import decryption.dm.DecryptionManager;
+import exceptions.invalidInputException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,6 +30,7 @@ public class ThirdTabController {
     @FXML private TextArea candidatesTA;
 
     private MainPageController mainPageController;
+
     private DecryptionManager decryptionManager;
 
     @FXML
@@ -43,7 +45,15 @@ public class ThirdTabController {
 
     @FXML
     void processBtnListener(ActionEvent event) {
+        if(!encodeMsgTF.getText().equals("")){
+            try {
+                decryptionManager.isLegalString(encodeMsgTF.getText());
+            } catch (invalidInputException e) {
+                mainPageController.popUpError(e.getMessage());
+            }
+        }
 
+        //....
     }
 
     @FXML

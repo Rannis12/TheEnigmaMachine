@@ -31,7 +31,7 @@ public class Rotors implements Serializable {
         for (int i = 0; i < rotorsFirstPositionsString.length(); i++) {
             rotors.get(rotorsIndexes.get(i) - 1).initRotor(rotorsFirstPositionsString.charAt(i));
 
-            rotors.get(rotorsIndexes.get(i) - 1).notchFirstPos =rotors.get(rotorsIndexes.get(i) - 1).getNotchCurrentPlace();
+            rotors.get(rotorsIndexes.get(i) - 1).notchFirstPos = rotors.get(rotorsIndexes.get(i) - 1).getNotchCurrentPlace();
 
             rotors.get(rotorsIndexes.get(i) - 1).rotorFirstPosition = rotorsFirstPositionsString.charAt(i);
         }
@@ -211,7 +211,6 @@ public class Rotors implements Serializable {
     private class Rotor implements Serializable{
         private LinkedList<Positioning> wiring;
         private Positioning notch;
-
         private int notchFirstPos;
         private int rotorID;
         private char rotorFirstPosition;

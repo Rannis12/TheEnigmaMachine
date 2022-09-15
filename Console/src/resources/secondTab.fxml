@@ -55,7 +55,7 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" prefWidth="309.0" spacing="10.0">
                            <children>
-                              <Button fx:id="decodeCharBtn" disable="true" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="87.0" mnemonicParsing="false" onAction="#decodeCharListener" prefHeight="25.0" prefWidth="87.0" text="Decode Char" />
+                              <Button fx:id="decodeCharBtn" disable="true" maxHeight="31.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="87.0" mnemonicParsing="false" onAction="#decodeCharListener" prefHeight="31.0" prefWidth="107.0" text="Decode Char" />
                               <TextField fx:id="charInputTF" alignment="CENTER" disable="true" maxHeight="1.7976931348623157E308" maxWidth="250.0" minWidth="100.0" onKeyPressed="#charInputListener" prefHeight="25.0" prefWidth="200.0" />
                            </children>
                         </HBox>
@@ -96,7 +96,7 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="287.0" spacing="10.0">
                            <children>
-                              <Button fx:id="decodeLineBtn" disable="true" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="87.0" mnemonicParsing="false" onAction="#decodeLineListener" prefHeight="25.0" prefWidth="87.0" text="Decode Line" />
+                              <Button fx:id="decodeLineBtn" disable="true" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="87.0" mnemonicParsing="false" onAction="#decodeLineListener" prefHeight="30.0" prefWidth="105.0" text="Decode Line" />
                               <TextField fx:id="lineInputTF" disable="true" maxHeight="1.7976931348623157E308" maxWidth="250.0" minWidth="100.0" prefHeight="25.0" prefWidth="200.0" />
                            </children>
                         </HBox>
@@ -135,7 +135,7 @@
                            </opaqueInsets></TextField>
                         <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets top="30.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                            <children>
                               <Button fx:id="clearBtn" alignment="TOP_LEFT" disable="true" mnemonicParsing="false" onAction="#clearBtnListener" text="Clear fields">

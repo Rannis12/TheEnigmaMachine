@@ -42,8 +42,8 @@
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="120.0" minWidth="110.0" prefWidth="120.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="300.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="63.0" minWidth="63.0" prefWidth="63.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="63.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="93.0" prefWidth="93.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
@@ -58,7 +58,7 @@
                     </rowConstraints>
                     <children>
                         <Button fx:id="processBtn" mnemonicParsing="false" onAction="#processBtnListener" text="Process" GridPane.columnIndex="2" />
-                        <Button fx:id="resetBtn" alignment="CENTER" mnemonicParsing="false" onAction="#resetBtnListener" prefHeight="25.0" prefWidth="94.0" text="Reset settings" GridPane.columnIndex="3">
+                        <Button fx:id="resetBtn" alignment="CENTER" mnemonicParsing="false" onAction="#resetBtnListener" prefHeight="25.0" prefWidth="94.0" text="Reset" GridPane.columnIndex="3">
                             <GridPane.margin>
                                 <Insets right="10.0" />
                             </GridPane.margin>
@@ -81,7 +81,10 @@
                             </font>
                         </Label>
                         <TextField fx:id="searchInDictionaryTF" alignment="CENTER" onAction="#searchInDictionaryListener" promptText="Search from dictionary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear fields" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <Button fx:id="clearBtn" mnemonicParsing="false" prefHeight="31.0" prefWidth="94.0" text="Clear fields" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin></Button>
                         <TextArea fx:id="dictionaryTA" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6" GridPane.rowSpan="3">
                             <GridPane.margin>
                                 <Insets right="10.0" />

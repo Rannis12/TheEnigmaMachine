@@ -13,8 +13,6 @@ public class NewDictionary {
     private boolean isLeaf;
     private Map<Character, NewDictionary> children;
     private CTEDictionary cteDictionary;
-
-
     private String excludedCharacters;
     private KeyBoard keyBoard;
 
@@ -128,6 +126,7 @@ public class NewDictionary {
                 dictionary.add(wordsArr[i]);
             }
         }
+
         for (String string: dictionary) {
             insert(string);
         }

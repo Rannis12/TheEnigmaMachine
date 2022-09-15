@@ -39,15 +39,13 @@ public class MainPageController {
             secondTabController.getAmountOfDecodedStrings().addListener(e -> {
             updateConfigurationLabel();
             });
-
-
         }
-
     }
     public void updateConfigurationLabel() {
         EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(),
+                engineFullDetailsDTO.getPlugBoardString());
 
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
@@ -59,8 +57,6 @@ public class MainPageController {
     @FXML private Tab tabOne;
     @FXML private Tab tabTwo;
     @FXML private Tab tabThree;
-
-
 
     @FXML
     void loadFile(MouseEvent event) {

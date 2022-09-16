@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 import resources.jaxb.generated.CTEDecipher;
@@ -26,7 +27,6 @@ public class MainPageController {
     @FXML private ThirdTabController thirdTabController;
     private Engine engine;
     private int currConfigurationDecodedAmount;
-
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
     private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty(0);
 
@@ -98,11 +98,10 @@ public class MainPageController {
 
 
     public boolean loadFileFromXml(String fileDestination){
-
         try {
 
            EngineLoader engineLoader = new EngineLoader(fileDestination);
-           engine = engineLoader.loadEngineFromXml(fileDestination);
+           engine = engineLoader.loadEngineFromXml(fileDestination); //Ran added. updates the dictionary in thirdController.
 
            firstTabController.setReflectorsCB(getReflectorsIDs());
           //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
@@ -111,7 +110,7 @@ public class MainPageController {
 
           xmlPathLabel.setText(fileDestination + " selected");
           secondTabController.setDecodingButtonsDisable(true);
-
+//          thirdTabController.setDictionary(dictionary);
           return true;
 
         } catch (invalidXMLfileException e) {
@@ -236,6 +235,10 @@ public class MainPageController {
 
     public void setAmountOfDecodedStrings(int amountOfDecodedStrings) {
         this.amountOfDecodedStrings.set(amountOfDecodedStrings);
+    }
+
+    public Engine getEngine(){
+       return (Engine)engine.clone();
     }
 }
 

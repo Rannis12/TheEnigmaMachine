@@ -128,4 +128,9 @@ public class PlugBoard implements Serializable {
             }
         }
     }
+
+    public void initForDM() {
+        cables = new HashMap<>();
+        initString = "";
+    }
 }

@@ -16,7 +16,7 @@ public class EngineLoader {
         this.FileDestination = fileDestination;
     }
 
-    public Engine loadEngineFromXml(String filePath) throws invalidXMLfileException {
+    public Engine loadEngineFromXml(String filePath/*, Dictionary dictionary*/) throws invalidXMLfileException {
         CTEEnigma cteEnigma = null;
         try {
             InputStream inputStream = new FileInputStream(new File(filePath));
@@ -26,7 +26,7 @@ public class EngineLoader {
             throw new invalidXMLfileException("This File isn't a xml file that fits xsd. Please enter a valid xml file path: ");
         }
 
-        return convertToEngine(cteEnigma);
+        return convertToEngine(cteEnigma/*, dictionary*/);
     }
     private CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
@@ -34,11 +34,8 @@ public class EngineLoader {
         return (CTEEnigma) u.unmarshal(in);
     }
 
-
-
-
-    private Engine convertToEngine(CTEEnigma cteEnigma) throws invalidXMLfileException {
-
+    private Engine convertToEngine(CTEEnigma cteEnigma/*, Dictionary dictionary*/) throws invalidXMLfileException {
+        Engine newEngine = null;
         String alphaBetFromCTE = cteEnigma.getCTEMachine().getABC();
         alphaBetFromCTE = alphaBetFromCTE.trim();
         int rotorCount = cteEnigma.getCTEMachine().getRotorsCount();
@@ -48,10 +45,10 @@ public class EngineLoader {
         CTEDecipher cteDecipher = cteEnigma.getCTEDecipher();
 
         if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher) == true) {
-
-            return new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getAgents() /*, cteDecipher.getCTEDictionary()*/);
+            newEngine =  new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getAgents() , cteDecipher.getCTEDictionary());
+            //dictionary = new Dictionary(newEngine.getKeyBoard(), cteDecipher.getCTEDictionary());
         }
-        return null;
+        return newEngine;
     }
     private boolean checkCTEEnigma(String alphaBetFromCTE, int rotorCount, List<CTEReflector> cteReflectorsLIST, List<CTERotor> cteRotorsLIST, CTEDecipher cteDecipher) throws invalidXMLfileException {
         if (alphaBetFromCTE.length() % 2 != 0) {

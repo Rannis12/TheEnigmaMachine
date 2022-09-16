@@ -2,6 +2,7 @@ package application;
 
 import decryption.dm.DecryptionManager;
 import dtos.DecodeStringInfo;
+import dtos.DecryptionManagerDTO;
 import exceptions.invalidInputException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import logic.enigma.Dictionary;
 
 public class ThirdTabController {
     @FXML private TextField currentConfiguration;
@@ -43,9 +45,12 @@ public class ThirdTabController {
     private MainPageController mainPageController;
     private int currAgentAmount;
 
+    private int tasksSize;
     private double progressBarValue;
 
     private DecryptionManager decryptionManager;
+
+//    private Dictionary dictionary = null;
 
     @FXML public void initialize() {
         agentAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {//set slider listener
@@ -151,7 +156,6 @@ public class ThirdTabController {
     void startBtnListener(ActionEvent event) {
         int agentAmount;
         String difficulty;
-        int tasksSize;
 
         try {
             agentAmount = (int)agentAmountSlider.getValue();
@@ -160,14 +164,14 @@ public class ThirdTabController {
                 throw new invalidInputException("Please choose Difficulty.");
             }
             tasksSize = Integer.valueOf(taskSizeTF.getText());
-            if(tasksSize < 1 && tasksSize > 1000) {
+            if(tasksSize < 1 /*|| tasksSize > 1000*/) { //maybe not a good condition.
                 taskSizeTF.clear();
                 throw new invalidInputException("Please choose size between 1 to 1000.");
 
             }
             //calculate amount of tasks here
             amountOfTasksTF.setText(taskSizeTF.getText()); // THIS IS TEMPORARY FOR NOW - NEED TO CHANGE
-            amountOfTasksTF.setVisible(true);
+            //amountOfTasksTF.setVisible(true);
             amountOfTasksLabel.setVisible(true);
             searchingSolutionsLabel.setVisible(true);
 
@@ -182,9 +186,12 @@ public class ThirdTabController {
             pauseBtn.setDisable(false);
             resumeBtn.setDisable(false);
 
-            //DecryptionManager decryptionManager = new DecryptionManager() use agentAmount, difficulty, tasksSize
-            //start running tasks
+            DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText()/*!!!*/.toUpperCase(),
+                    difficulty);
+            decryptionManager = new DecryptionManager(decryptionManagerDTO, mainPageController.getEngine());/*use agentAmount, difficulty, tasksSize*/
 
+            //start running tasks
+            decryptionManager.encode();
         }
         catch (invalidInputException invalidEx) {
             mainPageController.popUpError(invalidEx.getMessage());
@@ -220,7 +227,6 @@ public class ThirdTabController {
     @FXML
     void stopBtnListener(ActionEvent event) {
 
-
         agentAmountSlider.setDisable(false);
         difficultyChoiceBox.setDisable(false);
         difficultyChoiceBox.setValue(null);
@@ -237,7 +243,8 @@ public class ThirdTabController {
 
     @FXML
     void taskSizeListener(ActionEvent event) {
-
+        tasksSize = Integer.valueOf(taskSizeTF.getText());
+        taskSizeTF.setDisable(true);
     }
 
     public void setMainPageController(MainPageController mainPageController) {
@@ -281,5 +288,13 @@ public class ThirdTabController {
         startBtn.setDisable(setToDisable);
 
     }
+
+   /* public Dictionary getDictionary(){
+        return this.dictionary;
+    }
+
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
+    }*/
 }
 

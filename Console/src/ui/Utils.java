@@ -3,6 +3,7 @@ package ui;
 import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
+import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 
@@ -134,6 +135,9 @@ public class Utils {
 
     public Engine optionOne() throws invalidXMLfileException {
         Engine engine = null;
+
+        Dictionary dictionary = null; //Ran added.
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hey, please insert a full path to your requested xml file: ");
         String fileDestination = scanner.nextLine();
@@ -320,7 +324,6 @@ public class Utils {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
             out.writeObject(engine);
             out.flush();
-            System.out.println("File saved successfully!\n");
 
         } catch (IOException e) {
             throw new invalidInputException("Error: could not save file. Please try again.\n");

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.concurrent.BlockingQueue;
 
-import static decryption.dm.DecryptionManager.loadEnigmaFromString;
+//import static decryption.dm.DecryptionManager.loadEnigmaFromString;
 
 /**
  * This is what the agent supposed to do - Agent's Job.
@@ -23,7 +23,7 @@ import static decryption.dm.DecryptionManager.loadEnigmaFromString;
 public class DecryptTask implements Runnable {
     private Engine engine;
     private BlockingQueue blockingQueueResponses;
-    private NewDictionary dictionary;
+    private Dictionary dictionary;
     private String excludedCharacters;
     private String toEncodeString;
     private int sizeOfMission;
@@ -32,21 +32,22 @@ public class DecryptTask implements Runnable {
 //    private int decryptModeOption; //the specific mode to do in run -  from easy mode -> bruteForce mode.
 
 
-    public DecryptTask(int sizeOfMission, NewDictionary dictionary,/*int decryptModeOption,*/String currentConfiguration,
+    public DecryptTask(Engine copyEngine, int sizeOfMission,/*int decryptModeOption,*/String currentConfiguration,
                        String toEncodeString, BlockingQueue blockingQueueResponses){
 
         this.sizeOfMission = sizeOfMission;
         this.toEncodeString = toEncodeString;
-        this.dictionary = dictionary;
+        this.dictionary = copyEngine.getDictionary();
         this.excludedCharacters = dictionary.getExcludedCharacters();
         this.blockingQueueResponses = blockingQueueResponses;
 //        this.initConfiguration = initConfiguration;
 
-        try {
+        /*try {
             engine = loadEnigmaFromString();
         } catch (invalidInputException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        engine = copyEngine;
 
         engine.initRotorsFirstPositions(currentConfiguration);
     }
@@ -76,38 +77,60 @@ public class DecryptTask implements Runnable {
     @Override
     public void run(){
         try {
+
             int numOfSeparates = 0;
             numOfSeparates = getNumOfSeparates(toEncodeString);
 
             String[] wordsArr = toEncodeString.split(" ", numOfSeparates + 1);
-            for (String string : wordsArr) {
-                if(!dictionary.search(string)){
+
+            //need to add check in the thirdPageController - using dictionary.
+            /*for (int i = 0; i < wordsArr.length; i++) {
+                if(!dictionary.isExistInDictionary(wordsArr[i])){
+                    System.out.println("the word " + wordsArr[i] + " isn't in the dictionary.");
+                    //Thread.currentThread().stop();
                     return; //supposed to finish this task.
                 }
-            }
+            }*/
+
             //if we got here, all the Strings in wordsArr in the dictionary. which means toEncodeString is a possible string to encode.
 
             for (int i = 0; i < sizeOfMission; i++) {
+                boolean shouldContinueSearching = true;
                 long start = System.nanoTime();
-                DecodeStringInfo decodeStringInfo = engine.decodeStr(toEncodeString); //we need to decode without plugboard.
+                DecodeStringInfo decodeStringInfo = engine.decodeStr(toEncodeString);
 
                 String resultString = decodeStringInfo.getDecodedString();
+
+                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " decoded to -> " + resultString);
+
                 numOfSeparates = getNumOfSeparates(resultString);
 
                 String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
-                for (String string : resultWordsArr) {
-                    if(!dictionary.search(string)){
-                        engine.steerRotors();
-                        continue; //supposed to finish this task.
+
+                //after split by spaces, we clean each char that is excluded.
+                for (int j = 0; j < resultWordsArr.length; j++) {
+                    for (int k = 0; k < excludedCharacters.length(); k++) {
+                        resultWordsArr[i] = resultWordsArr[i].replace(String.valueOf(excludedCharacters.charAt(j)), "");
                     }
                 }
 
-                long end = System.nanoTime();
-                //if we got here, resultString might be the origin string, then we need to create a dto of it.
-                MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString, resultString, end - start);
+                for (int j = 0; j < resultWordsArr.length && shouldContinueSearching; j++) {
+                    if (!dictionary.isExistInDictionary(resultWordsArr[i])) {
+                        engine.steerRotors();
+                        shouldContinueSearching = false;
+                    }
+                }
 
-                blockingQueueResponses.put(missionDTO); //add a listener to this blocking queue from the Application.
-                engine.steerRotors();
+                if(shouldContinueSearching == true) {
+                    long end = System.nanoTime();
+                    //if we got here, resultString might be the origin string, then we need to create a dto of it.
+                    System.out.println(Thread.currentThread().getName() + "found that " + toEncodeString + " might be: " + resultString);
+
+                    MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString, resultString, end - start);
+
+                    blockingQueueResponses.put(missionDTO); //add a listener to this blocking queue from the Application.
+                    engine.steerRotors();
+                }
             }
 
         } catch (invalidInputException | InterruptedException e) {

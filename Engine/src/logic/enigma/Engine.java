@@ -6,10 +6,10 @@ import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
 
 import javax.lang.model.type.ArrayType;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
-public class Engine implements Serializable, Machine {
+public class Engine implements Serializable, Machine, Cloneable {
     private Reflectors reflectors;
     private Rotors rotors;
     private PlugBoard plugBoard;
@@ -20,16 +20,16 @@ public class Engine implements Serializable, Machine {
 
     private int amountOfDecodedStrings;
 
-    //private Dictionary dictionary;        engine shouldn't include Dictionary.
+    private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
     //we need to use it. in Agent im calling this whole path, instead calling LOADED_ENGINE_PATH.
     public final String LOADED_ENGINE_PATH = "C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml";
+    String serializedEngine = new String();
 
-
-    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount/*, CTEDictionary cteDictionary*/) {
+    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount, CTEDictionary cteDictionary) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
-//        dictionary = new Dictionary(keyBoard, cteDictionary);
+        dictionary = new Dictionary(keyBoard, cteDictionary);
         this.agentMaxAmount = agentMaxAmount;
 
         reflectors = new Reflectors(cteReflectors);
@@ -40,8 +40,17 @@ public class Engine implements Serializable, Machine {
         amountOfDecodedStrings = 0;
     }
 
+    @Override
+    public Object clone(){
+        Engine engineCopy = null;
+        try {
+            engineCopy = loadEnigmaFromString(saveEnigmaToString(this));
+        } catch (invalidInputException e) {
+            throw new RuntimeException("error in cloning the engine.");
+        }
 
-
+        return engineCopy;
+    }
 
     public void initRotorIndexes(ArrayList<Integer> uiRotorsIndexes) {
         rotors.initRotorsIndexes(uiRotorsIndexes);
@@ -203,6 +212,42 @@ public class Engine implements Serializable, Machine {
 
     public void steerRotors() {
         rotors.steerRotors();
+    }
+
+    public String saveEnigmaToString(Engine engine) throws invalidInputException {
+        try
+        {
+            // To String
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(engine);
+            oos.close();
+            return Base64.getEncoder().encodeToString(baos.toByteArray());
+
+        } catch(IOException e) {
+            throw new invalidInputException("Error in saving a file\n");
+        }
+    }
+
+    public Engine loadEnigmaFromString(String s) throws invalidInputException {
+        try {
+            byte[] data = Base64.getDecoder().decode(s);
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+            Engine engine =(Engine) ois.readObject();
+            ois.close();
+            return engine;
+
+        }catch (IOException | ClassNotFoundException ex) {
+            throw new invalidInputException("Error in loading a file\n");
+        }
+    }
+
+    public Dictionary getDictionary() {
+        return this.dictionary;
+    }
+
+    public void initPlugBoardForDM() {
+        plugBoard.initForDM();
     }
 }
 

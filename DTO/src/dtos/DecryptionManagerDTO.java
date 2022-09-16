@@ -6,25 +6,25 @@ public class DecryptionManagerDTO {
     private int amountOfAgents;
     private int sizeOfMission; // amount of missions that each agent need to do
     private String toEncode;
-    private String selectedRotors;
-    private int selectedReflector;
-    private String notchPositions;
-    private int decryptionSelection;
+//    private String selectedRotors;
+//    private int selectedReflector;
+//    private String notchPositions;
+    private String decryptionSelection;
 
 
     public DecryptionManagerDTO(int amountOfAgents, int sizeOfMission, String toEncode,
-                                String selectedRotors, int selectedReflector, String notchPositions,
-                                int decryptionSelection){
+                                /*String selectedRotors,*/  /*String notchPositions,*/
+                                String decryptionSelection){
         this.amountOfAgents = amountOfAgents;
         this.sizeOfMission = sizeOfMission;
         this.toEncode = toEncode;
-        this.selectedRotors = selectedRotors;
-        this.selectedReflector = selectedReflector;
-        this.notchPositions = notchPositions;
+//        this.selectedRotors = selectedRotors;
+//        this.selectedReflector = selectedReflector;
+//        this.notchPositions = notchPositions;
         this.decryptionSelection = decryptionSelection;
     }
 
-    public int getDecryptionSelection() {
+    public String getDecryptionSelection() {
         return decryptionSelection;
     }
 
@@ -40,17 +40,17 @@ public class DecryptionManagerDTO {
         return toEncode;
     }
 
-    public String getSelectedRotors() {
-        return selectedRotors;
-    }
+//    public String getSelectedRotors() {
+//        return selectedRotors;
+//    }
 
-    public int getSelectedReflector() {
-        return selectedReflector;
-    }
+//    public int getSelectedReflector() {
+//        return selectedReflector;
+//    }
 
-    public String getNotchPositions() {
+    /*public String getNotchPositions() {
         return notchPositions;
-    }
+    }*/
 
 
 }

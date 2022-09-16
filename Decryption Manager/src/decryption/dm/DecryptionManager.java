@@ -1,17 +1,13 @@
 package decryption.dm;
 
 import decryption.DecryptTask;
-import decryption.NewDictionary;
 import dtos.DecryptionManagerDTO;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 
+import logic.enigma.Dictionary;
 import logic.enigma.Engine;
-import logic.enigma.EngineLoader;
-import resources.jaxb.generated.CTEDictionary;
 
-import java.io.*;
-import java.util.Base64;
 import java.util.concurrent.*;
 
 public class DecryptionManager {
@@ -19,85 +15,79 @@ public class DecryptionManager {
     private int amountOfAgents;
     private int sizeOfMission; // amount of missions that each agent need to do
     private String toEncode;
-    private NewDictionary dictionary; //we maybe would like to sent him from the controllers, after we open the file.
+    private Dictionary dictionary; //we maybe would like to sent him from the controllers, after we open the file.
     private ThreadPoolExecutor threadPool; //ok
-
-    DecryptionSelection decryptionSelection;
-//    private int selection; //it's here since we might remove decryptionSelection.
+    String decryptionSelection;
     BlockingQueue blockingQueueResponses; //queue of optional decoded strings.
     CustomThreadFactory customThreadFactory;
-
     private Producer producer; // not sure if leave it here as a nested Class or created a new class.
 
-    static String serializedEngine = new String(); //in order to load engines without ctor and without multiply file opening.
-
-    private enum DecryptionSelection {
+/*    private enum DecryptionSelection {
 
         OPTION_ONE,
         OPTION_TWO,
         OPTION_THREE,
         BRUTE_FORCE;
 
-        private DecryptionSelection convertToEnum(int selection) {
+        private DecryptionSelection convertToEnum(String selection) {
             switch (selection) {
-                case 0:
+                case "Easy":
                     return OPTION_ONE;
-                case 1:
+                case "Medium":
                     return OPTION_TWO;
-                case 2:
+                case "Hard":
                     return OPTION_THREE;
-                case 3:
+                case "Impossible":
                     return BRUTE_FORCE;
             }
             return null;
         }
-    }
+    }*/
 
-    public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engine, CTEDictionary cteDictionary) throws invalidInputException {
-        saveEnigmaToString(engine);
-        this.engine = loadEnigmaFromString();
+    public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy) throws invalidInputException {
+        engine = engineCopy; //engineCopy is a copy of engine. I implemented Cloneable.
 
-        this.dictionary = new NewDictionary(engine.getKeyBoard(), cteDictionary);   //Pay Attention to Send HIM!!!!!!!!!!!!
+        engine.initPlugBoardForDM();
 
-        producer = new Producer(engine.getEngineFullDetails().getUsedAmountOfRotors(), engine.getKeyBoard().getAlphaBet());
+        amountOfAgents = decryptionManagerDTO.getAmountOfAgents();
+        sizeOfMission = decryptionManagerDTO.getSizeOfMission();
+        toEncode = decryptionManagerDTO.getToEncode();
+
+        decryptionSelection = decryptionManagerDTO.getDecryptionSelection();
+
+        this.dictionary = engine.getDictionary();
+        BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
+
+        producer = new Producer(engine.getEngineFullDetails().getUsedAmountOfRotors(),
+                                engine.getKeyBoard().getAlphaBet(),
+                                blockingQueue);
 
         customThreadFactory = new CustomThreadFactory();
 
-        threadPool = new ThreadPoolExecutor(amountOfAgents, 50, 50, TimeUnit.MILLISECONDS,
-                producer.getBlockingQueue(),
+        threadPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 20, TimeUnit.SECONDS,
+                blockingQueue,
                 customThreadFactory);
 
         blockingQueueResponses = new LinkedBlockingQueue();
 
         threadPool.prestartAllCoreThreads();
-
-
-
-
-        //from here, maybe move it to another method, to avoid hugh c'tor - handle from UI.
-        amountOfAgents = decryptionManagerDTO.getAmountOfAgents();
-        sizeOfMission = decryptionManagerDTO.getSizeOfMission();
-        toEncode = decryptionManagerDTO.getToEncode();
-
-        decryptionSelection = decryptionSelection.convertToEnum(decryptionManagerDTO.getDecryptionSelection());
-//        this.selection = decryptionManagerDTO.getDecryptionSelection();
     }
 
     private class Producer {
         private BlockingQueue<Runnable> blockingQueue;
         private final int QUEUE_MAX_SIZE = 1000; //should be 1000
-        private int missionSize = 1; //checking.
+        private int missionSize; //checking.
         private int numOfSteers = 0;
         private int amountOfRotors;
         private String alphaBet;
         private String currentConfiguration; // in case we will return "create missions" , we would like to know where we stopped.
 
-        public Producer(int amountOfRotors, String alphaBet) {
+        public Producer(int amountOfRotors, String alphaBet, BlockingQueue<Runnable> blockingQueue) {
             this.amountOfRotors = amountOfRotors;
             this.alphaBet = alphaBet;
             this.currentConfiguration = "";
-
-            blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
+            this.missionSize = sizeOfMission;
+            this.blockingQueue = blockingQueue;
         }
 
 
@@ -114,6 +104,7 @@ public class DecryptionManager {
                     for (int j = 0; j < amountOfRotors; j++) {
                         initString += alphaBet.charAt(0);
                     }
+                    System.out.println(initString);
 
                     engine.initRotorsFirstPositions(initString); //this should be the right method.
 
@@ -123,8 +114,9 @@ public class DecryptionManager {
                     //for example, initialize the initString to - "AAAAAAAA".
                     for (int i = 0; i < possibleOptions; i++) {
 
-                        if (i == 0){
-                            blockingQueue.put(new DecryptTask(sizeOfMission, dictionary, /*selection,*/
+                        if (i == 0){ //doing it since we don't want to miss the first initialization.
+                            System.out.println("inserted " + engine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
+                            blockingQueue.put(new DecryptTask((Engine)engine.clone(), sizeOfMission, /*selection,*/
                                     engine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
                         }
                         for (int k = 0; k < missionSize; k++) {
@@ -133,12 +125,12 @@ public class DecryptionManager {
                             numOfSteers++;
                         }
 
-                        blockingQueue.put(new DecryptTask(sizeOfMission, dictionary, /*selection,*/
+                        blockingQueue.put(new DecryptTask((Engine)engine.clone(), sizeOfMission, /*selection,*/
                                 engine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
+                        System.out.println("inserted " + engine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
                     }
 
                     currentConfiguration = engine.getEngineFullDetails().getRotorsCurrentPositions(); //necessary??
-
 
                 }catch (InterruptedException e) {
                     System.out.println("Exception in thread that push to queue.");
@@ -146,9 +138,9 @@ public class DecryptionManager {
             }).start();
         }
 
-        public BlockingQueue<Runnable> getBlockingQueue() {
+        /*public BlockingQueue<Runnable> setBlockingQueue() {
             return blockingQueue;
-        }
+        }*/
 
         private int calculateOptionOnePossibleMissions(){ //need to check it
             double alphaBetLength = alphaBet.length();
@@ -161,17 +153,22 @@ public class DecryptionManager {
 
     public void encode() {
         switch (decryptionSelection) {
-            case OPTION_ONE:
+            case "Easy":
                 encodeWhenOnlyMissingPosition();
-            case OPTION_TWO:
-                //encodeWhenPositionsAndReflectorMissing();
-
+                break;
+            case "Medium":
                 //for each reflector, we need to set him in the engine, and then decode all options.
                 //engine.setReflector()
-            case OPTION_THREE:
+//                for (int i = 0; i < ; i++) {
+//
+//                }
+                break;
+            case "Hard":
                 encodeWhenOnlyRotorsAreKnown();
-            case BRUTE_FORCE:
+                break;
+            case "Impossible":
                 impossible();
+                break;
         }
     }
 
@@ -205,11 +202,7 @@ public class DecryptionManager {
 
     }
 
-
-
-
-
-    public static void saveEnigmaToString(Engine engine) throws invalidInputException {
+    /*public static void saveEnigmaToString(Engine engine) throws invalidInputException {
         try
         {
             // To String
@@ -239,8 +232,7 @@ public class DecryptionManager {
         }catch (IOException | ClassNotFoundException ex) {
             throw new invalidInputException("Error in loading a file\n");
         }
-    }
-
+    }*/
 
 
     public boolean isLegalString(String stringFromUser) throws invalidInputException {
@@ -249,7 +241,7 @@ public class DecryptionManager {
 
         String[] wordsArr = stringFromUser.split(" ", numOfSeparates + 1);
         for (String string : wordsArr) {
-            if(!dictionary.search(string)){
+            if(!dictionary.isExistInDictionary(string)){
                 throw new invalidInputException("The string " + string + " isn't in the dictionary!");
             }
         }
@@ -271,8 +263,8 @@ public class DecryptionManager {
 
     public static void main(String[] args) throws invalidXMLfileException {
 
-        EngineLoader engineLoader = new EngineLoader("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");
-        Engine engine1 = engineLoader.loadEngineFromXml("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");
+/*        EngineLoader engineLoader = new EngineLoader("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");
+        Engine engine1 = engineLoader.loadEngineFromXml("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");*/
 
 //        DecryptionManager decryptionManager = new DecryptionManager(engine1.getDec, engine1);
 

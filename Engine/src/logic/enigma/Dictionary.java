@@ -46,4 +46,17 @@ public class Dictionary implements Serializable {
             }
         }
     }
+
+    public String getExcludedCharacters(){
+        return excludedCharacters;
+    }
+
+    public boolean isExistInDictionary(String string) {
+        for (String str : dictionary) {
+            if(str.equals(string)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

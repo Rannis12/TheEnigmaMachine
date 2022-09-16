@@ -189,6 +189,7 @@ public class ThirdTabController {
         catch (invalidInputException invalidEx) {
             mainPageController.popUpError(invalidEx.getMessage());
         }catch (RuntimeException noInputEx) {
+            taskSizeTF.clear();
             mainPageController.popUpError("Please choose size(number) of each task.");
         }
 

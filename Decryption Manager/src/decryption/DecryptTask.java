@@ -35,9 +35,11 @@ public class DecryptTask implements Runnable {
     public DecryptTask(Engine copyEngine, int sizeOfMission,/*int decryptModeOption,*/String currentConfiguration,
                        String toEncodeString, BlockingQueue blockingQueueResponses){
 
+        engine = copyEngine;
+
         this.sizeOfMission = sizeOfMission;
         this.toEncodeString = toEncodeString;
-        this.dictionary = copyEngine.getDictionary();
+        this.dictionary = engine.getDictionary();
         this.excludedCharacters = dictionary.getExcludedCharacters();
         this.blockingQueueResponses = blockingQueueResponses;
 //        this.initConfiguration = initConfiguration;
@@ -47,8 +49,6 @@ public class DecryptTask implements Runnable {
         } catch (invalidInputException e) {
             throw new RuntimeException(e);
         }*/
-        engine = copyEngine;
-
         engine.initRotorsFirstPositions(currentConfiguration);
     }
 
@@ -81,7 +81,7 @@ public class DecryptTask implements Runnable {
             int numOfSeparates = 0;
             numOfSeparates = getNumOfSeparates(toEncodeString);
 
-            String[] wordsArr = toEncodeString.split(" ", numOfSeparates + 1);
+       //     String[] wordsArr = toEncodeString.split(" ", numOfSeparates + 1);
 
             //need to add check in the thirdPageController - using dictionary.
             /*for (int i = 0; i < wordsArr.length; i++) {

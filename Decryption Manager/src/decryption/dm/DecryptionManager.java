@@ -79,6 +79,7 @@ public class DecryptionManager {
         private int missionSize; //checking.
         private int numOfSteers = 0;
         private int amountOfRotors;
+        private Engine producerEngine;
         private String alphaBet;
         private String currentConfiguration; // in case we will return "create missions" , we would like to know where we stopped.
 
@@ -88,6 +89,7 @@ public class DecryptionManager {
             this.currentConfiguration = "";
             this.missionSize = sizeOfMission;
             this.blockingQueue = blockingQueue;
+            this.producerEngine = (Engine)engine.clone();
         }
 
 
@@ -106,7 +108,7 @@ public class DecryptionManager {
                     }
                     System.out.println(initString);
 
-                    engine.initRotorsFirstPositions(initString); //this should be the right method.
+                    producerEngine.initRotorsFirstPositions(initString); //this should be the right method.
 
                     //calculates amount of possible missions, when given a specific size.
                     double possibleOptions = calculateOptionOnePossibleMissions();
@@ -115,22 +117,22 @@ public class DecryptionManager {
                     for (int i = 0; i < possibleOptions; i++) {
 
                         if (i == 0){ //doing it since we don't want to miss the first initialization.
-                            System.out.println("inserted " + engine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
-                            blockingQueue.put(new DecryptTask((Engine)engine.clone(), sizeOfMission, /*selection,*/
-                                    engine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
+                            System.out.println("inserted " + producerEngine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
+                            blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission, /*selection,*/
+                                    producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
                         }
                         for (int k = 0; k < missionSize; k++) {
                             //SteerRotors...
-                            engine.steerRotors(); //this method should steer *all rotors* - in case the first gets to the end.
+                            producerEngine.steerRotors(); //this method should steer *all rotors* - in case the first gets to the end.
                             numOfSteers++;
                         }
 
-                        blockingQueue.put(new DecryptTask((Engine)engine.clone(), sizeOfMission, /*selection,*/
-                                engine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
-                        System.out.println("inserted " + engine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
+                        blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission, /*selection,*/
+                                producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
+                        System.out.println("inserted " + producerEngine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
                     }
 
-                    currentConfiguration = engine.getEngineFullDetails().getRotorsCurrentPositions(); //necessary??
+                    currentConfiguration = producerEngine.getEngineFullDetails().getRotorsCurrentPositions(); //necessary??
 
                 }catch (InterruptedException e) {
                     System.out.println("Exception in thread that push to queue.");

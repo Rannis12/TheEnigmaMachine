@@ -14,7 +14,7 @@ public class CustomThreadFactory implements ThreadFactory {
         SecurityManager s = System.getSecurityManager();
         group = (s != null)? s.getThreadGroup() :
                 Thread.currentThread().getThreadGroup();
-        namePrefix = "Thread/Agent ID: ";
+        namePrefix = "Agent: ";
     }
 
     public Thread newThread(Runnable r) {

@@ -3,6 +3,7 @@ package logic.enigma;
 import resources.jaxb.generated.CTEDictionary;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +27,6 @@ public class Dictionary implements Serializable {
             amountOfWords++;
         }
         String[] wordsArr = words.split(" ", amountOfWords);
-        //String[] regexes = new String[] {"\\+","\\*","\\^", "\\{", "\\}", "\\?"};
 
         for (int i = 0; i < wordsArr.length; i++) {
             boolean isValidWord = true;
@@ -58,5 +58,20 @@ public class Dictionary implements Serializable {
             }
         }
         return false;
+    }
+
+    public ArrayList<String> searchForSubStrings(String prefix) {
+        ArrayList<String> wordsInDictionary = new ArrayList<>();
+        for (String word : dictionary) {
+            if(word.contains(prefix)){
+                wordsInDictionary.add(word);
+            }
+        }
+        //sorting the words.
+        wordsInDictionary.
+                stream().
+                sorted();
+
+        return wordsInDictionary;
     }
 }

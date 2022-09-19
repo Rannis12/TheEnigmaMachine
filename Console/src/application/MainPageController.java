@@ -39,7 +39,6 @@ public class MainPageController {
             secondTabController.setMainPageController(this);
             thirdTabController.setMainPageController(this);
 
-
             // Ran: Bind number of decodes to counter.
             firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
 
@@ -100,18 +99,19 @@ public class MainPageController {
     public boolean loadFileFromXml(String fileDestination){
         try {
 
-           EngineLoader engineLoader = new EngineLoader(fileDestination);
-           engine = engineLoader.loadEngineFromXml(fileDestination); //Ran added. updates the dictionary in thirdController.
+            EngineLoader engineLoader = new EngineLoader(fileDestination);
+            engine = engineLoader.loadEngineFromXml(fileDestination); //Ran added. updates the dictionary in thirdController.
 
-           firstTabController.setReflectorsCB(getReflectorsIDs());
-          //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
+            firstTabController.setReflectorsCB(getReflectorsIDs());
+            //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
 
-           engine.resetStatistics();
+            engine.resetStatistics();
 
-          xmlPathLabel.setText(fileDestination + " selected");
-          secondTabController.setDecodingButtonsDisable(true);
-//          thirdTabController.setDictionary(dictionary);
-          return true;
+            xmlPathLabel.setText(fileDestination + " selected");
+            secondTabController.setDecodingButtonsDisable(true);
+            thirdTabController.setDictionary(engine.getDictionary());
+            thirdTabController.setEngine(engine);
+            return true;
 
         } catch (invalidXMLfileException e) {
             popUpError(e.getMessage());

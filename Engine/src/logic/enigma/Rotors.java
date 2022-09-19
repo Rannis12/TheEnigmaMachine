@@ -205,7 +205,11 @@ public class Rotors implements Serializable {
         }
     }
 
-
+    public void initRotorsPosition(String initString) {
+        for (int i = 0; i < initString.length(); i++) {
+            rotors.get(rotorsIndexes.get(i) - 1).initRotor(initString.charAt(i));
+        }
+    }
 
 
     private class Rotor implements Serializable{

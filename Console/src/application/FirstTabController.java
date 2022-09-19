@@ -116,7 +116,7 @@ public class FirstTabController implements Initializable {
     }
 
     public Label getDecodedStrings() {
-            return this.decodedStrings;
+        return this.decodedStrings;
     }
 
 

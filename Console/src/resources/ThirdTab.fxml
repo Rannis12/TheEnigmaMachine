@@ -6,12 +6,14 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -87,7 +89,7 @@
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="searchInDictionaryTF" alignment="CENTER" disable="true" onAction="#searchInDictionaryListener" promptText="Search from dictionary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="searchInDictionaryTF" alignment="CENTER" disable="true" onKeyPressed="#searchInDictionaryListener" promptText="Search from dictionary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Button fx:id="clearBtn" disable="true" mnemonicParsing="false" onAction="#clearFieldsListener" text="Clear fields" GridPane.columnIndex="3" GridPane.rowIndex="4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -257,11 +259,14 @@
                                 <Insets left="10.0" />
                             </padding>
                         </Label>
-                        <TextArea fx:id="candidatesTA" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="477.0" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets bottom="10.0" right="10.0" />
-                            </HBox.margin>
-                        </TextArea>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="2.0" right="9.0" />
+                     </HBox.margin>
+                     <content>
+                        <FlowPane fx:id="candidatesFP" prefHeight="43.0" prefWidth="478.0" style="-fx-border-color: #1C2833;" />
+                     </content>
+                  </ScrollPane>
                     </children>
                 </HBox>
             </children>

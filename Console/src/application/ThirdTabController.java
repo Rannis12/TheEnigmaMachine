@@ -3,17 +3,33 @@ package application;
 import decryption.dm.DecryptionManager;
 import dtos.DecodeStringInfo;
 import dtos.DecryptionManagerDTO;
+import dtos.MissionDTO;
 import exceptions.invalidInputException;
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import logic.enigma.Dictionary;
+import logic.enigma.Engine;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class ThirdTabController {
+    private Engine tabThreeEngine;
     @FXML private TextField currentConfiguration;
     @FXML private Button processBtn;
     @FXML private Button resetBtn;
@@ -29,10 +45,9 @@ public class ThirdTabController {
     @FXML private ToggleButton stopBtn;
     @FXML private ToggleButton pauseBtn;
     @FXML private ToggleButton resumeBtn;
-    @FXML private TextArea candidatesTA;
 
+    @FXML private FlowPane candidatesFP;
     @FXML private ProgressBar tasksProgressBar;
-
     @FXML private Label percentageLabel;
     @FXML private Label currAgentAmountLabel;
 
@@ -50,7 +65,12 @@ public class ThirdTabController {
 
     private DecryptionManager decryptionManager;
 
-//    private Dictionary dictionary = null;
+    private Dictionary dictionary = null;
+    private DoubleProperty doubleProperty = new SimpleDoubleProperty();
+
+    private Consumer<MissionDTO> consumer = missionDTO -> showGoodDecryptedString(missionDTO);
+
+    private Consumer<Double> progressConsumer = aDouble -> updateProgressBar(aDouble);
 
     @FXML public void initialize() {
         agentAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {//set slider listener
@@ -101,7 +121,8 @@ public class ThirdTabController {
 
                 mainPageController.setDecodedCorrectly(false);
 
-                DecodeStringInfo newInfo = mainPageController.decodeString(inputString);
+ //               mainPageController.getEngine().initPlugBoardForDM();
+                DecodeStringInfo newInfo = tabThreeEngine.decodeStrWithoutPG(inputString);
                 outputTF.setText(newInfo.getDecodedString());
                 mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
                 mainPageController.setDecodedCorrectly(true);
@@ -143,13 +164,22 @@ public class ThirdTabController {
     @FXML
     void resumeBtnListener(ActionEvent event) {
 
-
         searchingSolutionsLabel.setVisible(true);
     }
 
     @FXML
-    void searchInDictionaryListener(ActionEvent event) {
+    void searchInDictionaryListener(KeyEvent event) {
+        dictionaryTA.clear();
+        String prefix = searchInDictionaryTF.getText().toUpperCase();
+        ArrayList<String> wordsFromDictionary = dictionary.searchForSubStrings(prefix);
 
+        for (int i = 0; i < wordsFromDictionary.size(); i++) {
+            if(i == wordsFromDictionary.size() - 1){
+                dictionaryTA.appendText(wordsFromDictionary.get(i));
+            }else {
+                dictionaryTA.appendText(wordsFromDictionary.get(i) + '\n');
+            }
+        }
     }
 
     @FXML
@@ -186,9 +216,10 @@ public class ThirdTabController {
             pauseBtn.setDisable(false);
             resumeBtn.setDisable(false);
 
-            DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText()/*!!!*/.toUpperCase(),
+            DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(),
                     difficulty);
-            decryptionManager = new DecryptionManager(decryptionManagerDTO, mainPageController.getEngine());/*use agentAmount, difficulty, tasksSize*/
+            decryptionManager = new DecryptionManager(decryptionManagerDTO, (Engine)tabThreeEngine.clone(),
+                                                        consumer, progressConsumer);
 
             //start running tasks
             decryptionManager.encode();
@@ -221,7 +252,6 @@ public class ThirdTabController {
         }
         System.out.println("good");*/
 
-
     }
 
     @FXML
@@ -239,6 +269,7 @@ public class ThirdTabController {
         amountOfTasksTF.setVisible(false);
         progressBarValue = 0;
         percentageLabel.setText(Double.toString(progressBarValue) + "%");
+        tasksProgressBar.setProgress(0);
     }
 
     @FXML
@@ -255,14 +286,15 @@ public class ThirdTabController {
         currentConfiguration.setText(currConfiguration);
     }
 
-    public void updateProgressBar() {
+    public void updateProgressBar(Double aDouble) {
 
         //....
         //update progress bar by the overall tasks amount and then
+        progressBarValue = aDouble / 27000;
 
+        tasksProgressBar.setProgress(progressBarValue);
 
-
-        percentageLabel.setText(Double.toString(progressBarValue) + "%");
+//        percentageLabel.setText((progressBarValue * 100) + "%");
     }
 
     public void DisableAllButtonsAndTextFields() {
@@ -289,12 +321,40 @@ public class ThirdTabController {
 
     }
 
-   /* public Dictionary getDictionary(){
-        return this.dictionary;
+    public void showGoodDecryptedString(MissionDTO missionDTO){
+        Platform.runLater(() -> {
+            if(missionDTO != null){
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                URL url = getClass().getResource("../resources/Configuration.fxml");
+                fxmlLoader.setLocation(url);
+                try {
+                    Parent root = fxmlLoader.load(url.openStream());
+                    ConfigurationController configurationController = fxmlLoader.getController();
+
+//                    configurationController.setConfigurationLabel(missionDTO.getConfiguration());
+                    configurationController.setDecodedToLabel(missionDTO.getDecodedTo());
+                    configurationController.setReflectorIDLabel(missionDTO.getChosenReflector());
+                    configurationController.setToEncodeLabel(missionDTO.getToEncodeString());
+                    configurationController.setAgentIDLabel(missionDTO.getAgentID());
+                    configurationController.setRotorsPositionsLabel(missionDTO.getRotorsPosition());
+                    configurationController.setTimeTakenLabel(String.valueOf(missionDTO.getTimeTaken()));
+
+                    candidatesFP.getChildren().add(root);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            /*candidatesTA.appendText(missionDTO.getAgentID() + " " + missionDTO.getToEncodeString() + " " +
+            "decoded to: " + missionDTO.getDecodedTo() + " in time: " + missionDTO.getTimeTaken() + '\n');*/
+        });
     }
 
     public void setDictionary(Dictionary dictionary) {
         this.dictionary = dictionary;
-    }*/
+    }
+
+    public void setEngine(Engine engine) {
+        tabThreeEngine = engine;
+    }
 }
 

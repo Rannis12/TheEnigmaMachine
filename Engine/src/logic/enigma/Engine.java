@@ -20,11 +20,12 @@ public class Engine implements Serializable, Machine, Cloneable {
 
     private int amountOfDecodedStrings;
 
+    static int amountOfTimeCloneOccur = 0;
+
     private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
     //we need to use it. in Agent im calling this whole path, instead calling LOADED_ENGINE_PATH.
-    public final String LOADED_ENGINE_PATH = "C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml";
-    String serializedEngine = new String();
+
 
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount, CTEDictionary cteDictionary) {
 
@@ -45,8 +46,9 @@ public class Engine implements Serializable, Machine, Cloneable {
         Engine engineCopy = null;
         try {
             engineCopy = loadEnigmaFromString(saveEnigmaToString(this));
+//            amountOfTimeCloneOccur++;
         } catch (invalidInputException e) {
-            throw new RuntimeException("error in cloning the engine.");
+            throw new RuntimeException("error in cloning the engine. " /*+ amountOfTimeCloneOccur*/);
         }
 
         return engineCopy;
@@ -59,7 +61,7 @@ public class Engine implements Serializable, Machine, Cloneable {
         rotors.initRotorsFirstPositions(rotorsFirstPositionsString);
     }
     public void initSelectedReflector(int requestedReflector) {
-        reflectors.initReflectorFromUser(requestedReflector);
+        reflectors.initRequestedReflector(requestedReflector);
     }
     public void initPlugBoard(PlugBoardDTO plugBoardDTO) {
         plugBoard.initFromUser(plugBoardDTO);
@@ -248,6 +250,50 @@ public class Engine implements Serializable, Machine, Cloneable {
 
     public void initPlugBoardForDM() {
         plugBoard.initForDM();
+    }
+
+    public void initRotorsPositions(String initString) {
+        rotors.initRotorsPosition(initString);
+    }
+
+    public ArrayList<Integer> getAllExistingReflectors(){
+        return reflectors.getAllExistingReflectors();
+    }
+
+    public DecodeStringInfo decodeStrWithoutPG(String toEncodeString) throws invalidInputException {
+        toEncodeString = toEncodeString.toUpperCase();
+        checkStringValidity(toEncodeString);
+
+        String decodedString = new String();
+
+        long start = System.nanoTime();
+
+        for (int i = 0; i < toEncodeString.length(); i++) {
+            decodedString = decodedString +  decodeCharWithoutPG(toEncodeString.charAt(i));
+        }
+        long end = System.nanoTime();
+        amountOfDecodedStrings++;
+
+        return new DecodeStringInfo(toEncodeString, decodedString, end - start);
+    }
+
+    public char decodeCharWithoutPG(Character toDecode) {
+        int rowNum;
+        char newChar;
+
+//        newChar = plugBoard.getConnection(toDecode);
+
+        rowNum = keyBoard.getRowNum(toDecode);
+        rowNum = rotors.encodeFromRightToLeft(rowNum);
+
+        rowNum = reflectors.getConnection(rowNum);
+
+        rowNum = rotors.encodeFromLeftToRight(rowNum);
+        newChar = keyBoard.getCharFromRow(rowNum);
+
+//        newChar = plugBoard.getConnection(newChar);
+
+        return newChar;
     }
 }
 

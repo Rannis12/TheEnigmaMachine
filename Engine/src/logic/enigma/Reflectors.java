@@ -10,6 +10,8 @@ import java.util.*;
 public class Reflectors implements Serializable {
     private int requestedReflector;//assumption - range 0-4
     private Map <Integer,Reflector> reflectorsMap;
+
+    ArrayList<Integer> reflectorsArrayList = new ArrayList<>();
     Reflectors(List<CTEReflector> cteReflectors) {
 
         reflectorsMap = new HashMap<>();
@@ -20,28 +22,31 @@ public class Reflectors implements Serializable {
             switch (cteReflectors.get(i).getId()) {
                 case "I":
                     reflectorsMap.put(0,newRef);
+                    reflectorsArrayList.add(0);
                     break;
                 case "II":
                     reflectorsMap.put(1,newRef);
+                    reflectorsArrayList.add(1);
                     break;
                 case "III":
                     reflectorsMap.put(2,newRef);
+                    reflectorsArrayList.add(2);
                     break;
                 case "IV":
                     reflectorsMap.put(3,newRef);
+                    reflectorsArrayList.add(3);
                     break;
                 case "V":
                     reflectorsMap.put(4,newRef);
+                    reflectorsArrayList.add(4);
                     break;
             }
         }
     }
 
-    public void initReflectorFromUser(int requestedReflector) {
+    public void initRequestedReflector(int requestedReflector) {
         this.requestedReflector = requestedReflector;
     }
-
-
 
     public int getConnection(int val) {
         return reflectorsMap.get(requestedReflector).getConnection(val);
@@ -52,7 +57,6 @@ public class Reflectors implements Serializable {
     public String getReflectorID(){
         return reflectorsMap.get(requestedReflector).getID();
     }
-
 
 
     public void checkReflectorFromUserValidity(String reflectorID) throws invalidInputException {
@@ -95,6 +99,9 @@ public class Reflectors implements Serializable {
         return amount;
     }
 
+    public ArrayList<Integer> getAllExistingReflectors(){
+        return reflectorsArrayList;
+    }
     private class Reflector implements Serializable{
         private Map<Integer,Integer> wiring;
         private String ID;

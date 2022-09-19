@@ -102,6 +102,11 @@ public class Reflectors implements Serializable {
     public ArrayList<Integer> getAllExistingReflectors(){
         return reflectorsArrayList;
     }
+
+    public int getSelectedReflector() {
+        return requestedReflector;
+    }
+
     private class Reflector implements Serializable{
         private Map<Integer,Integer> wiring;
         private String ID;

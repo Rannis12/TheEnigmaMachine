@@ -295,6 +295,14 @@ public class Engine implements Serializable, Machine, Cloneable {
 
         return newChar;
     }
+
+    public ArrayList<Integer> getRotorsIndexes(){
+        return rotors.getUsedRotorsIndexes();
+    }
+
+    public int getSelectedReflector(){
+        return reflectors.getSelectedReflector();
+    }
 }
 
 

@@ -46,25 +46,7 @@ public class DecryptTask implements Runnable {
         }
 
 //        this.initConfiguration = initConfiguration;
-
-        /*try {
-            engine = loadEnigmaFromString();
-        } catch (invalidInputException e) {
-            throw new RuntimeException(e);
-        }*/
-//        engine.initRotorsFirstPositions(currentConfiguration);
     }
-
-/*    private static Engine loadEnigmaFromFile() throws invalidInputException {
-
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml"))) {
-            Engine engine = (Engine) in.readObject();
-            return engine;
-        } catch (IOException | ClassNotFoundException ex) {
-            throw new invalidInputException("Error in loading a file\n");
-        }
-
-    }*/
 
     /**In here the Agent should try to decode the String that the ThreadPool gave him.
      * Pay attention!
@@ -91,7 +73,8 @@ public class DecryptTask implements Runnable {
 
                 String resultString = decodeStringInfo.getDecodedString();
 
-                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " decoded to -> " + resultString + " with " + initPos);
+                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " -> " + resultString +
+                        " with " + initPos + " " + engine.getEngineFullDetails().getChosenReflector());
 
                 int numOfSeparates = getNumOfSeparates(resultString);
                 String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
@@ -123,7 +106,6 @@ public class DecryptTask implements Runnable {
 
                     blockingQueueResponses.put(missionDTO); //add a listener to this blocking queue from the Application.
                 }
-
             }
 
         } catch (invalidInputException | InterruptedException e) {
@@ -132,7 +114,7 @@ public class DecryptTask implements Runnable {
     }
 
 
-    synchronized private int getNumOfSeparates(String string) {
+    private int getNumOfSeparates(String string) {
         int numOfSeparates = 0;
         for (int i = 0; i < excludedCharacters.length(); i++) {//remove all excluded characters
             string = string.replace(String.valueOf(excludedCharacters.charAt(i)), "");
@@ -146,12 +128,5 @@ public class DecryptTask implements Runnable {
     }
 
 }
-
-
-/*
-    public static void main(String[] args) {
-        DecryptTask agent = new DecryptTask(1, "ABC");
-        System.out.println("sfdsa");
-    }*/
 
 

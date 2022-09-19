@@ -4,6 +4,7 @@ import decryption.dm.DecryptionManager;
 import dtos.DecodeStringInfo;
 import dtos.DecryptionManagerDTO;
 import dtos.MissionDTO;
+import dtos.ProgressUpdateDTO;
 import exceptions.invalidInputException;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -70,7 +71,7 @@ public class ThirdTabController {
 
     private Consumer<MissionDTO> consumer = missionDTO -> showGoodDecryptedString(missionDTO);
 
-    private Consumer<Double> progressConsumer = aDouble -> updateProgressBar(aDouble);
+    private Consumer<ProgressUpdateDTO> progressConsumer = progressUpdateDTO -> updateProgressBar(progressUpdateDTO);
 
     @FXML public void initialize() {
         agentAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {//set slider listener
@@ -286,11 +287,11 @@ public class ThirdTabController {
         currentConfiguration.setText(currConfiguration);
     }
 
-    public void updateProgressBar(Double aDouble) {
+    public void updateProgressBar(ProgressUpdateDTO progressUpdateDTO) { //need to make changes!! - now not working.
 
         //....
         //update progress bar by the overall tasks amount and then
-        progressBarValue = aDouble / 27000;
+        progressBarValue = progressUpdateDTO.getProgress() / 27000;
 
         tasksProgressBar.setProgress(progressBarValue);
 

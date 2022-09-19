@@ -211,6 +211,10 @@ public class Rotors implements Serializable {
         }
     }
 
+    public ArrayList<Integer> getUsedRotorsIndexes() {
+        return rotorsIndexes;
+    }
+
 
     private class Rotor implements Serializable{
         private LinkedList<Positioning> wiring;

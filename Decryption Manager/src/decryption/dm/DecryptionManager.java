@@ -15,8 +15,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
+import logic.enigma.Rotors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -121,7 +125,7 @@ public class DecryptionManager {
          * the current rotors positions should be right, and then we can convert the ArrayList
          * of the positions to String, and insert it to the blockingQueue.
          */
-        private void option1(Engine copyEngine) {  //need to count the number of possible options (possible mission) instead of the doubleLoop.
+       /* private void option1(Engine copyEngine) {  //need to count the number of possible options (possible mission) instead of the doubleLoop.
             new Thread(() -> {
                 try{
                     producerEngine = copyEngine;
@@ -161,7 +165,7 @@ public class DecryptionManager {
                     System.out.println("Exception in thread that push to queue.");
                 }
             }).start();
-        }
+        }*/
 
         private int calculateOptionOnePossibleMissions(){ //need to check it
             double alphaBetLength = alphaBet.length();
@@ -211,6 +215,16 @@ public class DecryptionManager {
 
             }
         }
+        private void medium(ArrayList<Integer> rotorsIndexes){
+            ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
+            amountOfMissions.setValue(calculateOptionOnePossibleMissions() * reflectorsArray.size());
+            for (Integer reflector : reflectorsArray) {
+                engine.initSelectedReflector(reflector);
+                easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
+                        engine.getSelectedReflector(),
+                        rotorsIndexes);
+            }
+        }
         private void createMissions(){
             switch (decryptionSelection) {
                 case "Easy": {
@@ -221,18 +235,15 @@ public class DecryptionManager {
                     break;
                 }
                 case "Medium": {
-                    ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
+                    /*ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
                     amountOfMissions.setValue(calculateOptionOnePossibleMissions() * reflectorsArray.size());
                     for (Integer reflector : reflectorsArray) {
                         engine.initSelectedReflector(reflector);
                         easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
                                 engine.getSelectedReflector(),
                                 engine.getRotorsIndexes());
-                    }
-
-                    //medium();
-
-
+                    }*/
+                    medium(engine.getRotorsIndexes());
                     //for each reflector, we need to set him in the engine, and then decode all options. ----- not working :(
 //                    for (int i = 0; i < reflectorsArray.size(); i++) {
 //                        engine.initSelectedReflector(reflectorsArray.get(i));
@@ -241,12 +252,49 @@ public class DecryptionManager {
                     break;
                 }
                 case "Hard":
-//                  hard();
+                    hard();
                     break;
                 case "Impossible":
 //                impossible();
                     break;
             }
+        }
+
+        private void hard() {
+            ArrayList<Integer> rotorsIndexes = engine.getRotorsIndexes();
+            ArrayList<ArrayList<Integer>> possiblePositions = getAllPossibleRotorsPosition(rotorsIndexes);
+            for (ArrayList<Integer> rotorsPossiblePosition : possiblePositions) {
+                medium(rotorsPossiblePosition);
+            }
+        }
+
+        private ArrayList<ArrayList<Integer>> getAllPossibleRotorsPosition(ArrayList<Integer> rotorsIndexes) { //need to fix it.
+            ArrayList<ArrayList<Integer>> possiblePositions = new ArrayList<>();
+            rotorsIndexes.stream()
+                    .sorted(Comparator.reverseOrder()).forEach(System.out::println);
+            for (int i = 0; i < rotorsIndexes.size() - 1; i++)
+                for (int j = 0; j < rotorsIndexes.size() - i - 1; j++)
+                    if (rotorsIndexes.get(j) > rotorsIndexes.get(j + 1)) {
+                        // swap arr[j+1] and arr[j]
+                        int temp = rotorsIndexes.get(j);
+                        rotorsIndexes.set(j, rotorsIndexes.get(j + 1));
+                        rotorsIndexes.set(j + 1, temp);
+                        possiblePositions.add(new ArrayList<>(rotorsIndexes));
+                    }
+            return possiblePositions;
+        }
+
+        private void bubbleSort(int arr[])
+        {
+            int n = arr.length;
+            for (int i = 0; i < n - 1; i++)
+                for (int j = 0; j < n - i - 1; j++)
+                    if (arr[j] > arr[j + 1]) {
+                        // swap arr[j+1] and arr[j]
+                        int temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
         }
 
 /*        @Override
@@ -302,9 +350,9 @@ public class DecryptionManager {
     /**
      * option 1 in brute force.
      */
-    public void encodeWhenOnlyMissingPosition(Engine copyEngine) { //probably not good.
+  /*  public void encodeWhenOnlyMissingPosition(Engine copyEngine) { //probably not good.
         producer.option1(copyEngine);
-    }
+    }*/
 
 
     /**

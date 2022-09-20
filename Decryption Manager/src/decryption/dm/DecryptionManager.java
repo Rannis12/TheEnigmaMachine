@@ -2,6 +2,7 @@ package decryption.dm;
 
 
 import decryption.DecryptTask;
+import decryption.Permuter;
 import dtos.DecryptionManagerDTO;
 import dtos.MissionDTO;
 import dtos.ProgressUpdateDTO;
@@ -17,10 +18,7 @@ import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.Rotors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -33,6 +31,8 @@ public class DecryptionManager {
     private ThreadPoolExecutor threadPool;
     String decryptionSelection;
     BlockingQueue<MissionDTO> blockingQueueResponses; //queue of optional decoded strings.
+    private final int QUEUE_MAX_SIZE = 1000; //should be 1000
+
     private Producer producer;
     private Consumer<MissionDTO> dmConsumer;
     private Consumer<ProgressUpdateDTO> dmProgressConsumer;
@@ -45,7 +45,6 @@ public class DecryptionManager {
         dmProgressConsumer = progressConsumer;
 
         engine = engineCopy; //engineCopy is a copy of engine. I implemented Cloneable.
-//        engine.initPlugBoardForDM();
 
         amountOfAgents = decryptionManagerDTO.getAmountOfAgents();
         sizeOfMission = decryptionManagerDTO.getSizeOfMission();
@@ -53,7 +52,7 @@ public class DecryptionManager {
         decryptionSelection = decryptionManagerDTO.getDecryptionSelection();
         this.dictionary = engine.getDictionary();
 
-        BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
+        BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE);
 
         producer = new Producer(engine.getEngineFullDetails().getUsedAmountOfRotors(),
                                 engine.getKeyBoard().getAlphaBet(),
@@ -69,11 +68,11 @@ public class DecryptionManager {
 
         checking = new SimpleDoubleProperty();
         amountOfMissions = new SimpleDoubleProperty();
-        //checking.set(0);
 
         threadPool.prestartAllCoreThreads();
     }
 
+    //important!! need to fix those methods.
     private void setProgressBarUpdating() {
         new Thread(() -> {
             while(true){
@@ -82,7 +81,6 @@ public class DecryptionManager {
         }).start();
 
     }
-
     private void setThreadOfResponses() {
         new Thread(() -> {
             MissionDTO missionDTO = null;
@@ -98,9 +96,9 @@ public class DecryptionManager {
 
     }
 
+
     private class Producer extends Task {
         private BlockingQueue<Runnable> blockingQueue;
-        private final int QUEUE_MAX_SIZE = 1000; //should be 1000
         private int missionSize;
         private int numOfSteers = 0;
         private int amountOfRotors;
@@ -174,6 +172,26 @@ public class DecryptionManager {
             return (int)possibleOptions;
         }
 
+
+        private void createMissions(){
+            switch (decryptionSelection) {
+                case "Easy":
+                    amountOfMissions.setValue(calculateOptionOnePossibleMissions());
+                    easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
+                            engine.getSelectedReflector(),
+                            engine.getRotorsIndexes());
+                    break;
+                case "Medium":
+                    medium(engine.getRotorsIndexes());
+                    break;
+                case "Hard":
+                    hard(engine.getRotorsIndexes());
+                    break;
+                case "Impossible":
+                    impossible();
+                    break;
+            }
+        }
         private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
             producerEngine.initSelectedReflector(chosenReflector);
 //            producerEngine.initRotorsPositions(initRotorsPositions);
@@ -225,82 +243,68 @@ public class DecryptionManager {
                         rotorsIndexes);
             }
         }
-        private void createMissions(){
-            switch (decryptionSelection) {
-                case "Easy": {
-                    amountOfMissions.setValue(calculateOptionOnePossibleMissions());
-                    easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
-                            engine.getSelectedReflector(),
-                            engine.getRotorsIndexes());
-                    break;
-                }
-                case "Medium": {
-                    /*ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
-                    amountOfMissions.setValue(calculateOptionOnePossibleMissions() * reflectorsArray.size());
-                    for (Integer reflector : reflectorsArray) {
-                        engine.initSelectedReflector(reflector);
-                        easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
-                                engine.getSelectedReflector(),
-                                engine.getRotorsIndexes());
-                    }*/
-                    medium(engine.getRotorsIndexes());
-                    //for each reflector, we need to set him in the engine, and then decode all options. ----- not working :(
-//                    for (int i = 0; i < reflectorsArray.size(); i++) {
-//                        engine.initSelectedReflector(reflectorsArray.get(i));
-//                        encodeWhenOnlyMissingPosition((Engine) this.engine.clone());
-//                    }
-                    break;
-                }
-                case "Hard":
-                    hard();
-                    break;
-                case "Impossible":
-//                impossible();
-                    break;
-            }
-        }
+        private void hard(ArrayList<Integer> possibleRotorsIndexes) { // rotors should be instead of engine.gerRotorsIndexes();
 
-        private void hard() {
-            ArrayList<Integer> rotorsIndexes = engine.getRotorsIndexes();
-            ArrayList<ArrayList<Integer>> possiblePositions = getAllPossibleRotorsPosition(rotorsIndexes);
+            ArrayList<ArrayList<Integer>> possiblePositions = getAllPossibleRotorsPosition(possibleRotorsIndexes);
             for (ArrayList<Integer> rotorsPossiblePosition : possiblePositions) {
                 medium(rotorsPossiblePosition);
+            }
+        }
+        private void impossible(){
+            List<ArrayList<Integer>> combinations = generate(engine.getEngineFullDetails().getRotorsAmount(),
+                    engine.getEngineFullDetails().getUsedAmountOfRotors());
+            for (int i = 0; i < combinations.size(); i++) {
+                hard(combinations.get(i));
             }
         }
 
         private ArrayList<ArrayList<Integer>> getAllPossibleRotorsPosition(ArrayList<Integer> rotorsIndexes) { //need to fix it.
             ArrayList<ArrayList<Integer>> possiblePositions = new ArrayList<>();
-            rotorsIndexes.stream()
-                    .sorted(Comparator.reverseOrder()).forEach(System.out::println);
-            for (int i = 0; i < rotorsIndexes.size() - 1; i++)
-                for (int j = 0; j < rotorsIndexes.size() - i - 1; j++)
-                    if (rotorsIndexes.get(j) > rotorsIndexes.get(j + 1)) {
-                        // swap arr[j+1] and arr[j]
-                        int temp = rotorsIndexes.get(j);
-                        rotorsIndexes.set(j, rotorsIndexes.get(j + 1));
-                        rotorsIndexes.set(j + 1, temp);
-                        possiblePositions.add(new ArrayList<>(rotorsIndexes));
-                    }
+            Permuter permuter = new Permuter(rotorsIndexes.size());
+            int[] indexesArr;
+
+            while((indexesArr = permuter.getNext()) != null){
+                ArrayList<Integer> possiblePos = new ArrayList<>(rotorsIndexes.size());
+                for (int j = 0; j < rotorsIndexes.size(); j++) {
+                    possiblePos.add(0);
+                } //init possiblePos arr
+                for (int j = 0; j < rotorsIndexes.size(); j++) {
+                    possiblePos.set(j, rotorsIndexes.get(indexesArr[j]));
+                }
+                possiblePositions.add(possiblePos);
+            }
+
             return possiblePositions;
         }
+        public List<ArrayList<Integer>> generate(int n, int r) {
+            List<ArrayList<Integer>> combinations = new ArrayList<>();
+            int[] combination = new int[r];
 
-        private void bubbleSort(int arr[])
-        {
-            int n = arr.length;
-            for (int i = 0; i < n - 1; i++)
-                for (int j = 0; j < n - i - 1; j++)
-                    if (arr[j] > arr[j + 1]) {
-                        // swap arr[j+1] and arr[j]
-                        int temp = arr[j];
-                        arr[j] = arr[j + 1];
-                        arr[j + 1] = temp;
-                    }
+            // initialize with lowest lexicographic combination
+            for (int i = 0; i < r; i++) {
+                combination[i] = i;
+            }
+
+            while (combination[r - 1] < n) {
+                ArrayList<Integer> tmp = new ArrayList<>(r);
+                for (int i = 0; i < r; i++) {
+                    tmp.add(combination[i] + 1);
+                }
+                combinations.add(tmp);
+
+                // generate next combination in lexicographic order
+                int t = r - 1;
+                while (t != 0 && combination[t] == n - r + t) {
+                    t--;
+                }
+                combination[t]++;
+                for (int i = t + 1; i < r; i++) {
+                    combination[i] = combination[i - 1] + 1;
+                }
+            }
+
+            return combinations;
         }
-
-/*        @Override
-        public void run() {
-            createMissions();
-        }*/
 
         @Override
         protected Object call() throws Exception {
@@ -314,69 +318,7 @@ public class DecryptionManager {
 
         Thread thread = new Thread(producer);
         thread.start();
-
-
-
-
-
-
-
-
-        /*switch (decryptionSelection) {
-            case "Easy": {
-                encodeWhenOnlyMissingPosition((Engine) this.engine.clone());
-                break;
-            }
-            case "Medium": {
-                ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
-//                ArrayList<>
-                //for each reflector, we need to set him in the engine, and then decode all options. ----- not working :(
-                for (int i = 0; i < reflectorsArray.size(); i++) {
-                    engine.initSelectedReflector(reflectorsArray.get(i));
-                    encodeWhenOnlyMissingPosition((Engine) this.engine.clone());
-                }
-                break;
-            }
-            case "Hard":
-//                encodeWhenOnlyRotorsAreKnown();
-                break;
-            case "Impossible":
-//                impossible();
-                break;
-        }*/
     }
-
-
-    /**
-     * option 1 in brute force.
-     */
-  /*  public void encodeWhenOnlyMissingPosition(Engine copyEngine) { //probably not good.
-        producer.option1(copyEngine);
-    }*/
-
-
-    /**
-     * option 2 in brute force.
-     */
-    /*public void encodeWhenPositionsAndReflectorMissing() {
-
-    }*/
-
-    /**
-     * option 3 in brute force.
-     */
-    public void encodeWhenOnlyRotorsAreKnown() {
-
-    }
-
-    /**
-     * option 4 in brute force.
-     */
-    public void impossible() {
-
-    }
-
-
     public boolean isLegalString(String stringFromUser) throws invalidInputException {
 
         int numOfSeparates = getNumOfSeparates(stringFromUser);
@@ -403,65 +345,35 @@ public class DecryptionManager {
         return numOfSeperates;
     }
 
-    public static void main(String[] args) throws invalidXMLfileException {
+  /*  public static void main(String[] args){
+*//*
+        int r = 3;
+        int n = 5;
+        List<ArrayList<Integer>> combinations = new ArrayList<>();
+        int[] combination = new int[r];
 
-/*        EngineLoader engineLoader = new EngineLoader("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");
-        Engine engine1 = engineLoader.loadEngineFromXml("C:\\Work\\Java\\Enigma\\Engine\\src\\resources\\EngineLoader.xml");*/
+        // initialize with lowest lexicographic combination
+        for (int i = 0; i < r; i++) {
+            combination[i] = i;
+        }
 
-//        DecryptionManager decryptionManager = new DecryptionManager(engine1.getDec, engine1);
+        while (combination[r - 1] < n) {
+            ArrayList<Integer> tmp = new ArrayList<>(r);
+            for (int i = 0; i < r; i++) {
+                tmp.add(combination[i]);
+            }
+            combinations.add(tmp);
 
-        /*String alphaBet = "ABCDEF";
-        int amountOfRotors = 3;
-        int missionSize = 7;
-
-        double alphaBetLength = alphaBet.length();
-        double num = Math.pow(alphaBetLength, amountOfRotors); //initialized amount of rotors.
-        double possibleOptions = num / missionSize;
-        System.out.println( possibleOptions);*/
-    }
+            // generate next combination in lexicographic order
+            int t = r - 1;
+            while (t != 0 && combination[t] == n - r + t) {
+                t--;
+            }
+            combination[t]++;
+            for (int i = t + 1; i < r; i++) {
+                combination[i] = combination[i - 1] + 1;
+            }
+        }*//*
+        System.out.println("check");
+    }*/
 }
-
-
-//    private void option1() {  //need to count the number of possible options (possible mission) instead of the doubleLoop.
-//        new Thread(() -> {
-//            try{
-//                String initString = "";
-//
-//                for (int j = 0; j < amountOfRotors; j++) {
-//                    initString += alphaBet.charAt(0);
-//                }
-//
-//                System.out.println(initString);
-//
-//                producerEngine.initRotorsFirstPositions(initString); //this should be the right method.
-//
-//                //calculates amount of possible missions, when given a specific size.
-//                double possibleOptions = calculateOptionOnePossibleMissions();
-//
-//                //for example, initialize the initString to - "AAAAAAAA".
-//                for (int i = 0; i < possibleOptions; i++) {
-//
-//                    if (i == 0){ //doing it since we don't want to miss the first initialization.
-//                        System.out.println("inserted " + producerEngine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
-//                        blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission, /*selection,*/
-//                                producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
-//                    }
-//                    for (int k = 0; k < missionSize; k++) {
-//                        //SteerRotors...
-//                        producerEngine.steerRotors(); //this method should steer *all rotors* - in case the first gets to the end.
-//                        numOfSteers++;
-//                    }
-//
-//                    blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission, /*selection,*/
-//                            producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses));
-//                    System.out.println("inserted " + producerEngine.getEngineFullDetails().getRotorsCurrentPositions() + " configuration.");
-//                }
-//
-//                currentConfiguration = producerEngine.getEngineFullDetails().getRotorsCurrentPositions(); //necessary??
-//
-//            }catch (InterruptedException e) {
-//                System.out.println("Exception in thread that push to queue.");
-//            }
-//        }).start();
-//    }
-

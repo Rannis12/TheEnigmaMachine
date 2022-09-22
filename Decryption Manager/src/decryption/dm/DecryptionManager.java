@@ -13,6 +13,7 @@ import javafx.beans.property.*;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.Rotors;
@@ -35,23 +36,26 @@ public class DecryptionManager {
     String decryptionSelection;
     BlockingQueue<MissionDTO> blockingQueueResponses; //queue of optional decoded strings.
     private final int QUEUE_MAX_SIZE = 1000;
-    private Producer producer;
+    public static long startTime; //measuring the time we start create tasks.
+    private Producer producer; //creates all the tasks.
     private Consumer<MissionDTO> dmConsumer;
-    private Consumer<ProgressUpdateDTO> dmProgressConsumer;
+//    private Consumer<ProgressUpdateDTO> dmProgressConsumer;
     private DoubleProperty createdSoFar;
     private DoubleProperty amountOfMissions;
 
+    private TextField totalTimeTF;
     private BooleanProperty isSystemPause;
 
     public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy,
-                             Consumer<MissionDTO> consumer, Consumer<ProgressUpdateDTO> progressConsumer,
-                             BooleanProperty isSystemPause, BooleanProperty isStopBtnClicked) throws invalidInputException {
+                             Consumer<MissionDTO> consumer/*, Consumer<ProgressUpdateDTO> progressConsumer*/,
+                             BooleanProperty isSystemPause, BooleanProperty isStopBtnClicked,
+                             TextField totalTimeTF) throws invalidInputException {
 
         this.isSystemPause = isSystemPause; //init in method.
         this.isStopBtnClicked = isStopBtnClicked;
 
         dmConsumer = consumer;
-        dmProgressConsumer = progressConsumer;
+        /*dmProgressConsumer = progressConsumer;*/
 
         engine = engineCopy; //engineCopy is a copy of engine. I implemented Cloneable.
 
@@ -77,7 +81,7 @@ public class DecryptionManager {
         createdSoFar = new SimpleDoubleProperty();
         amountOfMissions = new SimpleDoubleProperty();
 
-      //  bindingsToUI(tasksProgressBar, percentageLabel);
+        this.totalTimeTF = totalTimeTF;
 
         threadPool.prestartAllCoreThreads();
 
@@ -180,6 +184,7 @@ public class DecryptionManager {
             createdSoFar.set(0);
             calculatePossibleMissions();
 
+            startTime = System.nanoTime();
             switch (decryptionSelection) {
                 case "Easy":
                     easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
@@ -196,6 +201,9 @@ public class DecryptionManager {
                     impossible();
                     break;
             }
+
+            totalTimeTF.setText(totalTimeResult() + " Sec");
+
         }
         private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
             producerEngine.initSelectedReflector(chosenReflector);
@@ -331,6 +339,12 @@ public class DecryptionManager {
             createMissions();
             return 0;
         }
+    }
+
+    public static String totalTimeResult() {
+        long end = System.nanoTime();
+        long temp = (end - startTime) /1000000000;
+        return String.valueOf(temp);
     }
 
     public void encode() {

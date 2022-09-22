@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import static decryption.dm.DecryptionManager.pauseLock;
+import static decryption.dm.DecryptionManager.totalTimeResult;
 
 public class ThirdTabController {
     private Engine tabThreeEngine;
@@ -55,8 +56,8 @@ public class ThirdTabController {
     @FXML private Label currAgentAmountLabel;
     @FXML private Label amountOfTasksLabel;
     @FXML private TextField amountOfTasksTF;
+    @FXML private TextField totalTimeTF;
     @FXML private Label searchingSolutionsLabel;
-
     private MainPageController mainPageController;
     private int currAgentAmount;
     private int tasksSize;
@@ -116,11 +117,10 @@ public class ThirdTabController {
         if(!encodeMsgTF.getText().equals("")){
             try {
                 String inputString = encodeMsgTF.getText();
-                //decryptionManager.isLegalString(inputString);//wrong line - we suppose to decode without any DM
+                isLegalString(inputString.toUpperCase());
 
                 mainPageController.setDecodedCorrectly(false);
 
- //               mainPageController.getEngine().initPlugBoardForDM();
                 DecodeStringInfo newInfo = tabThreeEngine.decodeStrWithoutPG(inputString);
                 outputTF.setText(newInfo.getDecodedString());
                 mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
@@ -142,7 +142,6 @@ public class ThirdTabController {
     private void appendToStatistics(String statisticNewString) {
         mainPageController.appendToStatistics(statisticNewString);
     }
-
 
     @FXML
     void resetBtnListener(ActionEvent event) {
@@ -223,8 +222,9 @@ public class ThirdTabController {
             DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(),
                     difficulty);
             decryptionManager = new DecryptionManager(decryptionManagerDTO, (Engine)tabThreeEngine.clone(),
-                                                        consumer, progressConsumer,
-                                                          isSystemPause, isStopBtnClicked);
+                                                        consumer/*, progressConsumer*/,
+                                                          isSystemPause, isStopBtnClicked,
+                                                            totalTimeTF);
 
             decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
             //start running tasks
@@ -276,6 +276,7 @@ public class ThirdTabController {
         searchingSolutionsLabel.setVisible(false);
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
+        totalTimeResult();
         //progressBarValue = 0;
 
 
@@ -361,8 +362,6 @@ public class ThirdTabController {
                     throw new RuntimeException(e);
                 }
             }
-            /*candidatesTA.appendText(missionDTO.getAgentID() + " " + missionDTO.getToEncodeString() + " " +
-            "decoded to: " + missionDTO.getDecodedTo() + " in time: " + missionDTO.getTimeTaken() + '\n');*/
         });
     }
 
@@ -391,7 +390,36 @@ public class ThirdTabController {
         difficultyChoiceBox.setValue(null);
         taskSizeTF.clear();
 
+        totalTimeTF.setText("0 Sec");
+
         tasksProgressBar.setProgress(0);
         percentageLabel.setText("0%");
     }
+
+    public boolean isLegalString(String stringFromUser) throws invalidInputException {
+
+        int numOfSeparates = getNumOfSeparates(stringFromUser);
+
+        String[] wordsArr = stringFromUser.split(" ", numOfSeparates + 1);
+        for (String string : wordsArr) {
+            if(!dictionary.isExistInDictionary(string)){
+                throw new invalidInputException("The string " + string + " isn't in the dictionary!");
+            }
+        }
+        return true;
+    }
+
+    private int getNumOfSeparates(String string) {
+        int numOfSeperates = 0;
+        for (int i = 0; i < dictionary.getExcludedCharacters().length(); i++) {//remove all excluded characters
+            string = string.replace(String.valueOf(dictionary.getExcludedCharacters().charAt(i)), "");
+        }
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == ' ') {
+                numOfSeperates++;
+            }
+        }
+        return numOfSeperates;
+    }
+
 }

@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ThirdTabController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="894.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ThirdTabController">
     <children>
         <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="452.0" prefWidth="600.0" spacing="5.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="14.0">
             <children>
@@ -238,6 +238,9 @@
                            </cursor>
                         </ToggleButton>
                           </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                       </HBox>
                   <Label fx:id="searchingSolutionsLabel" alignment="CENTER_RIGHT" minWidth="50.0" prefHeight="19.0" prefWidth="293.0" style="-fx-text-fill: #DE3163;" text="searching for solutions!">
                      <font>
@@ -247,6 +250,16 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label prefHeight="21.0" prefWidth="90.0" text="Total time:">
+                     <HBox.margin>
+                        <Insets left="21.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="totalTimeTF" alignment="CENTER" editable="false" text="0 Sec" />
                </children>
             </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="600.0" spacing="15.0" VBox.vgrow="ALWAYS">

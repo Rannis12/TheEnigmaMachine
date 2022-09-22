@@ -197,7 +197,7 @@ public class DecryptionManager {
                     break;
             }
         }
-        synchronized private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
+        private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
             producerEngine.initSelectedReflector(chosenReflector);
             producerEngine.initRotorIndexes(rotorsIndexes);
 

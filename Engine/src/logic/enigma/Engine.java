@@ -303,6 +303,20 @@ public class Engine implements Serializable, Machine, Cloneable {
     public int getSelectedReflector(){
         return reflectors.getSelectedReflector();
     }
+
+    public String getRotorsIndexesString() {
+        ArrayList<Integer> rotorsIndexes = rotors.getUsedRotorsIndexes();
+        String rotorsIndexesString = "";
+
+        for (int i = 0; i < rotorsIndexes.size(); i++) {
+            if(i == rotorsIndexes.size() - 1)
+                rotorsIndexesString += String.valueOf(rotorsIndexes.get(i));
+            else
+                rotorsIndexesString += String.valueOf(rotorsIndexes.get(i)) + ',';
+
+        }
+        return rotorsIndexesString;
+    }
 }
 
 

@@ -7,8 +7,9 @@ import dtos.MissionDTO;
 import dtos.ProgressUpdateDTO;
 import exceptions.invalidInputException;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,6 +30,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import static decryption.dm.DecryptionManager.pauseLock;
+
 public class ThirdTabController {
     private Engine tabThreeEngine;
     @FXML private TextField currentConfiguration;
@@ -46,32 +49,24 @@ public class ThirdTabController {
     @FXML private ToggleButton stopBtn;
     @FXML private ToggleButton pauseBtn;
     @FXML private ToggleButton resumeBtn;
-
     @FXML private FlowPane candidatesFP;
     @FXML private ProgressBar tasksProgressBar;
     @FXML private Label percentageLabel;
     @FXML private Label currAgentAmountLabel;
-
     @FXML private Label amountOfTasksLabel;
-
     @FXML private TextField amountOfTasksTF;
-
     @FXML private Label searchingSolutionsLabel;
 
     private MainPageController mainPageController;
     private int currAgentAmount;
-
     private int tasksSize;
     private double progressBarValue;
-
     private DecryptionManager decryptionManager;
-
     private Dictionary dictionary = null;
-    private DoubleProperty doubleProperty = new SimpleDoubleProperty();
-
     private Consumer<MissionDTO> consumer = missionDTO -> showGoodDecryptedString(missionDTO);
-
     private Consumer<ProgressUpdateDTO> progressConsumer = progressUpdateDTO -> updateProgressBar(progressUpdateDTO);
+    private BooleanProperty isSystemPause = new SimpleBooleanProperty();
+    private BooleanProperty isStopBtnClicked = new SimpleBooleanProperty();
 
     @FXML public void initialize() {
         agentAmountSlider.valueProperty().addListener(new ChangeListener<Number>() {//set slider listener
@@ -81,7 +76,10 @@ public class ThirdTabController {
                 currAgentAmountLabel.setText(Integer.toString(currAgentAmount));
             }
         });
+        isSystemPause.set(false);
+        isStopBtnClicked.set(false);
         progressBarValue = 0;
+
         percentageLabel.setText(Double.toString(progressBarValue) + "%");
 
         ObservableList observableList = FXCollections.observableArrayList("Easy","Medium","Hard","Impossible");
@@ -100,8 +98,8 @@ public class ThirdTabController {
 
     @FXML
     void pauseBtnListener(ActionEvent event) {
-
-
+        isSystemPause.set(true);
+ //       isPauseRunningTask();
         searchingSolutionsLabel.setVisible(false);
     }
 
@@ -164,6 +162,10 @@ public class ThirdTabController {
 
     @FXML
     void resumeBtnListener(ActionEvent event) {
+        isSystemPause.set(false);
+        synchronized (pauseLock) {
+            pauseLock.notifyAll();
+        }
 
         searchingSolutionsLabel.setVisible(true);
     }
@@ -195,7 +197,7 @@ public class ThirdTabController {
                 throw new invalidInputException("Please choose Difficulty.");
             }
             tasksSize = Integer.valueOf(taskSizeTF.getText());
-            if(tasksSize < 1 /*|| tasksSize > 1000*/) { //maybe not a good condition.
+            if(tasksSize < 1) { //maybe not a good condition.
                 taskSizeTF.clear();
                 throw new invalidInputException("Please choose size between 1 to 1000.");
 
@@ -216,12 +218,15 @@ public class ThirdTabController {
             stopBtn.setDisable(false);
             pauseBtn.setDisable(false);
             resumeBtn.setDisable(false);
+            isStopBtnClicked.set(false);
 
             DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(),
                     difficulty);
             decryptionManager = new DecryptionManager(decryptionManagerDTO, (Engine)tabThreeEngine.clone(),
-                                                        consumer, progressConsumer);
+                                                        consumer, progressConsumer,
+                                                          isSystemPause, isStopBtnClicked);
 
+            decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
             //start running tasks
             decryptionManager.encode();
         }
@@ -258,6 +263,9 @@ public class ThirdTabController {
     @FXML
     void stopBtnListener(ActionEvent event) {
 
+        decryptionManager.stopAllAgents(); //shutdown all threads.
+
+        isStopBtnClicked.set(true);
         agentAmountSlider.setDisable(false);
         difficultyChoiceBox.setDisable(false);
         difficultyChoiceBox.setValue(null);
@@ -268,9 +276,16 @@ public class ThirdTabController {
         searchingSolutionsLabel.setVisible(false);
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
-        progressBarValue = 0;
-        percentageLabel.setText(Double.toString(progressBarValue) + "%");
+        //progressBarValue = 0;
+
+
+        unbind();
+
+
         tasksProgressBar.setProgress(0);
+        percentageLabel.setText(Double.toString(progressBarValue) + "%");
+
+        candidatesFP.getChildren().clear();
     }
 
     @FXML
@@ -288,12 +303,12 @@ public class ThirdTabController {
     }
 
     public void updateProgressBar(ProgressUpdateDTO progressUpdateDTO) { //need to make changes!! - now not working.
-
         //....
         //update progress bar by the overall tasks amount and then
-        progressBarValue = progressUpdateDTO.getProgress() / 27000;
+        progressBarValue = progressUpdateDTO.getProgress() / progressUpdateDTO.getAllPossibleMissions();
 
         tasksProgressBar.setProgress(progressBarValue);
+
 
 //        percentageLabel.setText((progressBarValue * 100) + "%");
     }
@@ -335,6 +350,7 @@ public class ThirdTabController {
 //                    configurationController.setConfigurationLabel(missionDTO.getConfiguration());
                     configurationController.setDecodedToLabel(missionDTO.getDecodedTo());
                     configurationController.setReflectorIDLabel(missionDTO.getChosenReflector());
+                    configurationController.setRotorsOrderLabel(missionDTO.getRotorsOrder());
                     configurationController.setToEncodeLabel(missionDTO.getToEncodeString());
                     configurationController.setAgentIDLabel(missionDTO.getAgentID());
                     configurationController.setRotorsPositionsLabel(missionDTO.getRotorsPosition());
@@ -357,5 +373,25 @@ public class ThirdTabController {
     public void setEngine(Engine engine) {
         tabThreeEngine = engine;
     }
-}
 
+    public void unbind(){
+        tasksProgressBar.progressProperty().unbind();
+        percentageLabel.textProperty().unbind();
+    }
+
+    public void prepareTab() {
+        unbind();
+
+        currentConfiguration.clear();
+        encodeMsgTF.clear();
+        outputTF.clear();
+        dictionaryTA.clear();
+        searchInDictionaryTF.clear();
+        candidatesFP.getChildren().clear();
+        difficultyChoiceBox.setValue(null);
+        taskSizeTF.clear();
+
+        tasksProgressBar.setProgress(0);
+        percentageLabel.setText("0%");
+    }
+}

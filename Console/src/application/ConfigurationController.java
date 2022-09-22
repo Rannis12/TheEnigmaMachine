@@ -8,7 +8,7 @@ public class ConfigurationController {
     @FXML private Label toEncodeLabel;
     @FXML private Label decodedToLabel;
     @FXML private Label agentIDLabel;
-    @FXML private Label configurationLabel;
+    @FXML private Label rotorsOrderLabel;
     @FXML private Label rotorsPositionsLabel;
     @FXML private Label reflectorIDLabel;
     @FXML private Label timeTakenLabel;
@@ -25,8 +25,8 @@ public class ConfigurationController {
         this.agentIDLabel.setText(agentIDLabel);
     }
 
-    public void setConfigurationLabel(String configurationLabel) {
-        this.configurationLabel.setText(configurationLabel);
+    public void setRotorsOrderLabel(String rotorsOrderLabel) {
+        this.rotorsOrderLabel.setText(rotorsOrderLabel);
     }
 
     public void setRotorsPositionsLabel(String rotorsPositionsLabel) {

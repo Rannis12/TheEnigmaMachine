@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="261.0" prefWidth="301.0" style="-fx-border-color: #1C2833; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ConfigurationController">
    <children>
       <HBox layoutX="20.0" layoutY="16.0" spacing="15.0">
@@ -15,9 +14,10 @@
                   <Label text="To Encode" />
                   <Label text="Decoded To" />
                   <Label text="Agent ID:" />
+                  <Label text="Rotors Order" />
                   <Label text="Rotors Positions" />
                   <Label text="Reflector ID" />
-                  <Label text="Time Taken"/>
+                  <Label text="Time Taken" />
                </children>
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="239.0" prefWidth="120.0" spacing="10.0">
@@ -25,6 +25,7 @@
                   <Label fx:id="toEncodeLabel" text="check" />
                   <Label fx:id="decodedToLabel" text="check" />
                   <Label fx:id="agentIDLabel" text="check" />
+                  <Label fx:id="rotorsOrderLabel" text="check" />
                   <Label fx:id="rotorsPositionsLabel" text="check" />
                   <Label fx:id="reflectorIDLabel" text="check" />
                   <Label fx:id="timeTakenLabel" text="check" />

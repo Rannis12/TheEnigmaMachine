@@ -12,11 +12,11 @@ public class MissionDTO {
     private String chosenReflector;
 //    private String configuration;
     private String rotorsPosition;
-
+    private String rotorsOrder;
 
 
     public MissionDTO(String agentID, String toEncodeString, String decodedTo, long timeTaken,
-                      String chosenReflector, String rotorsPosition) {
+                      String chosenReflector, String rotorsPosition, String rotorsOrder) {
         this.agentID = agentID;
         this.toEncodeString = toEncodeString;
         this.DecodedTo = decodedTo;
@@ -24,6 +24,7 @@ public class MissionDTO {
         this.chosenReflector = chosenReflector;
 //        this. configuration = configuration;
         this.rotorsPosition = rotorsPosition;
+        this.rotorsOrder = rotorsOrder;
     }
 
     public String getAgentID() {
@@ -52,5 +53,9 @@ public class MissionDTO {
 
     public String getRotorsPosition() {
         return rotorsPosition;
+    }
+
+    public String getRotorsOrder() {
+        return rotorsOrder;
     }
 }

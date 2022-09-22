@@ -1,6 +1,5 @@
 package decryption.dm;
 
-
 import decryption.DecryptTask;
 import decryption.Permuter;
 import dtos.DecryptionManagerDTO;
@@ -9,20 +8,24 @@ import dtos.ProgressUpdateDTO;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.*;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.Rotors;
 
+import javax.naming.Binding;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 public class DecryptionManager {
+    public static final Object pauseLock = new Object();
+    private BooleanProperty isStopBtnClicked;
+
     private Engine engine;
     private int amountOfAgents;
     private int sizeOfMission; // amount of missions that each agent need to do
@@ -31,16 +34,22 @@ public class DecryptionManager {
     private ThreadPoolExecutor threadPool;
     String decryptionSelection;
     BlockingQueue<MissionDTO> blockingQueueResponses; //queue of optional decoded strings.
-    private final int QUEUE_MAX_SIZE = 1000; //should be 1000
-
+    private final int QUEUE_MAX_SIZE = 1000;
     private Producer producer;
     private Consumer<MissionDTO> dmConsumer;
     private Consumer<ProgressUpdateDTO> dmProgressConsumer;
-    private DoubleProperty checking;
+    private DoubleProperty createdSoFar;
     private DoubleProperty amountOfMissions;
 
+    private BooleanProperty isSystemPause;
+
     public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy,
-                             Consumer<MissionDTO> consumer, Consumer<ProgressUpdateDTO> progressConsumer) throws invalidInputException {
+                             Consumer<MissionDTO> consumer, Consumer<ProgressUpdateDTO> progressConsumer,
+                             BooleanProperty isSystemPause, BooleanProperty isStopBtnClicked) throws invalidInputException {
+
+        this.isSystemPause = isSystemPause; //init in method.
+        this.isStopBtnClicked = isStopBtnClicked;
+
         dmConsumer = consumer;
         dmProgressConsumer = progressConsumer;
 
@@ -64,23 +73,28 @@ public class DecryptionManager {
 
         blockingQueueResponses = new LinkedBlockingQueue();
         setThreadOfResponses();
-        setProgressBarUpdating();
 
-        checking = new SimpleDoubleProperty();
+        createdSoFar = new SimpleDoubleProperty();
         amountOfMissions = new SimpleDoubleProperty();
 
+      //  bindingsToUI(tasksProgressBar, percentageLabel);
+
         threadPool.prestartAllCoreThreads();
-    }
-
-    //important!! need to fix those methods.
-    private void setProgressBarUpdating() {
-        new Thread(() -> {
-            while(true){
-                dmProgressConsumer.accept(new ProgressUpdateDTO(checking, amountOfMissions));
-            }
-        }).start();
 
     }
+
+    public void bindingsToUI(ProgressBar tasksProgressBar, Label percentageLabel) {
+        tasksProgressBar.progressProperty().bind(producer.progressProperty());
+        percentageLabel.textProperty().bind(
+                Bindings.concat(
+                        Bindings.format(
+                                "%.0f",
+                                Bindings.multiply(
+                                        producer.progressProperty(),
+                                        100)),
+                        " %"));
+    }
+
     private void setThreadOfResponses() {
         new Thread(() -> {
             MissionDTO missionDTO = null;
@@ -96,11 +110,9 @@ public class DecryptionManager {
 
     }
 
-
     private class Producer extends Task {
         private BlockingQueue<Runnable> blockingQueue;
         private int missionSize;
-        private int numOfSteers = 0;
         private int amountOfRotors;
         private Engine producerEngine;
         private String alphaBet;
@@ -116,67 +128,60 @@ public class DecryptionManager {
         }
 
 
-        //this should be the "inside method" alwayes gets rotorsOrder, reflector, and configuration.
-
-        /**
-         * we should steer the rotors 'missionSize' times. so, if we will call this method,
-         * the current rotors positions should be right, and then we can convert the ArrayList
-         * of the positions to String, and insert it to the blockingQueue.
-         */
-       /* private void option1(Engine copyEngine) {  //need to count the number of possible options (possible mission) instead of the doubleLoop.
-            new Thread(() -> {
-                try{
-                    producerEngine = copyEngine;
-                    String initString = "";
-
-                    for (int j = 0; j < amountOfRotors; j++) {
-                        initString += alphaBet.charAt(0);
-                    }
-
-                    producerEngine.initRotorsPositions(initString); //this should be the right method.
-                    //calculates amount of possible missions, when given a specific size.
-
-                    //for example, initialize the initString to - "AAAAAAAA".
-                    for (int i = 0; i < calculateOptionOnePossibleMissions(); i++) {
-
-                        ArrayList<String> initialPositions = new ArrayList<>();
-
-                        for (int k = 0; k < missionSize; k++) { //alwayes be >=0, and if it 0, the condition won't occur.
-                            initialPositions.add(initString);
-                            //SteerRotors...
-                            producerEngine.steerRotors(); //this method should steer *all rotors* - in case the first gets to the end.
-                            initString = producerEngine.getEngineFullDetails().getRotorsCurrentPositions();
-                            checking.setValue(checking.getValue() + 1);
-                        }
-
-                        for (String string:initialPositions) {
-                            System.out.println(string);
-                        }
-
-                        blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission,
-                                producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses,
-                                initialPositions));
-
-                    }
-
-                }catch (InterruptedException e) {
-                    System.out.println("Exception in thread that push to queue.");
-                }
-            }).start();
-        }*/
-
         private int calculateOptionOnePossibleMissions(){ //need to check it
             double alphaBetLength = alphaBet.length();
             double num = Math.pow(alphaBetLength, amountOfRotors); //initialized amount of rotors.
             double possibleOptions = num / missionSize;
             return (int)possibleOptions;
+
+        }
+
+
+        private void calculatePossibleMissions(){ //need to check it
+            double alphaBetLength = alphaBet.length();
+            double num = Math.pow(alphaBetLength, amountOfRotors); //initialized amount of rotors.
+            double possibleOptions = num / missionSize;
+
+            switch(decryptionSelection){
+                case "Easy":
+                   amountOfMissions.set(possibleOptions);
+                   break;
+                case "Medium":
+                    amountOfMissions.set(possibleOptions * engine.getEngineFullDetails().getReflectorsAmount());
+                    break;
+                case "Hard":
+                    amountOfMissions.set(possibleOptions * engine.getAllExistingReflectors().size()
+                            * fact(engine.getEngineFullDetails().getUsedAmountOfRotors()));
+                    break;
+                case "Impossible":
+                    amountOfMissions.set(possibleOptions * engine.getAllExistingReflectors().size()
+                            * fact(engine.getEngineFullDetails().getUsedAmountOfRotors()) *
+                            nCr(engine.getEngineFullDetails().getRotorsAmount(), engine.getEngineFullDetails().getUsedAmountOfRotors()));
+                    break;
+            }
+        }
+
+        private int fact(int n){
+            int fact = 1;
+            for(int i = 1;i <= n; i++){
+                fact = fact * i;
+            }
+            return fact;
+        }
+        private int nCr(int n, int r)
+        {
+            return fact(n) / (fact(r) *
+                              fact(n - r));
         }
 
 
         private void createMissions(){
+            //in order to initialize the progress bar.
+            createdSoFar.set(0);
+            calculatePossibleMissions();
+
             switch (decryptionSelection) {
                 case "Easy":
-                    amountOfMissions.setValue(calculateOptionOnePossibleMissions());
                     easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
                             engine.getSelectedReflector(),
                             engine.getRotorsIndexes());
@@ -192,9 +197,8 @@ public class DecryptionManager {
                     break;
             }
         }
-        private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
+        synchronized private void easy(String initRotorsPositions, int chosenReflector, ArrayList<Integer> rotorsIndexes){
             producerEngine.initSelectedReflector(chosenReflector);
-//            producerEngine.initRotorsPositions(initRotorsPositions);
             producerEngine.initRotorIndexes(rotorsIndexes);
 
             String initString = "";
@@ -203,30 +207,29 @@ public class DecryptionManager {
                 initString += alphaBet.charAt(0);
             }
 
-            engine.initRotorsPositions(initString); //this should be the right method.
-            //calculates amount of possible missions, when given a specific size.
+            producerEngine.initRotorsPositions(initString);
 
-            //for example, initialize the initString to - "AAAAAAAA".
-            for (int i = 0; i < calculateOptionOnePossibleMissions(); i++) {
+            for (int i = 0; i < calculateOptionOnePossibleMissions() && !isStopBtnClicked.get(); i++) {
+                isPauseRunningTask(); //checks if user clicked "pause";
 
                 ArrayList<String> initialPositions = new ArrayList<>();
 
                 for (int k = 0; k < missionSize; k++) { //alwayes be >=0, and if it 0, the condition won't occur.
                     initialPositions.add(initString);
-                    //SteerRotors...
-                    producerEngine.steerRotors(); //this method should steer *all rotors* - in case the first gets to the end.
-                    initString = producerEngine.getEngineFullDetails().getRotorsCurrentPositions();
-                    checking.setValue(checking.getValue());
-                }
 
-                for (String string:initialPositions) {
-                    System.out.println(string);
+                    //SteerRotors...
+                    producerEngine.steerRotors();
+                    initString = producerEngine.getEngineFullDetails().getRotorsCurrentPositions();
+
                 }
 
                 try {
-                    blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission,
-                            producerEngine.getEngineFullDetails().getRotorsCurrentPositions(), toEncode, blockingQueueResponses,
+                    blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission
+                            , toEncode, blockingQueueResponses,
                             initialPositions));
+                    createdSoFar.set(createdSoFar.get() + 1);
+                    updateProgress(createdSoFar.get(), amountOfMissions.get());
+
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -235,17 +238,17 @@ public class DecryptionManager {
         }
         private void medium(ArrayList<Integer> rotorsIndexes){
             ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
-            amountOfMissions.setValue(calculateOptionOnePossibleMissions() * reflectorsArray.size());
+
             for (Integer reflector : reflectorsArray) {
-                engine.initSelectedReflector(reflector);
+//                engine.initSelectedReflector(reflector);
                 easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
-                        engine.getSelectedReflector(),
+                        reflector,
                         rotorsIndexes);
             }
         }
         private void hard(ArrayList<Integer> possibleRotorsIndexes) { // rotors should be instead of engine.gerRotorsIndexes();
-
             ArrayList<ArrayList<Integer>> possiblePositions = getAllPossibleRotorsPosition(possibleRotorsIndexes);
+
             for (ArrayList<Integer> rotorsPossiblePosition : possiblePositions) {
                 medium(rotorsPossiblePosition);
             }
@@ -253,6 +256,7 @@ public class DecryptionManager {
         private void impossible(){
             List<ArrayList<Integer>> combinations = generate(engine.getEngineFullDetails().getRotorsAmount(),
                     engine.getEngineFullDetails().getUsedAmountOfRotors());
+
             for (int i = 0; i < combinations.size(); i++) {
                 hard(combinations.get(i));
             }
@@ -280,7 +284,7 @@ public class DecryptionManager {
             List<ArrayList<Integer>> combinations = new ArrayList<>();
             int[] combination = new int[r];
 
-            // initialize with lowest lexicographic combination
+            // initialize with the lowest lexicographic combination
             for (int i = 0; i < r; i++) {
                 combination[i] = i;
             }
@@ -306,20 +310,34 @@ public class DecryptionManager {
             return combinations;
         }
 
+
+        private void isPauseRunningTask(){
+            if(isSystemPause.get()){
+                synchronized (pauseLock){
+                    if(isSystemPause.get()){
+                        try{
+                            System.out.println(Thread.currentThread().getName() + " is Paused!");
+                            pauseLock.wait();
+                            System.out.println(Thread.currentThread().getName() + " is Resumed!");
+                        }catch (InterruptedException ignored){
+
+                        }
+                    }
+                }
+            }
+        }
         @Override
         protected Object call() throws Exception {
             createMissions();
-            return 0; //??
+            return 0;
         }
     }
 
     public void encode() {
-        checking.setValue(0); //in order to initialize the progress bar.
-
         Thread thread = new Thread(producer);
         thread.start();
     }
-    public boolean isLegalString(String stringFromUser) throws invalidInputException {
+/*    public boolean isLegalString(String stringFromUser) throws invalidInputException {
 
         int numOfSeparates = getNumOfSeparates(stringFromUser);
 
@@ -330,8 +348,9 @@ public class DecryptionManager {
             }
         }
         return true;
-    }
+    }*/
 
+/*
     private int getNumOfSeparates(String string) {
         int numOfSeperates = 0;
         for (int i = 0; i < dictionary.getExcludedCharacters().length(); i++) {//remove all excluded characters
@@ -344,36 +363,9 @@ public class DecryptionManager {
         }
         return numOfSeperates;
     }
+*/
 
-  /*  public static void main(String[] args){
-*//*
-        int r = 3;
-        int n = 5;
-        List<ArrayList<Integer>> combinations = new ArrayList<>();
-        int[] combination = new int[r];
-
-        // initialize with lowest lexicographic combination
-        for (int i = 0; i < r; i++) {
-            combination[i] = i;
-        }
-
-        while (combination[r - 1] < n) {
-            ArrayList<Integer> tmp = new ArrayList<>(r);
-            for (int i = 0; i < r; i++) {
-                tmp.add(combination[i]);
-            }
-            combinations.add(tmp);
-
-            // generate next combination in lexicographic order
-            int t = r - 1;
-            while (t != 0 && combination[t] == n - r + t) {
-                t--;
-            }
-            combination[t]++;
-            for (int i = t + 1; i < r; i++) {
-                combination[i] = combination[i - 1] + 1;
-            }
-        }*//*
-        System.out.println("check");
-    }*/
+    public void stopAllAgents(){
+        threadPool.shutdownNow();
+    }
 }

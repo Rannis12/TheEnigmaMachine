@@ -111,6 +111,7 @@ public class MainPageController {
             secondTabController.setDecodingButtonsDisable(true);
             thirdTabController.setDictionary(engine.getDictionary());
             thirdTabController.setEngine(engine);
+            thirdTabController.prepareTab();
             return true;
 
         } catch (invalidXMLfileException e) {

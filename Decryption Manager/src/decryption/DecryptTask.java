@@ -6,11 +6,9 @@ import exceptions.invalidInputException;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 
-
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
-//import static decryption.dm.DecryptionManager.loadEnigmaFromString;
 
 /**
  * This is what the agent supposed to do - Agent's Job.
@@ -29,7 +27,7 @@ public class DecryptTask implements Runnable {
     private ArrayList<String> initialPositions;
 
 
-    public DecryptTask(Engine copyEngine, int sizeOfMission,String currentConfiguration,
+    public DecryptTask(Engine copyEngine, int sizeOfMission,
                        String toEncodeString, BlockingQueue blockingQueueResponses, ArrayList<String> initialPositions){
 
         engine = copyEngine;
@@ -45,7 +43,6 @@ public class DecryptTask implements Runnable {
           this.initialPositions.add(config);
         }
 
-//        this.initConfiguration = initConfiguration;
     }
 
     /**In here the Agent should try to decode the String that the ThreadPool gave him.
@@ -63,6 +60,7 @@ public class DecryptTask implements Runnable {
     public void run(){
         try {
             for (int i = 0; i < sizeOfMission; i++) {
+
                 boolean shouldContinueSearching = true;
 
                 String initPos = initialPositions.get(initialPositions.size() - 1 - i);
@@ -79,12 +77,6 @@ public class DecryptTask implements Runnable {
                 int numOfSeparates = getNumOfSeparates(resultString);
                 String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
 
-                //after split by spaces, we clean each char that is excluded.
-                /*for (int j = 0; j < resultWordsArr.length; j++) {
-                    for (int k = 0; k < excludedCharacters.length(); k++) {
-                        resultWordsArr[j] = resultWordsArr[j].replace(String.valueOf(excludedCharacters.charAt(k)), "");
-                    }
-                }*/
 
                 for (int t = 0; t < resultWordsArr.length && shouldContinueSearching; t++) {
                     if (!dictionary.isExistInDictionary(resultWordsArr[t])) {
@@ -102,9 +94,9 @@ public class DecryptTask implements Runnable {
 
                     MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString,
                             resultString, end - start, engine.getEngineFullDetails().getChosenReflector(),
-                            initPos);
+                            initPos, engine.getRotorsIndexesString());
 
-                    blockingQueueResponses.put(missionDTO); //add a listener to this blocking queue from the Application.
+                    blockingQueueResponses.put(missionDTO);
                 }
             }
 
@@ -127,6 +119,55 @@ public class DecryptTask implements Runnable {
         return numOfSeparates;
     }
 
+
+
+    /* @Override
+    public void run(){
+        try {
+            for (int i = 0; i < sizeOfMission; i++) {
+                boolean shouldContinueSearching = true;
+
+                String initPos = initialPositions.get(initialPositions.size() - 1 - i);
+                engine.initRotorsPositions(initPos);
+
+                long start = System.nanoTime();
+                DecodeStringInfo decodeStringInfo = engine.decodeStrWithoutPG(toEncodeString);
+
+                String resultString = decodeStringInfo.getDecodedString();
+
+                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " -> " + resultString +
+                        " with " + initPos + " " + engine.getEngineFullDetails().getChosenReflector());
+
+                int numOfSeparates = getNumOfSeparates(resultString);
+                String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
+
+
+                for (int t = 0; t < resultWordsArr.length && shouldContinueSearching; t++) {
+                    if (!dictionary.isExistInDictionary(resultWordsArr[t])) {
+                        shouldContinueSearching = false;
+                    }
+                }
+
+                System.out.println(shouldContinueSearching);
+
+                if(shouldContinueSearching) {
+                    long end = System.nanoTime();
+                    //if we got here, resultString might be the origin string, then we need to create a dto of it.
+                    System.out.println(Thread.currentThread().getName() + "found that " + toEncodeString + " might be: "
+                                        + resultString + " with "+ initPos);
+
+                    MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString,
+                            resultString, end - start, engine.getEngineFullDetails().getChosenReflector(),
+                            initPos);
+
+                    blockingQueueResponses.put(missionDTO);
+                }
+            }
+
+        } catch (invalidInputException | InterruptedException e) {
+            System.out.println("exception in decrypt task");
+        }
+    }*/
 }
 
 

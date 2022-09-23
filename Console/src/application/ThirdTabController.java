@@ -156,7 +156,7 @@ public class ThirdTabController {
         searchInDictionaryTF.clear();
         dictionaryTA.clear();
         outputTF.setText("Reset has been made successfully!!");
-
+        int x = 5;
     }
 
     @FXML

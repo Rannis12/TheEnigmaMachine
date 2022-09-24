@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../Console/Console.iml" filepath="$PROJECT_DIR$/../Console/Console.iml" />
       <module fileurl="file://$PROJECT_DIR$/../DTO/DTO.iml" filepath="$PROJECT_DIR$/../DTO/DTO.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Decryption Manager/Decryption Manager.iml" filepath="$PROJECT_DIR$/../Decryption Manager/Decryption Manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../DecryptionManager/DecryptionManager.iml" filepath="$PROJECT_DIR$/../DecryptionManager/DecryptionManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Engine/Engine.iml" filepath="$PROJECT_DIR$/../Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Machine/Machine.iml" filepath="$PROJECT_DIR$/../Machine/Machine.iml" />
     </modules>

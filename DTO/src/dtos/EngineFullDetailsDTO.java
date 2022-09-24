@@ -32,8 +32,8 @@ public class EngineFullDetailsDTO {
         this.rotorsFirstPositions = rotorsFirstPositions;
         this.usedRotorsOrganization = usedRotorsOrganization;
 
-        this.notchesCurrentPlaces = notchesCurrentPlaces;//check
-        this.notchesFirstPlaces = notchesFirstPlaces;//check
+        this.notchesCurrentPlaces = notchesCurrentPlaces;
+        this.notchesFirstPlaces = notchesFirstPlaces;
         this.rotorsCurrentPositions = rotorsCurrentPositions;
 
     }

@@ -7,9 +7,9 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="DTO" exported="" />
-    <orderEntry type="module" module-name="Engine" exported="" />
+    <orderEntry type="module" module-name="DTO" />
+    <orderEntry type="module" module-name="Engine" />
     <orderEntry type="module" module-name="Machine" />
-    <orderEntry type="module" module-name="Decryption Manager" />
+    <orderEntry type="module" module-name="DecryptionManager" />
   </component>
 </module>

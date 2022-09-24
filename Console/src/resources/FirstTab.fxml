@@ -8,7 +8,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -183,13 +182,14 @@
                                     <Insets bottom="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <ToggleButton fx:id="setMachineBtn" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!">
+                              <Button fx:id="setMachineBtn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                  <effect>
                                     <InnerShadow />
-                                 </effect></ToggleButton>
+                                 </effect>
+                              </Button>
                            </children>
                         </VBox>
                         <Label fx:id="machineInitializeLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" styleClass="machineInitSuccessLabel" stylesheets="@firstTabStyleSheet.css" text="Machine initialize successfully!" textFill="#faf2f2" />

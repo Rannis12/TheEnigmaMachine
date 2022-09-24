@@ -71,12 +71,8 @@ public class DecryptTask implements Runnable {
 
                 String resultString = decodeStringInfo.getDecodedString();
 
-                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " -> " + resultString +
-                        " with " + initPos + " " + engine.getEngineFullDetails().getChosenReflector());
-
                 int numOfSeparates = getNumOfSeparates(resultString);
                 String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
-
 
                 for (int t = 0; t < resultWordsArr.length && shouldContinueSearching; t++) {
                     if (!dictionary.isExistInDictionary(resultWordsArr[t])) {
@@ -84,16 +80,13 @@ public class DecryptTask implements Runnable {
                     }
                 }
 
-                System.out.println(shouldContinueSearching);
-
                 if(shouldContinueSearching) {
                     long end = System.nanoTime();
                     //if we got here, resultString might be the origin string, then we need to create a dto of it.
-                    System.out.println(Thread.currentThread().getName() + "found that " + toEncodeString + " might be: "
-                                        + resultString + " with "+ initPos);
 
-                    MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString,
-                            resultString, end - start, engine.getEngineFullDetails().getChosenReflector(),
+
+                    MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(),
+                            resultString, engine.getEngineFullDetails().getChosenReflector(),
                             initPos, engine.getRotorsIndexesString());
 
                     blockingQueueResponses.put(missionDTO);
@@ -119,55 +112,6 @@ public class DecryptTask implements Runnable {
         return numOfSeparates;
     }
 
-
-
-    /* @Override
-    public void run(){
-        try {
-            for (int i = 0; i < sizeOfMission; i++) {
-                boolean shouldContinueSearching = true;
-
-                String initPos = initialPositions.get(initialPositions.size() - 1 - i);
-                engine.initRotorsPositions(initPos);
-
-                long start = System.nanoTime();
-                DecodeStringInfo decodeStringInfo = engine.decodeStrWithoutPG(toEncodeString);
-
-                String resultString = decodeStringInfo.getDecodedString();
-
-                System.out.println(Thread.currentThread().getName() + ": " + toEncodeString + " -> " + resultString +
-                        " with " + initPos + " " + engine.getEngineFullDetails().getChosenReflector());
-
-                int numOfSeparates = getNumOfSeparates(resultString);
-                String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
-
-
-                for (int t = 0; t < resultWordsArr.length && shouldContinueSearching; t++) {
-                    if (!dictionary.isExistInDictionary(resultWordsArr[t])) {
-                        shouldContinueSearching = false;
-                    }
-                }
-
-                System.out.println(shouldContinueSearching);
-
-                if(shouldContinueSearching) {
-                    long end = System.nanoTime();
-                    //if we got here, resultString might be the origin string, then we need to create a dto of it.
-                    System.out.println(Thread.currentThread().getName() + "found that " + toEncodeString + " might be: "
-                                        + resultString + " with "+ initPos);
-
-                    MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(), toEncodeString,
-                            resultString, end - start, engine.getEngineFullDetails().getChosenReflector(),
-                            initPos);
-
-                    blockingQueueResponses.put(missionDTO);
-                }
-            }
-
-        } catch (invalidInputException | InterruptedException e) {
-            System.out.println("exception in decrypt task");
-        }
-    }*/
 }
 
 

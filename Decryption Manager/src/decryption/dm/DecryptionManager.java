@@ -41,13 +41,19 @@ public class DecryptionManager {
     private Consumer<MissionDTO> dmConsumer;
 //    private Consumer<ProgressUpdateDTO> dmProgressConsumer;
     private DoubleProperty createdSoFar;
+
+    public int getAmountOfMissions() {
+        return (int)amountOfMissions.get();
+    }
+
+
     private DoubleProperty amountOfMissions;
 
     private TextField totalTimeTF;
     private BooleanProperty isSystemPause;
 
     public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy,
-                             Consumer<MissionDTO> consumer/*, Consumer<ProgressUpdateDTO> progressConsumer*/,
+                             Consumer<MissionDTO> consumer,
                              BooleanProperty isSystemPause, BooleanProperty isStopBtnClicked,
                              TextField totalTimeTF) throws invalidInputException {
 
@@ -55,7 +61,7 @@ public class DecryptionManager {
         this.isStopBtnClicked = isStopBtnClicked;
 
         dmConsumer = consumer;
-        /*dmProgressConsumer = progressConsumer;*/
+
 
         engine = engineCopy; //engineCopy is a copy of engine. I implemented Cloneable.
 
@@ -85,6 +91,8 @@ public class DecryptionManager {
 
         threadPool.prestartAllCoreThreads();
 
+
+        producer.calculatePossibleMissions();
     }
 
     public void bindingsToUI(ProgressBar tasksProgressBar, Label percentageLabel) {
@@ -97,6 +105,8 @@ public class DecryptionManager {
                                         producer.progressProperty(),
                                         100)),
                         " %"));
+
+
     }
 
     private void setThreadOfResponses() {
@@ -113,6 +123,8 @@ public class DecryptionManager {
         }).start();
 
     }
+
+
 
     private class Producer extends Task {
         private BlockingQueue<Runnable> blockingQueue;
@@ -182,7 +194,7 @@ public class DecryptionManager {
         private void createMissions(){
             //in order to initialize the progress bar.
             createdSoFar.set(0);
-            calculatePossibleMissions();
+            //calculatePossibleMissions(); check- moved to ctor
 
             startTime = System.nanoTime();
             switch (decryptionSelection) {
@@ -324,9 +336,7 @@ public class DecryptionManager {
                 synchronized (pauseLock){
                     if(isSystemPause.get()){
                         try{
-                            System.out.println(Thread.currentThread().getName() + " is Paused!");
                             pauseLock.wait();
-                            System.out.println(Thread.currentThread().getName() + " is Resumed!");
                         }catch (InterruptedException ignored){
 
                         }
@@ -351,33 +361,7 @@ public class DecryptionManager {
         Thread thread = new Thread(producer);
         thread.start();
     }
-/*    public boolean isLegalString(String stringFromUser) throws invalidInputException {
 
-        int numOfSeparates = getNumOfSeparates(stringFromUser);
-
-        String[] wordsArr = stringFromUser.split(" ", numOfSeparates + 1);
-        for (String string : wordsArr) {
-            if(!dictionary.isExistInDictionary(string)){
-                throw new invalidInputException("The string " + string + " isn't in the dictionary!");
-            }
-        }
-        return true;
-    }*/
-
-/*
-    private int getNumOfSeparates(String string) {
-        int numOfSeperates = 0;
-        for (int i = 0; i < dictionary.getExcludedCharacters().length(); i++) {//remove all excluded characters
-            string = string.replace(String.valueOf(dictionary.getExcludedCharacters().charAt(i)), "");
-        }
-        for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == ' ') {
-                numOfSeperates++;
-            }
-        }
-        return numOfSeperates;
-    }
-*/
 
     public void stopAllAgents(){
         threadPool.shutdownNow();

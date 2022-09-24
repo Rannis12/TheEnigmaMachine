@@ -47,9 +47,9 @@ public class ThirdTabController {
     @FXML private ChoiceBox<?> difficultyChoiceBox;
     @FXML private TextField taskSizeTF;
     @FXML private Button startBtn;
-    @FXML private ToggleButton stopBtn;
-    @FXML private ToggleButton pauseBtn;
-    @FXML private ToggleButton resumeBtn;
+    @FXML private Button stopBtn;
+    @FXML private Button pauseBtn;
+    @FXML private Button resumeBtn;
     @FXML private FlowPane candidatesFP;
     @FXML private ProgressBar tasksProgressBar;
     @FXML private Label percentageLabel;
@@ -58,6 +58,7 @@ public class ThirdTabController {
     @FXML private TextField amountOfTasksTF;
     @FXML private TextField totalTimeTF;
     @FXML private Label searchingSolutionsLabel;
+    @FXML private Label searchStoppedLabel;
     private MainPageController mainPageController;
     private int currAgentAmount;
     private int tasksSize;
@@ -65,7 +66,8 @@ public class ThirdTabController {
     private DecryptionManager decryptionManager;
     private Dictionary dictionary = null;
     private Consumer<MissionDTO> consumer = missionDTO -> showGoodDecryptedString(missionDTO);
-    private Consumer<ProgressUpdateDTO> progressConsumer = progressUpdateDTO -> updateProgressBar(progressUpdateDTO);
+
+    //private Consumer<ProgressUpdateDTO> progressConsumer = progressUpdateDTO -> updateProgressBar(progressUpdateDTO);
     private BooleanProperty isSystemPause = new SimpleBooleanProperty();
     private BooleanProperty isStopBtnClicked = new SimpleBooleanProperty();
 
@@ -94,13 +96,16 @@ public class ThirdTabController {
 
     @FXML
     void encodeMsgListener(ActionEvent event) {
-
+        processBtnListener(event);
     }
 
     @FXML
     void pauseBtnListener(ActionEvent event) {
         isSystemPause.set(true);
  //       isPauseRunningTask();
+        searchingSolutionsLabel.setVisible(false);
+
+        searchStoppedLabel.setVisible(true);
         searchingSolutionsLabel.setVisible(false);
     }
 
@@ -156,7 +161,7 @@ public class ThirdTabController {
         searchInDictionaryTF.clear();
         dictionaryTA.clear();
         outputTF.setText("Reset has been made successfully!!");
-        int x = 5;
+
     }
 
     @FXML
@@ -166,6 +171,7 @@ public class ThirdTabController {
             pauseLock.notifyAll();
         }
 
+        searchStoppedLabel.setVisible(false);
         searchingSolutionsLabel.setVisible(true);
     }
 
@@ -175,12 +181,14 @@ public class ThirdTabController {
         String prefix = searchInDictionaryTF.getText().toUpperCase();
         ArrayList<String> wordsFromDictionary = dictionary.searchForSubStrings(prefix);
 
-        for (int i = 0; i < wordsFromDictionary.size(); i++) {
-            if(i == wordsFromDictionary.size() - 1){
-                dictionaryTA.appendText(wordsFromDictionary.get(i));
-            }else {
-                dictionaryTA.appendText(wordsFromDictionary.get(i) + '\n');
-            }
+            for (int i = 1; i <= wordsFromDictionary.size(); i++) {
+            if(i == wordsFromDictionary.size())
+                dictionaryTA.appendText(wordsFromDictionary.get(i-1));
+            else if((i % 2) ==0 )
+                dictionaryTA.appendText(wordsFromDictionary.get(i-1) + '\n');
+            else
+                dictionaryTA.appendText(wordsFromDictionary.get(i-1) + "\t\t\t");
+
         }
     }
 
@@ -196,21 +204,23 @@ public class ThirdTabController {
                 throw new invalidInputException("Please choose Difficulty.");
             }
             tasksSize = Integer.valueOf(taskSizeTF.getText());
-            if(tasksSize < 1) { //maybe not a good condition.
+            if(tasksSize < 1 || tasksSize > 1000) { //maybe not a good condition.
                 taskSizeTF.clear();
                 throw new invalidInputException("Please choose size between 1 to 1000.");
 
             }
-            //calculate amount of tasks here
-            amountOfTasksTF.setText(taskSizeTF.getText()); // THIS IS TEMPORARY FOR NOW - NEED TO CHANGE
-            //amountOfTasksTF.setVisible(true);
-            amountOfTasksLabel.setVisible(true);
-            searchingSolutionsLabel.setVisible(true);
+            if(encodeMsgTF.getText().equals("") || outputTF.getText().equals("Reset has been made successfully!!")){
+                encodeMsgTF.clear();
+                outputTF.clear();
+                throw new invalidInputException("Please choose string to decode.");
+            }
+
 
             //disable 3 parameters that running
             agentAmountSlider.setDisable(true);
             difficultyChoiceBox.setDisable(true);
             taskSizeTF.setDisable(true);
+            searchingSolutionsLabel.setVisible(true);
 
             //opening options for stop, pause,resume
             startBtn.setDisable(true);
@@ -219,12 +229,17 @@ public class ThirdTabController {
             resumeBtn.setDisable(false);
             isStopBtnClicked.set(false);
 
-            DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(),
-                    difficulty);
+            DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(), difficulty);
             decryptionManager = new DecryptionManager(decryptionManagerDTO, (Engine)tabThreeEngine.clone(),
                                                         consumer/*, progressConsumer*/,
                                                           isSystemPause, isStopBtnClicked,
                                                             totalTimeTF);
+
+            //calculate amount of tasks here
+            amountOfTasksLabel.setVisible(true);
+            amountOfTasksTF.setText(String.valueOf(decryptionManager.getAmountOfMissions()));
+            amountOfTasksTF.setVisible(true);
+
 
             decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
             //start running tasks
@@ -237,33 +252,17 @@ public class ThirdTabController {
             mainPageController.popUpError("Please choose size(number) of each task.");
         }
 
-        /*try {
-            agentAmount = (int)agentAmountSlider.getValue();
-        }catch (RuntimeException agentEx) {
-            mainPageController.popUpError("Please choose amount of agents.");
-        }
-        try{
-            difficulty = (String) difficultyChoiceBox.getValue();
-        }catch (RuntimeException difficultyEx) {
-            mainPageController.popUpError("Please choose Difficulty.");
-        }
-        try {
-            tasksSize = Integer.valueOf(taskSizeTF.getText());
-            if(tasksSize < 1)
-                throw new invalidInputException("Please choose size between 0 to 1000.");
-        }catch (RuntimeException tasksEx) {
-            mainPageController.popUpError("Please choose size of each task.");
-        } catch (invalidInputException e) {
-            mainPageController.popUpError(e.getMessage());
-        }
-        System.out.println("good");*/
-
     }
 
     @FXML
     void stopBtnListener(ActionEvent event) {
 
         decryptionManager.stopAllAgents(); //shutdown all threads.
+
+        totalTimeTF.clear();
+        amountOfTasksLabel.setVisible(false);
+        amountOfTasksTF.clear();
+        amountOfTasksTF.setVisible(false);
 
         isStopBtnClicked.set(true);
         agentAmountSlider.setDisable(false);
@@ -274,11 +273,10 @@ public class ThirdTabController {
         startBtn.setDisable(false);
 
         searchingSolutionsLabel.setVisible(false);
+        searchStoppedLabel.setVisible(false);
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
         totalTimeResult();
-        //progressBarValue = 0;
-
 
         unbind();
 
@@ -303,16 +301,17 @@ public class ThirdTabController {
         currentConfiguration.setText(currConfiguration);
     }
 
-    public void updateProgressBar(ProgressUpdateDTO progressUpdateDTO) { //need to make changes!! - now not working.
+    /*public void updateProgressBar(ProgressUpdateDTO progressUpdateDTO) { //need to make changes!! - now not working.
         //....
         //update progress bar by the overall tasks amount and then
         progressBarValue = progressUpdateDTO.getProgress() / progressUpdateDTO.getAllPossibleMissions();
 
         tasksProgressBar.setProgress(progressBarValue);
 
+        if(tasksProgressBar.getProgress() == 100)
+            searchingSolutionsLabel.setVisible(false);
 
-//        percentageLabel.setText((progressBarValue * 100) + "%");
-    }
+    }*/
 
     public void DisableAllButtonsAndTextFields() {
         processBtn.setDisable(true);
@@ -324,8 +323,13 @@ public class ThirdTabController {
         pauseBtn.setDisable(true);
         resumeBtn.setDisable(true);
         startBtn.setDisable(true);
+
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
+
+        agentAmountSlider.setDisable(false);
+        difficultyChoiceBox.setDisable(false);
+        taskSizeTF.setDisable(false);
     }
 
     public void setDecodingButtonsDisable(boolean setToDisable) {
@@ -348,14 +352,13 @@ public class ThirdTabController {
                     Parent root = fxmlLoader.load(url.openStream());
                     ConfigurationController configurationController = fxmlLoader.getController();
 
-//                    configurationController.setConfigurationLabel(missionDTO.getConfiguration());
                     configurationController.setDecodedToLabel(missionDTO.getDecodedTo());
                     configurationController.setReflectorIDLabel(missionDTO.getChosenReflector());
                     configurationController.setRotorsOrderLabel(missionDTO.getRotorsOrder());
-                    configurationController.setToEncodeLabel(missionDTO.getToEncodeString());
+
                     configurationController.setAgentIDLabel(missionDTO.getAgentID());
                     configurationController.setRotorsPositionsLabel(missionDTO.getRotorsPosition());
-                    configurationController.setTimeTakenLabel(String.valueOf(missionDTO.getTimeTaken()));
+
 
                     candidatesFP.getChildren().add(root);
                 } catch (IOException e) {
@@ -390,7 +393,6 @@ public class ThirdTabController {
         difficultyChoiceBox.setValue(null);
         taskSizeTF.clear();
 
-        totalTimeTF.setText("0 Sec");
 
         tasksProgressBar.setProgress(0);
         percentageLabel.setText("0%");

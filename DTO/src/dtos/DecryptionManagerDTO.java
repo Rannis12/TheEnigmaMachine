@@ -18,9 +18,6 @@ public class DecryptionManagerDTO {
         this.amountOfAgents = amountOfAgents;
         this.sizeOfMission = sizeOfMission;
         this.toEncode = toEncode;
-//        this.selectedRotors = selectedRotors;
-//        this.selectedReflector = selectedReflector;
-//        this.notchPositions = notchPositions;
         this.decryptionSelection = decryptionSelection;
     }
 
@@ -39,18 +36,6 @@ public class DecryptionManagerDTO {
     public String getToEncode() {
         return toEncode;
     }
-
-//    public String getSelectedRotors() {
-//        return selectedRotors;
-//    }
-
-//    public int getSelectedReflector() {
-//        return selectedReflector;
-//    }
-
-    /*public String getNotchPositions() {
-        return notchPositions;
-    }*/
 
 
 }

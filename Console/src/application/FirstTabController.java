@@ -35,7 +35,7 @@ public class FirstTabController implements Initializable {
     @FXML
     private Label reflectorsAmount;
 
-    @FXML private ToggleButton setMachineBtn;
+    @FXML private Button setMachineBtn;
 
     @FXML
     private Button randomBtn;
@@ -71,7 +71,6 @@ public class FirstTabController implements Initializable {
 
     @FXML
     void setMachine(ActionEvent event) throws invalidInputException {
-        setMachineBtn.setSelected(false);
         try {
             int chosenReflector = (Integer) reflectorChoiceBox.getValue();
             reflectorDTO = new ReflectorDTO(chosenReflector);

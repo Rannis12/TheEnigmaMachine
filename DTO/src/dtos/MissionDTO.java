@@ -5,24 +5,17 @@ package dtos;
  */
 public class MissionDTO {
     private String agentID;
-    private String toEncodeString;
     private String DecodedTo;
-    private long timeTaken;
-
     private String chosenReflector;
-//    private String configuration;
     private String rotorsPosition;
     private String rotorsOrder;
 
 
-    public MissionDTO(String agentID, String toEncodeString, String decodedTo, long timeTaken,
+    public MissionDTO(String agentID, String decodedTo,
                       String chosenReflector, String rotorsPosition, String rotorsOrder) {
         this.agentID = agentID;
-        this.toEncodeString = toEncodeString;
         this.DecodedTo = decodedTo;
-        this.timeTaken = timeTaken;
         this.chosenReflector = chosenReflector;
-//        this. configuration = configuration;
         this.rotorsPosition = rotorsPosition;
         this.rotorsOrder = rotorsOrder;
     }
@@ -31,25 +24,13 @@ public class MissionDTO {
         return agentID;
     }
 
-    public String getToEncodeString() {
-        return toEncodeString;
-    }
-
     public String getDecodedTo() {
         return DecodedTo;
-    }
-
-    public long getTimeTaken() {
-        return timeTaken;
     }
 
     public String getChosenReflector() {
         return chosenReflector;
     }
-
-/*    public String getConfiguration() {
-        return configuration;
-    }*/
 
     public String getRotorsPosition() {
         return rotorsPosition;

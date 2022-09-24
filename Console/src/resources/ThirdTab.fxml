@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -20,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="894.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ThirdTabController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ThirdTabController">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="452.0" prefWidth="600.0" spacing="5.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="14.0">
+        <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="597.0" prefWidth="899.0" spacing="5.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="14.0">
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="600.0" spacing="5.0">
                     <children>
@@ -41,30 +40,28 @@
                         </TextField>
                     </children>
                 </HBox>
-                <GridPane alignment="CENTER" prefHeight="166.0" prefWidth="598.0">
+                <GridPane alignment="CENTER" prefHeight="166.0" prefWidth="894.0">
                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="120.0" minWidth="110.0" prefWidth="120.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="300.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="160.0" minWidth="110.0" prefWidth="160.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="573.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="63.0" minWidth="63.0" prefWidth="63.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="15.0" minHeight="5.0" prefHeight="15.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="15.0" minHeight="5.0" prefHeight="15.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="15.0" minHeight="5.0" prefHeight="15.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="10.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="7.0" minHeight="7.0" prefHeight="7.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="7.0" minHeight="7.0" prefHeight="7.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="40.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Button fx:id="processBtn" disable="true" mnemonicParsing="false" onAction="#processBtnListener" text="Process" GridPane.columnIndex="2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                        <Button fx:id="resetBtn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#resetBtnListener" prefHeight="25.0" prefWidth="94.0" text="Reset settings" GridPane.columnIndex="3">
+                        <Button fx:id="resetBtn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#resetBtnListener" prefHeight="25.0" prefWidth="95.0" text="Reset settings" GridPane.columnIndex="3">
                             <GridPane.margin>
                                 <Insets right="10.0" />
                             </GridPane.margin>
@@ -77,42 +74,53 @@
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="encodeMsgTF" alignment="CENTER" disable="true" onAction="#encodeMsgListener" GridPane.columnIndex="1" />
-                        <TextField fx:id="outputTF" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="encodeMsgTF" alignment="CENTER" disable="true" onAction="#encodeMsgListener" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin></TextField>
+                        <TextField fx:id="outputTF" alignment="CENTER" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin></TextField>
                         <Label text="Output:" GridPane.rowIndex="2">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
-                        <Label text="Dictionary:" GridPane.rowIndex="7">
+                        <Label text="Dictionary:" GridPane.rowIndex="5">
                             <font>
-                                <Font name="System Bold" size="13.0" />
+                                <Font name="System Bold" size="15.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="searchInDictionaryTF" alignment="CENTER" disable="true" onKeyPressed="#searchInDictionaryListener" promptText="Search from dictionary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Button fx:id="clearBtn" disable="true" mnemonicParsing="false" onAction="#clearFieldsListener" text="Clear fields" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                        <TextField fx:id="searchInDictionaryTF" alignment="CENTER" disable="true" maxWidth="150.0" onKeyPressed="#searchInDictionaryListener" promptText="Search from dictionary" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </GridPane.margin></TextField>
+                        <Button fx:id="clearBtn" disable="true" mnemonicParsing="false" onAction="#clearFieldsListener" prefHeight="25.0" prefWidth="95.0" text="Clear fields" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-                        <TextArea fx:id="dictionaryTA" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6" GridPane.rowSpan="3">
+                     </cursor>
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></Button>
+                        <TextArea fx:id="dictionaryTA" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" GridPane.rowSpan="3">
                             <GridPane.margin>
-                                <Insets right="10.0" />
+                                <Insets left="5.0" right="10.0" />
                             </GridPane.margin>
                         </TextArea>
                     </children>
                 </GridPane>
-                <GridPane alignment="CENTER" prefHeight="133.0" prefWidth="578.0" style="-fx-border-color: #DE3163;">
+                <GridPane alignment="CENTER" prefHeight="133.0" prefWidth="875.0" style="-fx-border-color: #DE3163;">
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="157.0" minWidth="157.0" prefWidth="157.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="700.0" minWidth="30.0" prefWidth="259.33331298828125" />
                         <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="217.0" minWidth="30.0" prefWidth="151.33331298828125" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="23.333343505859375" minHeight="10.0" prefHeight="17.333343505859375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="41.333343505859375" minHeight="10.0" prefHeight="38.666656494140625" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="37.666656494140625" minHeight="10.0" prefHeight="37.666656494140625" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="43.666656494140625" minHeight="10.0" prefHeight="23.333343505859375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="19.333343505859375" minHeight="0.333343505859375" prefHeight="7.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="27.0" minHeight="27.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="45.0" minHeight="25.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="38.0" minHeight="25.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="43.0" minHeight="25.0" prefHeight="43.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label text="Choose amount of agents:" GridPane.rowIndex="1">
@@ -144,7 +152,7 @@
                         <Insets />
                      </GridPane.margin>
                      <children>
-                              <Slider fx:id="agentAmountSlider" majorTickUnit="2.0" max="5.0" maxHeight="1.7976931348623157E308" maxWidth="450.0" minWidth="20.0" minorTickCount="1" prefHeight="31.0" prefWidth="195.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" HBox.hgrow="ALWAYS">
+                              <Slider fx:id="agentAmountSlider" majorTickUnit="2.0" max="0.0" maxHeight="1.7976931348623157E308" maxWidth="450.0" minWidth="20.0" minorTickCount="1" prefHeight="31.0" prefWidth="195.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" HBox.hgrow="ALWAYS">
                            <cursor>
                               <Cursor fx:constant="OPEN_HAND" />
                            </cursor>
@@ -166,7 +174,7 @@
                         <TextField fx:id="taskSizeTF" maxWidth="52.0" minWidth="25.0" onAction="#taskSizeListener" prefHeight="25.0" prefWidth="52.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="Set Decryption Manager" GridPane.columnIndex="1">
                             <font>
-                                <Font name="System Bold" size="12.0" />
+                                <Font name="System Bold" size="18.0" />
                             </font>
                      <GridPane.margin>
                         <Insets />
@@ -183,8 +191,11 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                         </Button>
-                        <Label fx:id="amountOfTasksLabel" text="amount of tasks:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <TextField fx:id="amountOfTasksTF" editable="false" prefHeight="25.0" prefWidth="81.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="amountOfTasksLabel" style="-fx-text-fill: RED;" text="Totall tasks:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                        <TextField fx:id="amountOfTasksTF" alignment="CENTER" editable="false" prefHeight="25.0" prefWidth="81.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                     </children>
                     <VBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -220,49 +231,53 @@
                 </HBox>
             <HBox alignment="CENTER">
                <children>
-                      <HBox alignment="CENTER_RIGHT" minWidth="30.0" prefHeight="25.0" prefWidth="479.0" spacing="25.0">
+                  <HBox alignment="CENTER_LEFT" maxWidth="280.0" prefHeight="25.0" prefWidth="270.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxHeight="20.0" maxWidth="90.0" minHeight="20.0" minWidth="92.0" prefHeight="20.0" prefWidth="90.0" text="Overall time:">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="totalTimeTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="100.0">
+                           <HBox.margin>
+                              <Insets left="-2.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                      <HBox alignment="CENTER" minWidth="200.0" prefHeight="25.0" prefWidth="693.0" spacing="25.0" HBox.hgrow="NEVER">
                           <children>
-                              <ToggleButton fx:id="stopBtn" disable="true" mnemonicParsing="false" onAction="#stopBtnListener" text="Stop">
+                        <Button fx:id="stopBtn" disable="true" maxWidth="90.0" minWidth="50.0" mnemonicParsing="false" onAction="#stopBtnListener" prefWidth="80.0" text="Stop" HBox.hgrow="ALWAYS">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
-                        </ToggleButton>
-                              <ToggleButton fx:id="pauseBtn" disable="true" mnemonicParsing="false" onAction="#pauseBtnListener" text="Pause">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ToggleButton>
-                              <ToggleButton fx:id="resumeBtn" disable="true" mnemonicParsing="false" onAction="#resumeBtnListener" text="Resume">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ToggleButton>
+                        </Button>
+                        <Button fx:id="pauseBtn" disable="true" maxWidth="90.0" minWidth="50.0" mnemonicParsing="false" onAction="#pauseBtnListener" prefWidth="80.0" text="Pause" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="resumeBtn" disable="true" maxWidth="90.0" minWidth="50.0" mnemonicParsing="false" onAction="#resumeBtnListener" prefWidth="80.0" text="Resume" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="searchingSolutionsLabel" alignment="CENTER" maxWidth="200.0" minWidth="0.0" prefHeight="19.0" prefWidth="200.0" style="-fx-text-fill: #DE3163;" text="searching for solutions!" visible="false">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="searchStoppedLabel" alignment="CENTER" maxWidth="136.0" minWidth="0.0" prefHeight="19.0" prefWidth="136.0" style="-fx-text-fill: #DE3163;" text="Search stopped!" visible="false">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
                           </children>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                       </HBox>
-                  <Label fx:id="searchingSolutionsLabel" alignment="CENTER_RIGHT" minWidth="50.0" prefHeight="19.0" prefWidth="293.0" style="-fx-text-fill: #DE3163;" text="searching for solutions!">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <padding>
-                        <Insets right="10.0" />
-                     </padding>
-                  </Label>
                </children>
             </HBox>
-            <HBox>
-               <children>
-                  <Label prefHeight="21.0" prefWidth="90.0" text="Total time:">
-                     <HBox.margin>
-                        <Insets left="21.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="totalTimeTF" alignment="CENTER" editable="false" text="0 Sec" />
-               </children>
-            </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="600.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="894.0" spacing="15.0" VBox.vgrow="ALWAYS">
                     <children>
                         <Label maxHeight="20.0" maxWidth="97.0" minHeight="20.0" minWidth="97.0" prefHeight="20.0" prefWidth="97.0" text="Candidates:">
                             <font>
@@ -272,12 +287,15 @@
                                 <Insets left="10.0" />
                             </padding>
                         </Label>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets bottom="2.0" right="9.0" />
+                        <Insets bottom="10.0" right="10.0" />
                      </HBox.margin>
                      <content>
-                        <FlowPane fx:id="candidatesFP" prefHeight="43.0" prefWidth="478.0" style="-fx-border-color: #1C2833;" />
+                        <FlowPane fx:id="candidatesFP" hgap="10.0" maxHeight="1.7976931348623157E308" prefWrapLength="200.0" style="-fx-border-color: #1C2833;" vgap="10.0">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding></FlowPane>
                      </content>
                   </ScrollPane>
                     </children>

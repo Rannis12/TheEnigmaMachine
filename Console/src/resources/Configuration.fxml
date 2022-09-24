@@ -4,31 +4,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="261.0" prefWidth="301.0" style="-fx-border-color: #1C2833; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ConfigurationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="121.0" prefWidth="303.0" style="-fx-border-color: RED; -fx-border-style: dashed solid; -fx-border-width: 3;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ConfigurationController">
    <children>
-      <HBox layoutX="20.0" layoutY="16.0" spacing="15.0">
+      <HBox layoutX="15.0" layoutY="5.0" prefHeight="112.0" prefWidth="279.0" spacing="15.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="2.0">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="239.0" prefWidth="120.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="97.0" prefWidth="110.0" spacing="5.0">
                <children>
-                  <Label text="To Encode" />
-                  <Label text="Decoded To" />
-                  <Label text="Agent ID:" />
-                  <Label text="Rotors Order" />
-                  <Label text="Rotors Positions" />
-                  <Label text="Reflector ID" />
-                  <Label text="Time Taken" />
+                  <Label prefWidth="97.0" text="Encrypted string:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label text="Agent ID:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label text="Rotors Order">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label text="Rotors Positions">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label text="Reflector ID">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="239.0" prefWidth="120.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="101.0" prefWidth="152.0" spacing="5.0">
                <children>
-                  <Label fx:id="toEncodeLabel" text="check" />
-                  <Label fx:id="decodedToLabel" text="check" />
-                  <Label fx:id="agentIDLabel" text="check" />
-                  <Label fx:id="rotorsOrderLabel" text="check" />
-                  <Label fx:id="rotorsPositionsLabel" text="check" />
-                  <Label fx:id="reflectorIDLabel" text="check" />
-                  <Label fx:id="timeTakenLabel" text="check" />
+                  <Label fx:id="decodedToLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
+                  <Label fx:id="agentIDLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
+                  <Label fx:id="rotorsOrderLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
+                  <Label fx:id="rotorsPositionsLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
+                  <Label fx:id="reflectorIDLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
                </children>
             </VBox>
          </children>

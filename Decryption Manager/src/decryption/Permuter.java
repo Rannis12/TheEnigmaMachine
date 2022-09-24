@@ -51,16 +51,5 @@ public class Permuter {
         return null;
     }
 
-    /*public static void main(String[] args) {
-        Permuter permuter = new Permuter(3);
-        System.out.println("check");
-        for (int i = 0; i < 6; i++) {
-            int[] arr = permuter.getNext();
-            for (int j = 0; j < 3; j++) {
-                System.out.println(arr[j] + " ");
-            }
-            System.out.println("\n");
-        }
-    }*/
 }
 

@@ -29,8 +29,6 @@ public class NewDictionary {
 
     // Iterative function to insert a string into a Trie
     public void insert(String key) {
-        System.out.println("Inserting \"" + key + "\"");
-
         // start from the root node
         NewDictionary curr = this;
 
@@ -50,7 +48,6 @@ public class NewDictionary {
     // Iterative function to search a key in a Trie. It returns true
     // if the key is found in the Trie; otherwise, it returns false
     public boolean search(String key) {
-        System.out.print("Searching \"" + key + "\" : ");
 
         NewDictionary curr = this;
 
@@ -70,26 +67,6 @@ public class NewDictionary {
         return curr.isLeaf;
     }
 
-    /*public static void main (String[] args) {
-        // construct a new Trie node
-        NewDictionary head = new NewDictionary();
-
-        head.insert("techie!");
-        head.insert("techi");
-        head.insert("tech");
-
-        System.out.println(head.search("tech"));            // true
-        System.out.println(head.search("techi"));           // true
-        System.out.println(head.search("techie!"));          // true
-        System.out.println(head.search("techiedelight"));   // false
-
-        head.insert("techiedelight");
-
-        System.out.println(head.search("tech"));            // true
-        System.out.println(head.search("techi"));           // true
-        System.out.println(head.search("techie"));          // true
-        System.out.println(head.search("techiedelight"));   // true
-    }*/
 
     private void initMethod(CTEDictionary cteDictionary){
         Set<String> dictionary = new HashSet<>();
@@ -107,7 +84,6 @@ public class NewDictionary {
             amountOfWords++;
         }
         String[] wordsArr = words.split(" ", amountOfWords);
-        //String[] regexes = new String[] {"\\+","\\*","\\^", "\\{", "\\}", "\\?"};
 
         for (int i = 0; i < wordsArr.length; i++) {
             boolean isValidWord = true;

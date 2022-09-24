@@ -87,7 +87,7 @@ public class DecryptTask implements Runnable {
 
                     MissionDTO missionDTO = new MissionDTO(Thread.currentThread().getName(),
                             resultString, engine.getEngineFullDetails().getChosenReflector(),
-                            initPos, engine.getRotorsIndexesString());
+                            initPos, engine.getEngineFullDetails().getUsedRotorsOrganization());
 
                     blockingQueueResponses.put(missionDTO);
                 }

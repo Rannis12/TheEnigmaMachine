@@ -294,7 +294,7 @@
                      <content>
                         <FlowPane fx:id="candidatesFP" hgap="10.0" maxHeight="1.7976931348623157E308" prefWrapLength="200.0" style="-fx-border-color: #1C2833;" vgap="10.0">
                            <padding>
-                              <Insets left="5.0" />
+                              <Insets left="5.0" top="5.0" />
                            </padding></FlowPane>
                      </content>
                   </ScrollPane>

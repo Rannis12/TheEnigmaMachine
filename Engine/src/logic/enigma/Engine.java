@@ -248,10 +248,6 @@ public class Engine implements Serializable, Machine, Cloneable {
         return this.dictionary;
     }
 
-    public void initPlugBoardForDM() {
-        plugBoard.initForDM();
-    }
-
     public void initRotorsPositions(String initString) {
         rotors.initRotorsPosition(initString);
     }

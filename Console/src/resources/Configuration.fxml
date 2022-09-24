@@ -10,7 +10,7 @@
    <children>
       <HBox layoutX="15.0" layoutY="5.0" prefHeight="112.0" prefWidth="279.0" spacing="15.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="2.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="97.0" prefWidth="110.0" spacing="5.0">
+            <VBox alignment="CENTER" prefHeight="106.0" prefWidth="166.0" spacing="5.0">
                <children>
                   <Label prefWidth="97.0" text="Encrypted string:">
                      <font>
@@ -20,11 +20,7 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label text="Rotors Order">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <Label text="Rotors Positions">
+                  <Label text="Rotors Order\Positions">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
@@ -38,8 +34,7 @@
                <children>
                   <Label fx:id="decodedToLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
                   <Label fx:id="agentIDLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
-                  <Label fx:id="rotorsOrderLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
-                  <Label fx:id="rotorsPositionsLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
+                  <Label fx:id="rotorsPositionsAndOrderLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
                   <Label fx:id="reflectorIDLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="check" />
                </children>
             </VBox>

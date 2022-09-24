@@ -354,10 +354,9 @@ public class ThirdTabController {
 
                     configurationController.setDecodedToLabel(missionDTO.getDecodedTo());
                     configurationController.setReflectorIDLabel(missionDTO.getChosenReflector());
-                    configurationController.setRotorsOrderLabel(missionDTO.getRotorsOrder());
+                    configurationController.setRotorsPositionsAndOrderLabel(missionDTO.getRotorsPositionsAndOrder());
 
                     configurationController.setAgentIDLabel(missionDTO.getAgentID());
-                    configurationController.setRotorsPositionsLabel(missionDTO.getRotorsPosition());
 
 
                     candidatesFP.getChildren().add(root);

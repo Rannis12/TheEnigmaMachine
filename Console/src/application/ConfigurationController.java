@@ -5,18 +5,15 @@ import javafx.scene.control.Label;
 
 public class ConfigurationController {
 
-    @FXML private Label toEncodeLabel;
     @FXML private Label decodedToLabel;
     @FXML private Label agentIDLabel;
-    @FXML private Label rotorsOrderLabel;
-    @FXML private Label rotorsPositionsLabel;
+
+    @FXML private Label rotorsPositionsAndOrderLabel;
     @FXML private Label reflectorIDLabel;
-    @FXML private Label timeTakenLabel;
 
-    public void setToEncodeLabel(String toEncodeLabel) {
-        this.toEncodeLabel.setText(toEncodeLabel);
+    public void setRotorsPositionsAndOrderLabel(String rotorsPositionsAndOrderLabel) {
+        this.rotorsPositionsAndOrderLabel.setText(rotorsPositionsAndOrderLabel);
     }
-
     public void setDecodedToLabel(String decodedToLabel) {
         this.decodedToLabel.setText(decodedToLabel);
     }
@@ -25,19 +22,8 @@ public class ConfigurationController {
         this.agentIDLabel.setText(agentIDLabel);
     }
 
-    public void setRotorsOrderLabel(String rotorsOrderLabel) {
-        this.rotorsOrderLabel.setText(rotorsOrderLabel);
-    }
-
-    public void setRotorsPositionsLabel(String rotorsPositionsLabel) {
-        this.rotorsPositionsLabel.setText(rotorsPositionsLabel);
-    }
-
     public void setReflectorIDLabel(String reflectorIDLabel) {
         this.reflectorIDLabel.setText(reflectorIDLabel);
     }
 
-    public void setTimeTakenLabel(String timeTakenLabel){
-        this.timeTakenLabel.setText(timeTakenLabel);
-    }
 }

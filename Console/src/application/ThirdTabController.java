@@ -204,9 +204,9 @@ public class ThirdTabController {
                 throw new invalidInputException("Please choose Difficulty.");
             }
             tasksSize = Integer.valueOf(taskSizeTF.getText());
-            if(tasksSize < 1 || tasksSize > 1000) { //maybe not a good condition.
+            if(tasksSize < 1 ) { //maybe not a good condition.
                 taskSizeTF.clear();
-                throw new invalidInputException("Please choose size between 1 to 1000.");
+                throw new invalidInputException("Please choose positive size.");
 
             }
             if(encodeMsgTF.getText().equals("") || outputTF.getText().equals("Reset has been made successfully!!")){

@@ -276,7 +276,7 @@ public class ThirdTabController {
         searchStoppedLabel.setVisible(false);
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
-        totalTimeResult();
+        totalTimeResult();//why is this here
 
         unbind();
 

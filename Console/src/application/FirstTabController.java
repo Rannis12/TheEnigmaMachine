@@ -22,51 +22,24 @@ public class FirstTabController implements Initializable {
         private ReflectorDTO reflectorDTO = null;
         private MainPageController mainPageController;
 
-    @FXML
-    private Label rotorsDetails;
-
-
-    @FXML
-    private Label decodedStrings;
-
-    @FXML
-    private Label chooseReflectorLabel;
-
-    @FXML
-    private Label reflectorsAmount;
-
+    @FXML private Label rotorsDetails;
+    @FXML private Label decodedStrings;
+    @FXML private Label chooseReflectorLabel;
+    @FXML private Label reflectorsAmount;
     @FXML private Button setMachineBtn;
-
-    @FXML
-    private Button randomBtn;
-
-    @FXML
-    private Button manualBtn;
-
-    @FXML
-    private TextArea instructionTF;
-
-    @FXML
-    private TextField userRotorsInput;
-
-    @FXML
-    private TextField userInitPlaces;
-
-    @FXML
-    private TextField userInitPlugBoard;
-
-    @FXML
-    private ChoiceBox<?> reflectorChoiceBox;
+    @FXML private Button randomBtn;
+    @FXML private Button manualBtn;
+    @FXML private TextArea instructionTF;
+    @FXML private TextField userRotorsInput;
+    @FXML private TextField userInitPlaces;
+    @FXML private TextField userInitPlugBoard;
+    @FXML private ChoiceBox<?> reflectorChoiceBox;
 
 
     @FXML
     private Label machineInitializeLabel;
-
-    @FXML
-    private TextField initializeConfigurationTF;
-
-    @FXML
-    private TextField currentConfigurationTF;
+    @FXML private TextField initializeConfigurationTF;
+    @FXML private TextField currentConfigurationTF;
 
 
     @FXML
@@ -123,9 +96,7 @@ public class FirstTabController implements Initializable {
 
         rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
         reflectorsAmount.setText(String.valueOf(engineMinimalDetailsDTO.getReflectorsAmount()));
-        //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings()));
-
-//        IntegerProperty counter = mainPageController.getDecodedStringsCounterDTO();
+        //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings())); // solved with bind
 
     }
 
@@ -174,8 +145,6 @@ public class FirstTabController implements Initializable {
     }
     @FXML
     void userRotorsInputListener(ActionEvent event) {
-
-
         String rotorsPosition = userRotorsInput.getText();
         try {
             rotorsIndexesDTO = new RotorsIndexesDTO();

@@ -346,7 +346,7 @@ public class ThirdTabController {
         Platform.runLater(() -> {
             if(missionDTO != null){
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                URL url = getClass().getResource("../resources/Configuration.fxml");
+                URL url = getClass().getResource("/resources/Configuration.fxml");
                 fxmlLoader.setLocation(url);
                 try {
                     Parent root = fxmlLoader.load(url.openStream());

@@ -108,7 +108,6 @@ public class DecryptionManager {
 
 
     }
-
     private void setThreadOfResponses() {
         new Thread(() -> {
             MissionDTO missionDTO = null;
@@ -123,9 +122,6 @@ public class DecryptionManager {
         }).start();
 
     }
-
-
-
     private class Producer extends Task {
         private BlockingQueue<Runnable> blockingQueue;
         private int missionSize;
@@ -142,8 +138,6 @@ public class DecryptionManager {
             this.producerEngine = copyEngine;
 
         }
-
-
         private int calculateOptionOnePossibleMissions(){ //need to check it
             double alphaBetLength = alphaBet.length();
             double num = Math.pow(alphaBetLength, amountOfRotors); //initialized amount of rotors.
@@ -151,8 +145,6 @@ public class DecryptionManager {
             return (int)possibleOptions;
 
         }
-
-
         private void calculatePossibleMissions(){ //need to check it
             double alphaBetLength = alphaBet.length();
             double num = Math.pow(alphaBetLength, amountOfRotors); //initialized amount of rotors.
@@ -184,17 +176,14 @@ public class DecryptionManager {
             }
             return fact;
         }
-        private int nCr(int n, int r)
-        {
+        private int nCr(int n, int r) {
             return fact(n) / (fact(r) *
                               fact(n - r));
         }
-
-
         private void createMissions(){
             //in order to initialize the progress bar.
             createdSoFar.set(0);
-            //calculatePossibleMissions(); check- moved to ctor
+
 
             startTime = System.nanoTime();
             switch (decryptionSelection) {
@@ -236,13 +225,11 @@ public class DecryptionManager {
 
                 for (int k = 0; k < missionSize; k++) { //alwayes be >=0, and if it 0, the condition won't occur.
                     initialPositions.add(initString);
-
                     //SteerRotors...
                     producerEngine.steerRotors();
                     initString = producerEngine.getEngineFullDetails().getRotorsCurrentPositions();
 
                 }
-
                 try {
                     blockingQueue.put(new DecryptTask((Engine)producerEngine.clone(), sizeOfMission
                             , toEncode, blockingQueueResponses,
@@ -260,15 +247,12 @@ public class DecryptionManager {
             ArrayList<Integer> reflectorsArray = engine.getAllExistingReflectors();
 
             for (Integer reflector : reflectorsArray) {
-//                engine.initSelectedReflector(reflector);
                 easy(engine.getEngineFullDetails().getRotorsCurrentPositions(),
-                        reflector,
-                        rotorsIndexes);
+                        reflector, rotorsIndexes);
             }
         }
-        private void hard(ArrayList<Integer> possibleRotorsIndexes) { // rotors should be instead of engine.gerRotorsIndexes();
+        private void hard(ArrayList<Integer> possibleRotorsIndexes) {
             ArrayList<ArrayList<Integer>> possiblePositions = getAllPossibleRotorsPosition(possibleRotorsIndexes);
-
             for (ArrayList<Integer> rotorsPossiblePosition : possiblePositions) {
                 medium(rotorsPossiblePosition);
             }
@@ -281,7 +265,6 @@ public class DecryptionManager {
                 hard(combinations.get(i));
             }
         }
-
         private ArrayList<ArrayList<Integer>> getAllPossibleRotorsPosition(ArrayList<Integer> rotorsIndexes) { //need to fix it.
             ArrayList<ArrayList<Integer>> possiblePositions = new ArrayList<>();
             Permuter permuter = new Permuter(rotorsIndexes.size());

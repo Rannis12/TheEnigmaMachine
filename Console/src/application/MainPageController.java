@@ -10,13 +10,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
-import resources.jaxb.generated.CTEDecipher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,53 +22,20 @@ public class MainPageController {
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
     @FXML private ThirdTabController thirdTabController;
+    @FXML private Label xmlPathLabel;
     private Engine engine;
     private int currConfigurationDecodedAmount;
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
-    private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty(0);
+    private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty();
 
 
     @FXML public void initialize() {
-        resetCurrConfigurationDecodedAmount();
-
         if(firstTabController != null && secondTabController != null && thirdTabController != null){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
             thirdTabController.setMainPageController(this);
-
-            // Ran: Bind number of decodes to counter.
-            firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
-
-            //Ran: everytime that amountOfDecodedStrings is changes, we "listening" to event, and updates the relevant fields.
-            // in this case, we update configuration label.
-            amountOfDecodedStrings.addListener(e -> {
-            updateConfigurationLabel();
-            });
         }
     }
-
-    private void setAgentAmountSlider() {
-        int agentMaxAmount = engine.getAgentMaxAmount();
-        thirdTabController.setAgentAmountSlider(agentMaxAmount);
-    }
-
-    public void updateConfigurationLabel() {
-        EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
-        String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(),
-                engineFullDetailsDTO.getPlugBoardString());
-
-        firstTabController.setCurrentConfigurationTF(newConfiguration);
-        secondTabController.setCurrentConfigurationTF(newConfiguration);
-        thirdTabController.setCurrentConfigurationTF(newConfiguration);
-    }
-    @FXML private Button loadFileBtn;
-    @FXML private Label xmlPathLabel;
-    @FXML private TabPane tabPane;
-    @FXML private Tab tabOne;
-    @FXML private Tab tabTwo;
-    @FXML private Tab tabThree;
-
     @FXML
     void loadFile(MouseEvent event) {
 
@@ -85,17 +49,41 @@ public class MainPageController {
                 firstTabController.enableButtons();
                 firstTabController.clearConfigurationTextFields();
 
-
                 secondTabController.disableAllButtonsAndTextFields();
                 secondTabController.clearCurrentConfigurationTA();
                 secondTabController.getStatisticsTA().clear();
 
                 thirdTabController.DisableAllButtonsAndTextFields();
+
+                amountOfDecodedStrings.unbind();
+                amountOfDecodedStrings = new SimpleIntegerProperty(0);
+
+                resetCurrConfigurationDecodedAmount();
+                firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
+
+                amountOfDecodedStrings.addListener(e -> {
+                    updateConfigurationLabel();
+                });
+
+
             }
         }
     }
 
+    private void setAgentAmountSlider() {
+        int agentMaxAmount = engine.getAgentMaxAmount();
+        thirdTabController.setAgentAmountSlider(agentMaxAmount);
+    }
 
+    public void updateConfigurationLabel() {
+        EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
+        String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+
+        firstTabController.setCurrentConfigurationTF(newConfiguration);
+        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        thirdTabController.setCurrentConfigurationTF(newConfiguration);
+    }
     public boolean loadFileFromXml(String fileDestination){
         try {
 
@@ -103,7 +91,6 @@ public class MainPageController {
             engine = engineLoader.loadEngineFromXml(fileDestination); //Ran added. updates the dictionary in thirdController.
 
             firstTabController.setReflectorsCB(getReflectorsIDs());
-            //firstTabController.setReflectorsMenuBtn(getReflectorsIDs());
 
             engine.resetStatistics();
 
@@ -119,11 +106,9 @@ public class MainPageController {
         }
         return false;
     }
-
     public void randomConfiguration() {
         engine.randomEngine();
     }
-
     public EngineFullDetailsDTO getEngineFullDetails(){
         return engine.getEngineFullDetails();
     }
@@ -166,27 +151,21 @@ public class MainPageController {
         secondTabController.setDecodingButtonsDisable(setToDisable);
         thirdTabController.setDecodingButtonsDisable(setToDisable);
     }
-
     public int getUsedAmountOfRotors() {
         return engine.getEngineMinimalDetails().getUsedAmountOfRotors();
     }
-
     public void checkRotorIndexesValidity(String rotorsPosition, RotorsIndexesDTO rotorsIndexesDTO) throws invalidInputException {
         engine.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO.getUIRotorsIndexes());
     }
-
     public void checkRotorsFirstPositionsValidity(String rotorsFirstPositions) throws invalidInputException {
         engine.checkRotorsFirstPositionsValidity(rotorsFirstPositions, engine.getKeyBoard());
     }
-
     public void checkPlugBoardValidity(String tmpString, PlugBoardDTO plugBoardDTO) throws invalidInputException {
         engine.checkPlugBoardValidity(tmpString, plugBoardDTO.getUICables());
     }
-
     public void setNewMachine(RotorsFirstPositionDTO rotorsFirstPositionDTO, PlugBoardDTO plugBoardDTO, ReflectorDTO reflectorDTO, RotorsIndexesDTO rotorsIndexesDTO) {
         engine.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
     }
-
     public int getReflectorsIDs(){
         return engine.getReflectorsIDs();
     }
@@ -196,18 +175,13 @@ public class MainPageController {
         errorAlert.setContentText(errorMsg);
         errorAlert.showAndWait();
     }
-
-
     public DecodeStringInfo decodeString(String text) throws invalidInputException {
-
         DecodeStringInfo decodeStringInfo = engine.decodeStr(text);
         return decodeStringInfo;
     }
-
     public char decodeChar(char character){
         return engine.decodeChar(character);
     }
-
     public void increaseDecodedStringAmount(){
         currConfigurationDecodedAmount++;
     }
@@ -217,29 +191,20 @@ public class MainPageController {
     public void resetCurrConfigurationDecodedAmount() {
         currConfigurationDecodedAmount = 0;
     }
-
     public void resetEngineToUserInitChoice() {
         engine.resetEngineToUserInitChoice();
     }
-
     public void setDecodedCorrectly(boolean value) {
         decodedCorrectly.set(value);
     }
-
     public void appendToStatistics(String statisticNewString) {
         secondTabController.appendToStatistics(statisticNewString);
     }
-
     public int getAmountOfDecodedStrings() {
         return amountOfDecodedStrings.get();
     }
-
     public void setAmountOfDecodedStrings(int amountOfDecodedStrings) {
         this.amountOfDecodedStrings.set(amountOfDecodedStrings);
-    }
-
-    public Engine getEngine(){
-       return (Engine)engine.clone();
     }
 }
 

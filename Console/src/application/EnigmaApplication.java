@@ -13,7 +13,7 @@ public class EnigmaApplication extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("../resources/MainPage.fxml");
+        URL url = getClass().getResource("/resources/MainPage.fxml");
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 

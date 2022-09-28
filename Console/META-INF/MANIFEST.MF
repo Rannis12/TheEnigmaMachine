@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: application.EnigmaApplication
+Class-Path: DTO.jar Engine.jar Machine.jar DecryptionManager.jar

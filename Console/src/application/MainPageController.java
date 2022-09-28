@@ -55,6 +55,7 @@ public class MainPageController {
 
                 thirdTabController.DisableAllButtonsAndTextFields();
 
+
                 amountOfDecodedStrings.unbind();
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 

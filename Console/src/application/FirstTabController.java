@@ -154,7 +154,6 @@ public class FirstTabController implements Initializable {
         return this.decodedStrings;
     }
 
-
     public void showDetails(EngineMinimalDetailsDTO engineMinimalDetailsDTO) {
 
         rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
@@ -162,17 +161,13 @@ public class FirstTabController implements Initializable {
         //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings())); // solved with bind
 
     }
-
     public void setMainController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;
     }
-
     public void enableButtons() {
         randomBtn.setDisable(false);
         manualBtn.setDisable(false);
     }
-
-
     public void operationsAfterValidInput(){
         clearAllUsersTextFields();
         machineInitializeLabel.setTextFill(Color.RED);

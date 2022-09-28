@@ -34,13 +34,9 @@ public class FirstTabController implements Initializable {
     @FXML private TextField userInitPlaces;
     @FXML private TextField userInitPlugBoard;
     @FXML private ChoiceBox<?> reflectorChoiceBox;
-
-
-    @FXML
-    private Label machineInitializeLabel;
+    @FXML private Label machineInitializeLabel;
     @FXML private TextField initializeConfigurationTF;
     @FXML private TextField currentConfigurationTF;
-
 
     @FXML
     void setMachine(ActionEvent event) throws invalidInputException {
@@ -63,7 +59,6 @@ public class FirstTabController implements Initializable {
 
 
     }
-
     @FXML
     void randomBtnListener(ActionEvent event) {
         mainPageController.randomConfiguration();
@@ -72,6 +67,74 @@ public class FirstTabController implements Initializable {
         mainPageController.resetCurrConfigurationDecodedAmount();
         mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
+    @FXML
+    void manualBtnListener(ActionEvent event) {
+        userRotorsInput.setDisable(false);
+        clearAllUsersTextFields();
+        instructionTF.setText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
+                "from left to right divided by comma. for example 23,542,231");
+
+
+        userInitPlaces.setDisable(true);
+        userInitPlugBoard.setDisable(true);
+
+        machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
+    }
+    @FXML
+    void userRotorsInputListener(ActionEvent event) {
+        String rotorsPosition = userRotorsInput.getText();
+        try {
+            rotorsIndexesDTO = new RotorsIndexesDTO();
+            mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
+            userRotorsInput.setDisable(true);
+
+            userInitPlaces.setDisable(false);
+            instructionTF.setText("Enter first positions of rotors from left to right without spaces. For example: 4D8A.");
+
+        } catch (invalidInputException ex) {
+            userRotorsInput.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+
+    }
+    @FXML
+    void userInitPlacesListener(ActionEvent event) {
+        String rotorsFirstPositions = userInitPlaces.getText();
+        rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
+        try {
+            mainPageController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
+            rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
+            userInitPlaces.setDisable(true);
+
+            userInitPlugBoard.setDisable(false);
+
+            instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
+        } catch (invalidInputException ex) {
+            userInitPlaces.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+    }
+    @FXML
+    void userInitPlugBoardListener(ActionEvent event) {
+        try {
+            String tmpString = userInitPlugBoard.getText();
+            tmpString = tmpString.toUpperCase();
+            plugBoardDTO = new PlugBoardDTO();
+            mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
+            plugBoardDTO.setInitString(tmpString);
+            userInitPlugBoard.setDisable(true);
+
+            chooseReflectorLabel.setVisible(true);
+            reflectorChoiceBox.setVisible(true);
+            setMachineBtn.setDisable(false);
+
+            instructionTF.setText("Choose reflectors from the following:");
+        } catch (invalidInputException ex) {
+            userInitPlugBoard.clear();
+            mainPageController.popUpError(ex.getMessage());
+        }
+    }
+
 
     public void setReflectorsCB(int amount){
         ObservableList observableList = FXCollections.observableArrayList();
@@ -130,91 +193,11 @@ public class FirstTabController implements Initializable {
         instructionTF.clear();
     }
 
-    @FXML
-    void manualBtnListener(ActionEvent event) {
-        userRotorsInput.setDisable(false);
-        clearAllUsersTextFields();
-        instructionTF.setText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
-                "from left to right divided by comma. for example 23,542,231");
-
-
-        userInitPlaces.setDisable(true);
-        userInitPlugBoard.setDisable(true);
-
-        machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
-    }
-    @FXML
-    void userRotorsInputListener(ActionEvent event) {
-        String rotorsPosition = userRotorsInput.getText();
-        try {
-            rotorsIndexesDTO = new RotorsIndexesDTO();
-            mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
-            userRotorsInput.setDisable(true);
-
-            userInitPlaces.setDisable(false);
-            instructionTF.setText("Enter first positions of rotors from left to right without spaces. For example: 4D8A.");
-
-        } catch (invalidInputException ex) {
-            userRotorsInput.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-
-    }
-
-    @FXML
-    void userInitPlacesListener(ActionEvent event) {
-        String rotorsFirstPositions = userInitPlaces.getText();
-        rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
-        try {
-            mainPageController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
-            rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
-            userInitPlaces.setDisable(true);
-
-            userInitPlugBoard.setDisable(false);
-
-            instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
-        } catch (invalidInputException ex) {
-            userInitPlaces.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-    }
-
-    @FXML
-    void userInitPlugBoardListener(ActionEvent event) {
-        try {
-            String tmpString = userInitPlugBoard.getText();
-            tmpString = tmpString.toUpperCase();
-            plugBoardDTO = new PlugBoardDTO();
-            mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
-            plugBoardDTO.setInitString(tmpString);
-            userInitPlugBoard.setDisable(true);
-
-            chooseReflectorLabel.setVisible(true);
-            reflectorChoiceBox.setVisible(true);
-            setMachineBtn.setDisable(false);
-
-            instructionTF.setText("Choose reflectors from the following:");
-        } catch (invalidInputException ex) {
-            userInitPlugBoard.clear();
-            mainPageController.popUpError(ex.getMessage());
-        }
-    }
-
-    public void reLoadInitialize() {
-        rotorsDetails.setText("...");
-        //decodedStrings.setText("...");
-        reflectorsAmount.setText("...");
-
-        initializeConfigurationTF.clear();
-        currentConfigurationTF.clear();
-    }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
     public void clearConfigurationTextFields() {
         initializeConfigurationTF.clear();
         currentConfigurationTF.clear();

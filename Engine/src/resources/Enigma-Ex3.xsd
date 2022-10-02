@@ -51,8 +51,8 @@
 	</xs:element>
 	<xs:element name="CTE-Positioning">
 		<xs:complexType>
-			<xs:attribute name="right" type="xs:string" use="required"/>
 			<xs:attribute name="left" type="xs:string" use="required"/>
+			<xs:attribute name="right" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="CTE-Machine">
@@ -70,6 +70,7 @@
 			<xs:sequence>
 				<xs:element ref="CTE-Machine"/>
 				<xs:element ref="CTE-Decipher"/>
+				<xs:element ref="CTE-Battlefield"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -86,7 +87,22 @@
 			<xs:sequence>
 				<xs:element ref="CTE-Dictionary"/>
 			</xs:sequence>
-			<xs:attribute name="agents" type="xs:int" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CTE-Battlefield">
+		<xs:complexType>
+			<xs:attribute name="level" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Easy"/>
+						<xs:enumeration value="Medium"/>
+						<xs:enumeration value="Hard"/>
+						<xs:enumeration value="Insane"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="battle-name" type="xs:string" use="required"/>
+			<xs:attribute name="allies" type="xs:int" use="required"/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

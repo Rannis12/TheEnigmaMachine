@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
-<CTE-Enigma xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Downloads/Enigma-Ex2.xsd">
+<CTE-Enigma xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Enigma-Ex3.xsd">
 	<CTE-Machine rotors-count="5">
 		<ABC>ABCDEFGHIJKLMNOPQRSTUVWXYZ !?'</ABC>
 		<CTE-Rotors>
@@ -228,7 +228,7 @@
 				<CTE-Positioning left="?" right="U"/>
 				<CTE-Positioning left="'" right="X"/>
 			</CTE-Rotor>
-			<CTE-Rotor id="5" notch="20">
+			<CTE-Rotor id="5" notch="2">
 				<CTE-Positioning left="A" right="O"/>
 				<CTE-Positioning left="B" right="U"/>
 				<CTE-Positioning left="C" right="F"/>
@@ -381,11 +381,12 @@
 			</CTE-Reflector>
 		</CTE-Reflectors>
 	</CTE-Machine>
-	<CTE-Decipher agents="10">
+	<CTE-Decipher>
 		<CTE-Dictionary exclude-chars="!'#?">
 			<Words>		
 			german year remote salary leg advance tea character rabbit fire stick they coffe sister element sure robot! edit nail past old dune dolphine scratch then am easy quality eye seat folder letter notch allies adult wing brother saturday strong yellow scam sea gold see does attack taken free foot hand mine a manager black i thursday pistol blood democracy battle single fly component blue watch progress purple under yours insurance mouce won't foam cannon lie project run do ruler bomb red mother view later white hello? missile huge wood finish which wendsday sink telephone check decrease ranch retreat she sand wire knife squad month desk loose child drop where? deep plural young father for privacy back rule house fox not street now lier missing ignore end hard class trike human mortal live patrol midnight green umbrella start bye bypass print fork money airplane pyramid iron window time gate he mark age tray encapsulation big poland happy slim kombat sanity convert waffele whom? tape terms else camel lost action text portal if sky calculator item pedal shape in metal it propellor explicit sunday moon system light tiny number# dog word partial hash why? gun implicit pink woman what? direct triangle local weak out slave computer noon file top freedom ear dark dwarf man stand can't table monday suprise could strike electricity kill great boat off help reflector future machine grid atom shuffle complete clip entity inferno voice rotor small tonight door domination shake data use doom sign screen feel employee second whale than function spoon england tap morning! dirt tree thrown water heart trash army square entry person coal rectangle present sugar soap magenta shame game code enigma week death vegtable fruit line snake their box racket can hair napkin paper hour and cat of snale design sad iteration friday steam said win make fight sheep how? on keyboard or will wheel saw smoke control increase master minute orange tuesday round bomer front walk account lame
 		</Words>
 		</CTE-Dictionary>
 	</CTE-Decipher>
+	<CTE-Battlefield battle-name="Hirushima" allies="3" level="Medium"/>
 </CTE-Enigma>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CTE-Enigma xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../Downloads/Enigma-Ex2.xsd">
+<CTE-Enigma xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Enigma-Ex3.xsd">
 	<CTE-Machine rotors-count="3">
 		<ABC>ABCDEFGHIJKLMNOPQRSTUVWXYZ !?'</ABC>
 		<CTE-Rotors>
@@ -218,11 +218,12 @@
 			</CTE-Reflector>
 		</CTE-Reflectors>
 	</CTE-Machine>
-	<CTE-Decipher agents="56">
+	<CTE-Decipher>
 		<CTE-Dictionary exclude-chars="!'#?">
 		<Words>		
-			encapsulation german poland kombat waffele german whom? leg character terms else camel rabbit fire text if they element sky item robot! past dune dolphine then it am quality eye moon system folder light letter number# notch allies dog word hash why? gun pink what? yellow sea see noon file top does ear can't table foot hand a strike black i electricity pistol kill boat democracy off battle single fly component blue watch reflector future machine progress atom under inferno voice rotor tonight mouce door won't data use doom sign screen do bomb red later whale white hello? than which england morning! dirt tree thrown water trash ranch she sand squad desk present where? magenta game code enigma plural death vegtable fruit for their privacy back house fox not hair napkin and street cat now of iteration class trike fight mortal live how? on patrol keyboard midnight or green umbrella wheel saw orange airplane window front he
+			encapsulation german poland kombat waffele whom? leg character terms else camel rabbit fire text if they element sky item robot! past dune dolphine then it am quality eye moon system folder light letter number# notch allies dog word hash why? gun pink what? yellow sea see noon file top does ear can't table foot hand a strike black i electricity pistol kill boat democracy off battle single fly component blue watch reflector future machine progress atom under inferno voice rotor tonight mouce door won't data use doom sign screen do bomb red later whale white hello? than which england morning! dirt tree thrown water trash ranch she sand squad desk present where? magenta game code enigma plural death vegtable fruit for their privacy back house fox not hair napkin and street cat now of iteration class trike fight mortal live how? on patrol keyboard midnight or green umbrella wheel saw orange airplane window front he
 		</Words>
 		</CTE-Dictionary>
 	</CTE-Decipher>	
+	<CTE-Battlefield battle-name="pearl harbour" allies="2" level="Easy"/>
 </CTE-Enigma>

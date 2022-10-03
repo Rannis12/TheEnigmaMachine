@@ -5,7 +5,6 @@ import enigma.machine.Machine;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
 
-import javax.lang.model.type.ArrayType;
 import java.io.*;
 import java.util.*;
 
@@ -15,17 +14,11 @@ public class Engine implements Serializable, Machine, Cloneable {
     private PlugBoard plugBoard;
     private KeyBoard keyBoard;
     private MachineStatisticsDTO machineStatisticsDTO;
-
     private int agentMaxAmount;
-
     private int amountOfDecodedStrings;
-
-    static int amountOfTimeCloneOccur = 0;
-
     private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
-    //we need to use it. in Agent im calling this whole path, instead calling LOADED_ENGINE_PATH.
-
+    private BattleField battleField;
 
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount, CTEDictionary cteDictionary) {
 
@@ -46,9 +39,8 @@ public class Engine implements Serializable, Machine, Cloneable {
         Engine engineCopy = null;
         try {
             engineCopy = loadEnigmaFromString(saveEnigmaToString(this));
-//            amountOfTimeCloneOccur++;
         } catch (invalidInputException e) {
-            throw new RuntimeException("error in cloning the engine. " /*+ amountOfTimeCloneOccur*/);
+            throw new RuntimeException("error in cloning the engine.");
         }
 
         return engineCopy;

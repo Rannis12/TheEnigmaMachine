@@ -7,6 +7,9 @@
       <module fileurl="file://$PROJECT_DIR$/../DecryptionManager/DecryptionManager.iml" filepath="$PROJECT_DIR$/../DecryptionManager/DecryptionManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Engine/Engine.iml" filepath="$PROJECT_DIR$/../Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Machine/Machine.iml" filepath="$PROJECT_DIR$/../Machine/Machine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebAgent/WebAgent.iml" filepath="$PROJECT_DIR$/../WebAgent/WebAgent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebAllies/WebAllies.iml" filepath="$PROJECT_DIR$/../WebAllies/WebAllies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebUBoat/WebUBoat.iml" filepath="$PROJECT_DIR$/../WebUBoat/WebUBoat.iml" />
     </modules>
   </component>
 </project>

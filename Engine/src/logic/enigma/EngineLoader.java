@@ -16,7 +16,7 @@ public class EngineLoader {
         this.FileDestination = fileDestination;
     }
 
-    public Engine loadEngineFromXml(String filePath/*, Dictionary dictionary*/) throws invalidXMLfileException {
+    public Engine loadEngineFromXml(String filePath) throws invalidXMLfileException {
         CTEEnigma cteEnigma = null;
         try {
             InputStream inputStream = new FileInputStream(new File(filePath));
@@ -26,7 +26,7 @@ public class EngineLoader {
             throw new invalidXMLfileException("This File isn't a xml file that fits xsd. Please enter a valid xml file path: ");
         }
 
-        return convertToEngine(cteEnigma/*, dictionary*/);
+        return convertToEngine(cteEnigma);
     }
     private CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
@@ -43,14 +43,17 @@ public class EngineLoader {
         List<CTEReflector> cteReflectors = cteEnigma.getCTEMachine().getCTEReflectors().getCTEReflector();
         List<CTERotor> cteRotorsLIST = cteEnigma.getCTEMachine().getCTERotors().getCTERotor();
         CTEDecipher cteDecipher = cteEnigma.getCTEDecipher();
+        CTEBattlefield CteBattlefield = cteEnigma.getCTEBattlefield();
 
-        if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher) == true) {
+        if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher, CteBattlefield) == true) {
             newEngine =  new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getAgents() , cteDecipher.getCTEDictionary());
             //dictionary = new Dictionary(newEngine.getKeyBoard(), cteDecipher.getCTEDictionary());
         }
         return newEngine;
     }
-    private boolean checkCTEEnigma(String alphaBetFromCTE, int rotorCount, List<CTEReflector> cteReflectorsLIST, List<CTERotor> cteRotorsLIST, CTEDecipher cteDecipher) throws invalidXMLfileException {
+    private boolean checkCTEEnigma(String alphaBetFromCTE, int rotorCount, List<CTEReflector> cteReflectorsLIST,
+                                   List<CTERotor> cteRotorsLIST, CTEDecipher cteDecipher,
+                                   CTEBattlefield cteBattlefield) throws invalidXMLfileException {
         if (alphaBetFromCTE.length() % 2 != 0) {
             throw new invalidXMLfileException("Error in loading a file: Alpha-Bet in file does not even!");
         }
@@ -60,8 +63,14 @@ public class EngineLoader {
         if (rotorCount < 2) {
             throw new invalidXMLfileException("Error in loading a file: Minimal Enigma machine should have at least 2 rotors and theres only " + rotorCount + " in this file");
         }
-        if(cteDecipher.getAgents() <2 || cteDecipher.getAgents() >50) {
-            throw new invalidXMLfileException("ERROR: agents amount should be between 2 and 50.");
+        /*if(cteDecipher.getAgents() < 2 || cteDecipher.getAgents() > 50) {
+            throw new invalidXMLfileException("Error: agents amount should be between 2 and 50.");
+        }*/
+        if(cteBattlefield.getAllies() <= 0){
+            throw new invalidXMLfileException("Error: amount of allies must be a positive number.");
+        }
+        if(!checkDifficultyValidation(cteBattlefield.getBattleName())){
+            throw new invalidXMLfileException("Error: the word " + cteBattlefield.getBattleName() + " isn't a possible difficulty selection.");
         }
 
         boolean isValidRotors = false, isValidPositioning = false, isValidReflectors = false;
@@ -177,5 +186,24 @@ public class EngineLoader {
         else{
             throw new invalidXMLfileException(fullPath +" isn't a xml file.");
         }
+    }
+
+    //needs to check validation only in xml file, since we supposed to use a combo box in the application,
+    public static boolean checkDifficultyValidation(String value){
+        boolean isValid = false;
+        switch(value){
+            case "Easy":
+            case "Medium":
+            case "Hard":
+            case "Insane":
+                isValid = true;
+                break;
+        }
+        return isValid;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(checkDifficultyValidation("Insane1"));
     }
 }

@@ -46,7 +46,6 @@ public class EngineLoader {
 
         if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher) == true) {
             newEngine =  new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE, cteDecipher.getAgents() , cteDecipher.getCTEDictionary());
-            //dictionary = new Dictionary(newEngine.getKeyBoard(), cteDecipher.getCTEDictionary());
         }
         return newEngine;
     }

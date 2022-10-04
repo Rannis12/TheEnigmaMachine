@@ -1,3 +1,4 @@
+import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import javafx.beans.property.BooleanProperty;
@@ -12,11 +13,15 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
+import okhttp3.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainPageController {
+    public final static String BASE_URL = "http://localhost:8080";
+    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
    // @FXML private ThirdTabController thirdTabController;
@@ -35,7 +40,7 @@ public class MainPageController {
         }
     }
     @FXML
-    void loadFile(MouseEvent event) {
+    void loadFile(MouseEvent event) throws IOException {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
@@ -51,7 +56,7 @@ public class MainPageController {
                 secondTabController.clearCurrentConfigurationTA();
                 secondTabController.getStatisticsTA().clear();
 
-                thirdTabController.DisableAllButtonsAndTextFields();
+                /*thirdTabController.DisableAllButtonsAndTextFields();*/
 
 
                 amountOfDecodedStrings.unbind();
@@ -65,13 +70,38 @@ public class MainPageController {
                 });
 
 
+
+                String RESOURCE = "/upload-file";
+
+//                File f = new File("src/resources/some-file.txt");
+
+                RequestBody body =
+                        new MultipartBody.Builder()
+                                .addFormDataPart("file1", file.getName(), RequestBody.create(file, MediaType.parse("text/plain")))
+                                //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                                .build();
+
+                Request request = new Request.Builder()
+                        .url(BASE_URL + RESOURCE)
+                        .post(body)
+                        .build();
+
+                Call call = HTTP_CLIENT.newCall(request);
+
+                Response response = call.execute();
+
+
+
+
+
+
             }
         }
     }
 
     private void setAgentAmountSlider() {
         int agentMaxAmount = engine.getAgentMaxAmount();
-        thirdTabController.setAgentAmountSlider(agentMaxAmount);
+        /*thirdTabController.setAgentAmountSlider(agentMaxAmount);*/
     }
 
     public void updateConfigurationLabel() {
@@ -81,7 +111,7 @@ public class MainPageController {
 
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
-        thirdTabController.setCurrentConfigurationTF(newConfiguration);
+        /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
     }
     public boolean loadFileFromXml(String fileDestination){
         try {
@@ -95,9 +125,9 @@ public class MainPageController {
 
             xmlPathLabel.setText(fileDestination + " selected");
             secondTabController.setDecodingButtonsDisable(true);
-            thirdTabController.setDictionary(engine.getDictionary());
+            /*thirdTabController.setDictionary(engine.getDictionary());
             thirdTabController.setEngine(engine);
-            thirdTabController.prepareTab();
+            thirdTabController.prepareTab();*/
             return true;
 
         } catch (invalidXMLfileException e) {
@@ -141,14 +171,14 @@ public class MainPageController {
     public void setTabsConfiguration(String newConfiguration) {
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
-        thirdTabController.setCurrentConfigurationTF(newConfiguration);
+        /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
 
         secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }
 
     public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
         secondTabController.setDecodingButtonsDisable(setToDisable);
-        thirdTabController.setDecodingButtonsDisable(setToDisable);
+        /*thirdTabController.setDecodingButtonsDisable(setToDisable);*/
     }
     public int getUsedAmountOfRotors() {
         return engine.getEngineMinimalDetails().getUsedAmountOfRotors();

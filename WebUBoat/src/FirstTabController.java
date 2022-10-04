@@ -1,7 +1,4 @@
-import dtos.PlugBoardDTO;
-import dtos.ReflectorDTO;
-import dtos.RotorsFirstPositionDTO;
-import dtos.RotorsIndexesDTO;
+import dtos.*;
 import exceptions.invalidInputException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

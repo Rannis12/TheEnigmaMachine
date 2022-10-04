@@ -20,11 +20,13 @@ public class Engine implements Serializable, Machine, Cloneable {
 
     private BattleField battleField;
 
-    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE, String alphaBetFromCTE, int agentMaxAmount, CTEDictionary cteDictionary) {
+    //agentMaxAmount field no required anymore.
+    Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE,
+           String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
         dictionary = new Dictionary(keyBoard, cteDictionary);
-        this.agentMaxAmount = agentMaxAmount;
+        /*this.agentMaxAmount = agentMaxAmount;*/
 
         reflectors = new Reflectors(cteReflectors);
         rotors = new Rotors(cteRotors, rotorCountFromCTE);

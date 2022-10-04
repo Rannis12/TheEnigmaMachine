@@ -11,7 +11,7 @@ public class UBoatApplication extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/resources/MainPage.fxml");
+        URL url = getClass().getResource("/resources/NewMainPage.fxml");
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 

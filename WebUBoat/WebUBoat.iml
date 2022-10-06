@@ -23,5 +23,15 @@
     <orderEntry type="module" module-name="DTO" />
     <orderEntry type="module" module-name="Engine" />
     <orderEntry type="module" module-name="Machine" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../okHttp" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../../okHttp" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

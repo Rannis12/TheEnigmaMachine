@@ -69,35 +69,35 @@ public class MainPageController {
                     updateConfigurationLabel();
                 });
 
-
-
-                //updating tomcat isn't working. needs to figure why.
-                String RESOURCE = "/upload-file";
-
-//                File f = new File("src/resources/some-file.txt");
-
-                RequestBody body =
-                        new MultipartBody.Builder()
-                                .addFormDataPart("file1", file.getName(), RequestBody.create(file, MediaType.parse("text/plain")))
-                                //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
-                                .build();
-
-                Request request = new Request.Builder()
-                        .url(BASE_URL + RESOURCE)
-                        .post(body)
-                        .build();
-
-                Call call = HTTP_CLIENT.newCall(request);
-
-                Response response = call.execute();
-
-
-
-
-
+                uploadFileToServer(file);
 
             }
         }
+    }
+
+    /**
+     * this method uploads game settings (xml file) to server
+     * @param file - xml file that represents game settings.
+     */
+    private void uploadFileToServer(File file) throws IOException {
+        String RESOURCE = "/upload-file";
+
+//                File f = new File("src/resources/some-file.txt");
+
+        RequestBody body =
+                new MultipartBody.Builder()
+                        .addFormDataPart("file1", file.getName(), RequestBody.create(file, MediaType.parse("text/plain")))
+                        //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
+                        .build();
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + RESOURCE)
+                .post(body)
+                .build();
+
+        Call call = HTTP_CLIENT.newCall(request);
+
+        Response response = call.execute();
     }
 
     private void setAgentAmountSlider() {

@@ -69,8 +69,8 @@ public class EngineLoader {
         if(cteBattlefield.getAllies() <= 0){
             throw new invalidXMLfileException("Error: amount of allies must be a positive number.");
         }
-        if(!checkDifficultyValidation(cteBattlefield.getBattleName())){
-            throw new invalidXMLfileException("Error: the word " + cteBattlefield.getBattleName() + " isn't a possible difficulty selection.");
+        if(!checkDifficultyValidation(cteBattlefield.getLevel())){
+            throw new invalidXMLfileException("Error: the word " + cteBattlefield.getLevel() + " isn't a possible difficulty selection.");
         }
 
         boolean isValidRotors = false, isValidPositioning = false, isValidReflectors = false;

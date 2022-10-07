@@ -13,23 +13,17 @@ public class SecondTabController {
     private MainPageController mainPageController;
     private boolean shouldDecodeLine; //false = should decode char
 
-
-
-
-
     @FXML private TextField currentConfiguration;
+    @FXML private Button decodeLineBtn;
+    @FXML private TextField lineInputTF;
+    @FXML private Button readyBtn;
     @FXML private TextField decodeResultTF;
-    @FXML private Button processBtn;
     @FXML private Button clearBtn;
     @FXML private Button resetBtn;
-    @FXML private Button decodeLineBtn;
-    @FXML private Button doneBtn;
-    @FXML private Button decodeCharBtn;
-    @FXML private TextField lineInputTF;
-    @FXML private TextField charInputTF;
-    @FXML private TextArea statisticsTA;
-
+    @FXML private TextArea teamDetailsTA;
     @FXML
+    private Button logoutBtn;
+/*    @FXML
     void processBtnListener(ActionEvent event) {
         mainPageController.setDecodedCorrectly(false);
 
@@ -44,21 +38,18 @@ public class SecondTabController {
 
                 mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
 
-                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
-                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
+//                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+//                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
             } catch (invalidInputException e) {
                 mainPageController.popUpError(e.getMessage());
             }
         }
 
-    }
+    }*/
 
     @FXML
     void clearBtnListener(ActionEvent event) {
         clearEncryptTextFields();
-    }
-    public void clearCurrentConfigurationTA() {
-        currentConfiguration.clear();
     }
 
     @FXML
@@ -68,15 +59,83 @@ public class SecondTabController {
         the integerProperty and the listener will update automatically, but it's weird*/
 
         clearEncryptTextFields();
-        charInputTF.setDisable(true);
-        doneBtn.setDisable(true);
+//        charInputTF.setDisable(true);
+//        doneBtn.setDisable(true);
         lineInputTF.setDisable(true);
-        processBtn.setDisable(true);
+//        processBtn.setDisable(true);
         decodeResultTF.setText("Reset has been made successfully!!");
 
     }
 
     @FXML
+    void decodeLineListener(ActionEvent event) {
+        clearEncryptTextFields();
+
+        lineInputTF.setDisable(false);
+//        processBtn.setDisable(false);
+        clearBtn.setDisable(false);
+
+//        doneBtn.setDisable(true);
+
+//        charInputTF.setDisable(!lineInputTF.isDisable());
+
+        shouldDecodeLine = true;
+    }
+
+    @FXML
+    void logoutBtnListener(ActionEvent event) {
+
+    }
+    @FXML
+    void readyBtnListener(ActionEvent event) {
+
+    }
+
+    public void setMainPageController(MainPageController mainPageController) {
+        this.mainPageController = mainPageController;
+    }
+
+    public void setCurrentConfigurationTF(String currConfiguration) {
+        currentConfiguration.setText(currConfiguration);
+    }
+
+    public void setDecodingButtonsDisable(boolean setToDisable) {
+        decodeLineBtn.setDisable(setToDisable);
+//        decodeCharBtn.setDisable(setToDisable);
+        resetBtn.setDisable(setToDisable);
+
+    }
+
+    public void clearEncryptTextFields(){
+//        charInputTF.clear();
+        lineInputTF.clear();
+        decodeResultTF.clear();
+    }
+
+    public void clearCurrentConfigurationTA() {
+        currentConfiguration.clear();
+    }
+
+    public void disableAllButtonsAndTextFields() {
+//        decodeCharBtn.setDisable(true);
+//        charInputTF.setDisable(true);
+//        doneBtn.setDisable(true);
+        decodeLineBtn.setDisable(true);
+        lineInputTF.setDisable(true);
+//        processBtn.setDisable(true);
+        clearBtn.setDisable(true);
+    }
+
+
+
+
+
+
+    /*public void appendToStatistics(String statisticNewString) {
+        statisticsTA.appendText(statisticNewString);
+    }*/
+
+/*    @FXML
     void doneBtnListener(ActionEvent event) {
         mainPageController.setDecodedCorrectly(false);
         if(!charInputTF.getText().equals("")) {
@@ -91,9 +150,9 @@ public class SecondTabController {
 
         clearEncryptTextFields();
 
-    }
+    }*/
 
-    @FXML
+/*    @FXML
     void charInputListener(KeyEvent event) {
         char nextChar = 0;
         if(!event.getText().equals("")) {
@@ -104,76 +163,23 @@ public class SecondTabController {
                 mainPageController.popUpError("The letter " + nextChar + " doesn't exist in the language. Please try again.\n");
             }
         }
-    }
+    }*/
 
-    @FXML
+/*    @FXML
     void decodeCharListener(ActionEvent event) {
         clearEncryptTextFields();
 
         lineInputTF.setDisable(true);
-        processBtn.setDisable(true);
+//        processBtn.setDisable(true);
         clearBtn.setDisable(true);
 
-        doneBtn.setDisable(false);
+//        doneBtn.setDisable(false);
 
-        charInputTF.setDisable(!lineInputTF.isDisable());
+//        charInputTF.setDisable(!lineInputTF.isDisable());
 
         shouldDecodeLine = false;
-    }
-
-    @FXML
-    void decodeLineListener(ActionEvent event) {
-        clearEncryptTextFields();
-
-        lineInputTF.setDisable(false);
-        processBtn.setDisable(false);
-        clearBtn.setDisable(false);
-
-        doneBtn.setDisable(true);
-
-        charInputTF.setDisable(!lineInputTF.isDisable());
-
-        shouldDecodeLine = true;
-    }
-
-    public void setMainPageController(MainPageController mainPageController) {
-        this.mainPageController = mainPageController;
-    }
-
-    public void setCurrentConfigurationTF(String currConfiguration) {
-        currentConfiguration.setText(currConfiguration);
-    }
-
-
-    public void setDecodingButtonsDisable(boolean setToDisable) {
-        decodeLineBtn.setDisable(setToDisable);
-        decodeCharBtn.setDisable(setToDisable);
-        resetBtn.setDisable(setToDisable);
-
-    }
-
-
-    public void clearEncryptTextFields(){
-        charInputTF.clear();
-        lineInputTF.clear();
-        decodeResultTF.clear();
-    }
-
-    public TextArea getStatisticsTA(){
+    }*/
+    /*    public TextArea getStatisticsTA(){
         return statisticsTA;
-    }
-
-    public void disableAllButtonsAndTextFields() {
-        decodeCharBtn.setDisable(true);
-        charInputTF.setDisable(true);
-        doneBtn.setDisable(true);
-        decodeLineBtn.setDisable(true);
-        lineInputTF.setDisable(true);
-        processBtn.setDisable(true);
-        clearBtn.setDisable(true);
-    }
-
-    public void appendToStatistics(String statisticNewString) {
-        statisticsTA.appendText(statisticNewString);
-    }
+    }*/
 }

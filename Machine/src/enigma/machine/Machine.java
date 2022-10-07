@@ -1,3 +1,4 @@
+/*
 package enigma.machine;
 
 import dtos.EngineFullDetailsDTO;
@@ -13,3 +14,4 @@ public interface Machine {
 
     void resetStatistics();
 }
+*/

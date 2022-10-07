@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainPageController {
-    public final static String BASE_URL = "http://localhost:8080";
-    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
+    public static String BASE_URL = "http://localhost:8080";
+    public static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
    // @FXML private ThirdTabController thirdTabController;
@@ -54,7 +54,7 @@ public class MainPageController {
 
                 secondTabController.disableAllButtonsAndTextFields();
                 secondTabController.clearCurrentConfigurationTA();
-                secondTabController.getStatisticsTA().clear();
+//                secondTabController.getStatisticsTA().clear();
 
                 /*thirdTabController.DisableAllButtonsAndTextFields();*/
 
@@ -63,7 +63,7 @@ public class MainPageController {
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 
                 resetCurrConfigurationDecodedAmount();
-                firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
+//                firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
 
                 amountOfDecodedStrings.addListener(e -> {
                     updateConfigurationLabel();
@@ -174,7 +174,7 @@ public class MainPageController {
         secondTabController.setCurrentConfigurationTF(newConfiguration);
         /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
 
-        secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
+//        secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }
 
     public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
@@ -227,9 +227,9 @@ public class MainPageController {
     public void setDecodedCorrectly(boolean value) {
         decodedCorrectly.set(value);
     }
-    public void appendToStatistics(String statisticNewString) {
+ /*   public void appendToStatistics(String statisticNewString) {
         secondTabController.appendToStatistics(statisticNewString);
-    }
+    }*/
     public int getAmountOfDecodedStrings() {
         return amountOfDecodedStrings.get();
     }

@@ -19,21 +19,48 @@ public class FirstTabController implements Initializable {
     private ReflectorDTO reflectorDTO = null;
     private MainPageController mainPageController;
 
-    @FXML private Label rotorsDetails;
-    @FXML private Label decodedStrings;
-    @FXML private Label chooseReflectorLabel;
-    @FXML private Label reflectorsAmount;
-    @FXML private Button setMachineBtn;
-    @FXML private Button randomBtn;
-    @FXML private Button manualBtn;
-    @FXML private TextArea instructionTF;
-    @FXML private TextField userRotorsInput;
-    @FXML private TextField userInitPlaces;
-    @FXML private TextField userInitPlugBoard;
-    @FXML private ChoiceBox<?> reflectorChoiceBox;
-    @FXML private Label machineInitializeLabel;
-    @FXML private TextField initializeConfigurationTF;
-    @FXML private TextField currentConfigurationTF;
+    @FXML
+    private Button randomBtn;
+
+    @FXML
+    private Button manualBtn;
+
+    @FXML
+    private TextArea instructionTF;
+
+    @FXML
+    private TextField userRotorsInput;
+
+    @FXML
+    private TextField userInitPlaces;
+
+    @FXML
+    private TextField userInitPlugBoard;
+
+    @FXML
+    private Label chooseReflectorLabel;
+
+    @FXML
+    private ChoiceBox<?> reflectorChoiceBox;
+
+    @FXML
+    private Button setMachineBtn;
+
+    @FXML
+    private Label machineInitializeLabel;
+
+    @FXML
+    private TextField currentConfigurationTF;
+
+    @FXML
+    private Label detailsLabel;
+
+    @FXML
+    private Label rotorsDetails;
+
+    @FXML
+    private Label reflectorsAmount;
+
 
     @FXML
     void setMachine(ActionEvent event) throws invalidInputException {
@@ -44,7 +71,7 @@ public class FirstTabController implements Initializable {
             mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
             operationsAfterValidInput();
             mainPageController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
-            mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
+//            mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
 
             chooseReflectorLabel.setVisible(false);
             reflectorChoiceBox.setVisible(false);
@@ -62,7 +89,7 @@ public class FirstTabController implements Initializable {
 
         operationsAfterValidInput();
         mainPageController.resetCurrConfigurationDecodedAmount();
-        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
+//        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
     @FXML
     void manualBtnListener(ActionEvent event) {
@@ -112,7 +139,10 @@ public class FirstTabController implements Initializable {
         }
     }
     @FXML
-    void userInitPlugBoardListener(ActionEvent event) {
+    void userInitPlugBoardListener(ActionEvent event)
+
+
+    {
         try {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();
@@ -147,9 +177,9 @@ public class FirstTabController implements Initializable {
         currentConfigurationTF.setText(currentConfiguration);
     }
 
-    public Label getDecodedStrings() {
+    /*public Label getDecodedStrings() {
         return this.decodedStrings;
-    }
+    }*/
 
     public void showDetails(EngineMinimalDetailsDTO engineMinimalDetailsDTO) {
 
@@ -174,7 +204,7 @@ public class FirstTabController implements Initializable {
         String newConfiguration = mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
 
-        initializeConfigurationTF.setText(newConfiguration);
+//        initializeConfigurationTF.setText(newConfiguration);
         mainPageController.setDecodingAndClearButtonsDisable(false);
 
     }
@@ -191,7 +221,7 @@ public class FirstTabController implements Initializable {
 
     }
     public void clearConfigurationTextFields() {
-        initializeConfigurationTF.clear();
+//        initializeConfigurationTF.clear();
         currentConfigurationTF.clear();
     }
 }

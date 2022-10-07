@@ -9,6 +9,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="DTO" />
     <orderEntry type="module" module-name="Engine" />
-    <orderEntry type="module" module-name="Machine" />
   </component>
 </module>

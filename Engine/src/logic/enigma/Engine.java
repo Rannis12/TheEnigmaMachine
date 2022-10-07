@@ -1,14 +1,13 @@
 package logic.enigma;
 
 import dtos.*;
-import enigma.machine.Machine;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
 
 import java.io.*;
 import java.util.*;
 
-public class Engine implements Serializable, Machine, Cloneable {
+public class Engine implements Serializable, Cloneable {
     private Reflectors reflectors;
     private Rotors rotors;
     private PlugBoard plugBoard;
@@ -166,11 +165,9 @@ public class Engine implements Serializable, Machine, Cloneable {
         return reflectors.getReflectorsIDs();
     }
 
-    @Override
     public MachineStatisticsDTO getMachineStatistics() {
         return machineStatisticsDTO;
     }
-    @Override
     public EngineFullDetailsDTO getEngineFullDetails() {
         int usedAmountOfRotors = rotors.getUsedRotorsAmount();
         int rotorsAmount = rotors.getRotorsAmount();
@@ -188,7 +185,6 @@ public class Engine implements Serializable, Machine, Cloneable {
         return new EngineFullDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings, plugBoardString,
                 chosenReflector, rotorsFirstPositions, usedRotorsOrganization, notchesCurrentPlaces, notchesFirstPlaces, rotorsCurrentPositions);
     }
-    @Override
     public EngineMinimalDetailsDTO getEngineMinimalDetails() {
         int usedAmountOfRotors = rotors.getUsedRotorsAmount();
         int rotorsAmount = rotors.getRotorsAmount();
@@ -200,7 +196,6 @@ public class Engine implements Serializable, Machine, Cloneable {
     public int getAgentMaxAmount() {
         return agentMaxAmount;
     }
-    @Override
     public void resetStatistics() {
         machineStatisticsDTO.resetStatistics();
         amountOfDecodedStrings = 0;
@@ -294,7 +289,7 @@ public class Engine implements Serializable, Machine, Cloneable {
         return reflectors.getSelectedReflector();
     }
 
-    public String getRotorsIndexesString() {
+/*    public String getRotorsIndexesString() {
         ArrayList<Integer> rotorsIndexes = rotors.getUsedRotorsIndexes();
         String rotorsIndexesString = "";
 
@@ -306,7 +301,7 @@ public class Engine implements Serializable, Machine, Cloneable {
 
         }
         return rotorsIndexesString;
-    }
+    }*/
 }
 
 

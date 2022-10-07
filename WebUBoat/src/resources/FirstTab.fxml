@@ -17,106 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FirstTabController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FirstTabController">
    <children>
-      <VBox fx:id="tabOneUpperVB" alignment="TOP_CENTER" layoutX="16.0" layoutY="-1.0" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="656.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
-         <children>
-            <Label fx:id="detailsLabel" alignment="CENTER" prefHeight="14.0" prefWidth="62.0" text="Details:">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <GridPane fx:id="rowOneInTabOne" maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="63.0" minWidth="63.0" prefWidth="63.0" />
-                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="576.6666564941406" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <padding>
-                  <Insets bottom="2.0" top="4.0" />
-               </padding>
-               <children>
-                  <Label fx:id="rotorsDetails" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="3.0" left="5.0" top="3.0" />
-                     </padding>
-                  </Label>
-                  <Label prefHeight="26.0" prefWidth="66.0" text="Rotors:">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-            <GridPane maxHeight="27.0" prefHeight="27.0" prefWidth="555.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="231.0" minWidth="231.0" prefWidth="231.0" />
-                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="408.33331298828125" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <padding>
-                  <Insets top="4.0" />
-               </padding>
-               <children>
-                  <Label fx:id="decodedStrings" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.vgrow="NEVER">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="3.0" left="5.0" top="3.0" />
-                     </padding>
-                  </Label>
-                  <Label fx:id="decodedStringsLabel" minWidth="-Infinity" prefHeight="26.0" text="Amount of decoded strings:">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-            <GridPane maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="170.0" minWidth="162.0" prefWidth="162.0" />
-                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="477.6666564941406" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <padding>
-                  <Insets top="4.0" />
-               </padding>
-               <children>
-                  <Label fx:id="reflectorsAmount" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets right="10.0" top="2.0" />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="3.0" left="5.0" top="3.0" />
-                     </padding>
-                  </Label>
-                  <Label prefHeight="26.0" prefWidth="168.0" text="Reflectors Amount:">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-      <SplitPane dividerPositions="0.5" layoutY="105.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="336.0" prefWidth="672.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="105.0">
+      <SplitPane dividerPositions="0.5" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="488.0" prefWidth="672.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
          <items>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="200.0" prefWidth="300.0">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="200.0" prefWidth="331.0">
                <children>
-                  <VBox alignment="TOP_CENTER" layoutY="-9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="266.0" spacing="7.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-9.0">
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="439.0" prefWidth="301.0" spacing="7.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Label alignment="CENTER" text="Calibration" textFill="#ea0505">
                            <font>
@@ -201,7 +108,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" layoutY="-1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="266.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-1.0">
                      <children>
-                        <Label alignment="TOP_CENTER" style="-fx-text-fill: #DE3163;" text="Current machine configuration">
+                        <Label alignment="TOP_CENTER" style="-fx-text-fill: #DE3163;" text="Current Machine Configuration">
                            <font>
                               <Font name="Arial Bold" size="18.0" />
                            </font>
@@ -209,23 +116,69 @@
                               <Insets top="12.0" />
                            </VBox.margin>
                         </Label>
-                        <Label alignment="BOTTOM_CENTER" maxHeight="80.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="120.0" style="-fx-text-fill: #DE3163;" text="Initiallize Configuration" VBox.vgrow="ALWAYS">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="initializeConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS" />
-                        <Label alignment="BOTTOM_CENTER" maxHeight="150.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="301.0" style="-fx-text-fill: #DE3163;" text="Current Configuration" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font size="16.0" />
-                           </font></Label>
-                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" prefWidth="301.0" style="-fx-border-color: #1C2833;" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="40.0" />
                            </VBox.margin></TextField>
+                        <Label fx:id="detailsLabel" alignment="CENTER" prefHeight="14.0" prefWidth="62.0" text="Details:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <GridPane fx:id="rowOneInTabOne" maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="63.0" minWidth="63.0" prefWidth="63.0" />
+                              <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="576.6666564941406" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <padding>
+                              <Insets bottom="2.0" top="4.0" />
+                           </padding>
+                           <children>
+                              <Label fx:id="rotorsDetails" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" />
+                                 </GridPane.margin>
+                                 <padding>
+                                    <Insets bottom="3.0" left="5.0" top="3.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="26.0" prefWidth="66.0" text="Rotors:">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </GridPane>
+                        <GridPane maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="170.0" minWidth="162.0" prefWidth="162.0" />
+                              <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="477.6666564941406" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <padding>
+                              <Insets top="4.0" />
+                           </padding>
+                           <children>
+                              <Label fx:id="reflectorsAmount" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" top="2.0" />
+                                 </GridPane.margin>
+                                 <padding>
+                                    <Insets bottom="3.0" left="5.0" top="3.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="26.0" prefWidth="168.0" text="Reflectors Amount:">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </GridPane>
                      </children>
                   </VBox>
                </children>

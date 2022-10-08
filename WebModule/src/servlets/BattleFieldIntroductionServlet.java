@@ -1,4 +1,4 @@
-package uboat.servlets;
+package servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

@@ -1,16 +1,14 @@
-package uboat.servlets;
+package servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import okhttp3.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //import static examples.servletcontext.store.GuestIntroductionServlet.GUESTS_LIST_PROPERTY_NAME;
@@ -31,7 +29,7 @@ public class BattleFieldListServlet extends HttpServlet {
     private void printGuestList(PrintWriter out) {
 //        out.println("Guest List so far:");
         for (int i = 0; i < getGuestList().size(); i++) {
-            out.println( (i+1) + ". " + getGuestList().get(i) );
+            out.println( /*(i+1) + ". " +*/ getGuestList().get(i) );
         }
     }
 

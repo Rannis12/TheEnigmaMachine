@@ -1,3 +1,4 @@
+import exceptions.invalidInputException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +9,6 @@ import okhttp3.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 
 public class UBoatApplication extends Application{
 
@@ -36,9 +36,10 @@ public class UBoatApplication extends Application{
         String ADD_BATTLEFIELD_RESOURCE = "/battleFieldList/new";
         String GET_BATTLEFIELD_RESOURCE = "/battleFieldList";
 
+        String battleFieldNameFromUser = "Ran";
         String[] guests = {"OFEK", "RAN", "HELLO"};
 
-        Arrays.stream(guests).forEach(guest -> {
+        /*Arrays.stream(guests).forEach(guest -> {
             HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "/UBoat" + ADD_BATTLEFIELD_RESOURCE).newBuilder();
             urlBuilder.addQueryParameter("battleField", guest);
             String finalUrl = urlBuilder.build().toString();
@@ -58,23 +59,58 @@ public class UBoatApplication extends Application{
                 System.out.println("Error when adding guest " + guest + ". Exception: " + e.getMessage());
             }
 
-        });
+        });*/
 
         Request request = new Request.Builder()
                 .url(BASE_URL  + "/UBoat" + GET_BATTLEFIELD_RESOURCE)
                 .build();
 
         Call call = HTTP_CLIENT.newCall(request);
-
+        int amountOfComma = 0;
         try {
             Response response = call.execute();
+//            System.out.println(response.body().string());
 
+            String responseBody = response.body().string();
+            responseBody = responseBody.trim();
+            for (int i = 0; i < responseBody.length(); i++) {
+                if(responseBody.charAt(i) == ','){
+                    amountOfComma++;
+                }
+            }
+            String[] bfNames = responseBody.
+                                        split(",", amountOfComma + 1);
 
-            System.out.println(response.body().string());
+            for (int i = 0; i < bfNames.length; i++) {
+                if(bfNames[i].equals(battleFieldNameFromUser)){
+                    System.out.println("the name: " + battleFieldNameFromUser + " is already taken.");
+                }
+            }
         } catch (IOException e) {
             System.out.println("Error when trying to get guests list. Exception: " + e.getMessage());
         }
 
-    }
 
+        //if we got here, the battlefield name isn't taken
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "/UBoat" + ADD_BATTLEFIELD_RESOURCE).newBuilder();
+        urlBuilder.addQueryParameter("battleField", battleFieldNameFromUser);
+        String finalUrl = urlBuilder.build().toString();
+        System.out.println("About to add guest " + battleFieldNameFromUser + "(" + finalUrl + ")");
+
+        request = new Request.Builder()
+                .url(finalUrl)
+                .put(RequestBody.create(new byte[]{}))
+                .build();
+
+        call = HTTP_CLIENT.newCall(request);
+
+        try {
+            Response response = call.execute();
+            System.out.println(response.body().string());
+        } catch (IOException e) {
+            System.out.println("Error when adding guest " + battleFieldNameFromUser + ". Exception: " + e.getMessage());
+        }
+
+
+    }
 }

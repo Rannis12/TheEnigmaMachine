@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/../Engine/Engine.iml" filepath="$PROJECT_DIR$/../Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/../WebAgent/WebAgent.iml" filepath="$PROJECT_DIR$/../WebAgent/WebAgent.iml" />
       <module fileurl="file://$PROJECT_DIR$/../WebAllies/WebAllies.iml" filepath="$PROJECT_DIR$/../WebAllies/WebAllies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebModule/WebModule.iml" filepath="$PROJECT_DIR$/../WebModule/WebModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/../WebUBoat/WebUBoat.iml" filepath="$PROJECT_DIR$/../WebUBoat/WebUBoat.iml" />
     </modules>
   </component>

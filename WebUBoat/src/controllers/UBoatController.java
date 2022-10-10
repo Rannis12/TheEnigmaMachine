@@ -1,3 +1,5 @@
+package controllers;
+
 import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
@@ -6,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -17,9 +20,11 @@ import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
-public class MainPageController {
+public class UBoatController {
+    private UBoatMainAppController uBoatMainAppController;
     public static String BASE_URL = "http://localhost:8080";
     public static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML private FirstTabController firstTabController;
@@ -38,6 +43,10 @@ public class MainPageController {
             secondTabController.setMainPageController(this);
             /*thirdTabController.setMainPageController(this);*/
         }
+
+//        loadLoginPage();
+//        loadChatRoomPage();
+
     }
     @FXML
     void loadFile(MouseEvent event) throws IOException {
@@ -81,8 +90,6 @@ public class MainPageController {
      */
     private void uploadFileToServer(File file) throws IOException {
         String RESOURCE = "/upload-file";
-
-//                File f = new File("src/resources/some-file.txt");
 
         RequestBody body =
                 new MultipartBody.Builder()
@@ -236,5 +243,10 @@ public class MainPageController {
     public void setAmountOfDecodedStrings(int amountOfDecodedStrings) {
         this.amountOfDecodedStrings.set(amountOfDecodedStrings);
     }
+
+    public void setuBoatMainAppController(UBoatMainAppController uBoatMainAppController) {
+        this.uBoatMainAppController = uBoatMainAppController;
+    }
+
 }
 

@@ -40,5 +40,6 @@
         <jarDirectory url="file://$MODULE_DIR$/../../okHttp" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="Engine" />
   </component>
 </module>

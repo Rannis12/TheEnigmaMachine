@@ -1,3 +1,5 @@
+package controllers;
+
 import dtos.*;
 import exceptions.invalidInputException;
 import javafx.collections.FXCollections;
@@ -17,7 +19,7 @@ public class FirstTabController implements Initializable {
     private PlugBoardDTO plugBoardDTO = null;
     private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
     private ReflectorDTO reflectorDTO = null;
-    private MainPageController mainPageController;
+    private UBoatController UBoatController;
 
     @FXML
     private Button randomBtn;
@@ -68,9 +70,9 @@ public class FirstTabController implements Initializable {
             int chosenReflector = (Integer) reflectorChoiceBox.getValue();
             reflectorDTO = new ReflectorDTO(chosenReflector);
 
-            mainPageController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
+            UBoatController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
             operationsAfterValidInput();
-            mainPageController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
+            UBoatController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
 //            mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
 
             chooseReflectorLabel.setVisible(false);
@@ -78,24 +80,24 @@ public class FirstTabController implements Initializable {
             setMachineBtn.setDisable(true);
         }
         catch (RuntimeException ex) {
-            mainPageController.popUpError("Please choose reflector before setting a new machine!");
+            UBoatController.popUpError("Please choose reflector before setting a new machine!");
         }
 
 
     }
     @FXML
     void randomBtnListener(ActionEvent event) {
-        mainPageController.randomConfiguration();
+        UBoatController.randomConfiguration();
 
         operationsAfterValidInput();
-        mainPageController.resetCurrConfigurationDecodedAmount();
+        UBoatController.resetCurrConfigurationDecodedAmount();
 //        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
     @FXML
     void manualBtnListener(ActionEvent event) {
         userRotorsInput.setDisable(false);
         clearAllUsersTextFields();
-        instructionTF.setText("enter " + mainPageController.getUsedAmountOfRotors() + " rotors ID's " +
+        instructionTF.setText("enter " + UBoatController.getUsedAmountOfRotors() + " rotors ID's " +
                 "from left to right divided by comma. for example 23,542,231");
 
 
@@ -109,7 +111,7 @@ public class FirstTabController implements Initializable {
         String rotorsPosition = userRotorsInput.getText();
         try {
             rotorsIndexesDTO = new RotorsIndexesDTO();
-            mainPageController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
+            UBoatController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
             userRotorsInput.setDisable(true);
 
             userInitPlaces.setDisable(false);
@@ -117,7 +119,7 @@ public class FirstTabController implements Initializable {
 
         } catch (invalidInputException ex) {
             userRotorsInput.clear();
-            mainPageController.popUpError(ex.getMessage());
+            UBoatController.popUpError(ex.getMessage());
         }
 
     }
@@ -126,7 +128,7 @@ public class FirstTabController implements Initializable {
         String rotorsFirstPositions = userInitPlaces.getText();
         rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
         try {
-            mainPageController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
+            UBoatController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
             rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
             userInitPlaces.setDisable(true);
 
@@ -135,7 +137,7 @@ public class FirstTabController implements Initializable {
             instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
         } catch (invalidInputException ex) {
             userInitPlaces.clear();
-            mainPageController.popUpError(ex.getMessage());
+            UBoatController.popUpError(ex.getMessage());
         }
     }
     @FXML
@@ -147,7 +149,7 @@ public class FirstTabController implements Initializable {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();
             plugBoardDTO = new PlugBoardDTO();
-            mainPageController.checkPlugBoardValidity(tmpString, plugBoardDTO);
+            UBoatController.checkPlugBoardValidity(tmpString, plugBoardDTO);
             plugBoardDTO.setInitString(tmpString);
             userInitPlugBoard.setDisable(true);
 
@@ -158,7 +160,7 @@ public class FirstTabController implements Initializable {
             instructionTF.setText("Choose reflectors from the following:");
         } catch (invalidInputException ex) {
             userInitPlugBoard.clear();
-            mainPageController.popUpError(ex.getMessage());
+            UBoatController.popUpError(ex.getMessage());
         }
     }
 
@@ -188,8 +190,8 @@ public class FirstTabController implements Initializable {
         //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings())); // solved with bind
 
     }
-    public void setMainController(MainPageController mainPageController) {
-        this.mainPageController = mainPageController;
+    public void setMainController(UBoatController UBoatController) {
+        this.UBoatController = UBoatController;
     }
     public void enableButtons() {
         randomBtn.setDisable(false);
@@ -200,12 +202,12 @@ public class FirstTabController implements Initializable {
         machineInitializeLabel.setTextFill(Color.RED);
 
 
-        EngineFullDetailsDTO engineFullDetailsDTO = mainPageController.getEngineFullDetails();
-        String newConfiguration = mainPageController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+        EngineFullDetailsDTO engineFullDetailsDTO = UBoatController.getEngineFullDetails();
+        String newConfiguration = UBoatController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
                 engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
 
 //        initializeConfigurationTF.setText(newConfiguration);
-        mainPageController.setDecodingAndClearButtonsDisable(false);
+        UBoatController.setDecodingAndClearButtonsDisable(false);
 
     }
     public void clearAllUsersTextFields(){

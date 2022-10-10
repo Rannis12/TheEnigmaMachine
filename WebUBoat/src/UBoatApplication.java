@@ -6,22 +6,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import okhttp3.*;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+
+import static util.Constants.UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION;
 
 public class UBoatApplication extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource("/resources/MainPage.fxml");
+        URL url = getClass().getResource(UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION);
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 
-
         Scene scene = new Scene(root, 500, 620);
-        primaryStage.setTitle("UBoat");
+        primaryStage.setTitle("UBoat App");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(500);
@@ -29,7 +29,7 @@ public class UBoatApplication extends Application{
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         String BASE_URL = "http://localhost:8080";
         OkHttpClient HTTP_CLIENT = new OkHttpClient();
 
@@ -39,7 +39,7 @@ public class UBoatApplication extends Application{
         String battleFieldNameFromUser = "Ran";
         String[] guests = {"OFEK", "RAN", "HELLO"};
 
-        /*Arrays.stream(guests).forEach(guest -> {
+        *//*Arrays.stream(guests).forEach(guest -> {
             HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + "/UBoat" + ADD_BATTLEFIELD_RESOURCE).newBuilder();
             urlBuilder.addQueryParameter("battleField", guest);
             String finalUrl = urlBuilder.build().toString();
@@ -59,7 +59,7 @@ public class UBoatApplication extends Application{
                 System.out.println("Error when adding guest " + guest + ". Exception: " + e.getMessage());
             }
 
-        });*/
+        });*//*
 
         Request request = new Request.Builder()
                 .url(BASE_URL  + "/UBoat" + GET_BATTLEFIELD_RESOURCE)
@@ -112,5 +112,5 @@ public class UBoatApplication extends Application{
         }
 
 
-    }
+    }*/
 }

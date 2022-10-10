@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import com.google.gson.Gson;
 
@@ -11,9 +11,9 @@ public class Constants {
     public final static String CHAT_LINE_FORMATTING = "%tH:%tM:%tS | %.10s: %s%n";
 
     // fxml locations
-    public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/chat/client/component/main/chat-app-main.fxml";
-    public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/chat/client/component/login/login.fxml";
-    public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/client/component/chatroom/chat-room-main.fxml";
+    public final static String UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/resources/uboat-template.fxml";
+    public final static String UBOAT_LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/login/login.fxml";
+    public final static String UBOAT_ROOM_PAGE_FXML_RESOURCE_LOCATION = "/resources/MainPage.fxml";
 
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";

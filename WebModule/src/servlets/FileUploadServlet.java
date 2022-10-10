@@ -38,6 +38,7 @@ public class FileUploadServlet extends HttpServlet {
             //to write the content of the file to an actual file in the system (will be created at c:\samplefile)
             part.write("samplefile");
 
+
             //to write the content of the file to a string
             fileContent.append(readFromInputStream(part.getInputStream()));
         }

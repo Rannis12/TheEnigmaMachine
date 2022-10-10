@@ -21,9 +21,10 @@ public class LightweightLoginServlet extends HttpServlet {
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
 
-        if (usernameFromSession == null) { //user is not logged in yet
+//        if (usernameFromSession == null) { //user is not logged in yet
 
             String usernameFromParameter = request.getParameter("username");
+            String type = request.getParameter("type");
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter - not standard situation. it's a conflict
 
@@ -55,7 +56,7 @@ public class LightweightLoginServlet extends HttpServlet {
                     }
                     else {
                         //add the new user to the users list
-                        userManager.addUser(usernameFromParameter);
+                        userManager.addUser(usernameFromParameter, type);
                         //set the username in a session so it will be available on each request
                         //the true parameter means that if a session object does not exists yet
                         //create a new one
@@ -67,10 +68,10 @@ public class LightweightLoginServlet extends HttpServlet {
                     }
                 }
             }
-        } else {
+//        } else {
             //user is already logged in
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
+//            response.setStatus(HttpServletResponse.SC_OK);
+//        }
     }
 
 }

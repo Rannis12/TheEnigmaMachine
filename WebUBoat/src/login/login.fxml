@@ -23,6 +23,7 @@
             <VBox alignment="TOP_CENTER" layoutX="166.0" layoutY="43.0" prefHeight="143.0" prefWidth="268.0" spacing="20.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="166.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="43.0">
                <children>
                   <TextField fx:id="nameTF" alignment="CENTER" prefHeight="31.0" prefWidth="268.0" promptText="name" />
+                  <Label fx:id="errorMessageLabel" />
                   <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#loginBtnListener" text="Login">
                      <VBox.margin>
                         <Insets bottom="50.0" />

@@ -1,16 +1,15 @@
-import dtos.DecodeStringInfo;
-import exceptions.invalidInputException;
+package controllers;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 
 
 public class SecondTabController {
 
-    private MainPageController mainPageController;
+    private UBoatController UBoatController;
     private boolean shouldDecodeLine; //false = should decode char
 
     @FXML private TextField currentConfiguration;
@@ -54,8 +53,8 @@ public class SecondTabController {
 
     @FXML
     void resetBtnListener(ActionEvent event) throws InterruptedException {
-        mainPageController.resetEngineToUserInitChoice();
-        mainPageController.updateConfigurationLabel();/*instead of this we can do ++ and then -- to
+        UBoatController.resetEngineToUserInitChoice();
+        UBoatController.updateConfigurationLabel();/*instead of this we can do ++ and then -- to
         the integerProperty and the listener will update automatically, but it's weird*/
 
         clearEncryptTextFields();
@@ -91,8 +90,8 @@ public class SecondTabController {
 
     }
 
-    public void setMainPageController(MainPageController mainPageController) {
-        this.mainPageController = mainPageController;
+    public void setMainPageController(UBoatController UBoatController) {
+        this.UBoatController = UBoatController;
     }
 
     public void setCurrentConfigurationTF(String currConfiguration) {
@@ -127,6 +126,10 @@ public class SecondTabController {
     }
 
 
+    @FXML
+    public void initialize(){
+
+    }
 
 
 

@@ -10,10 +10,14 @@ import java.io.*;
 import java.util.*;
 
 public class EngineLoader {
-    private final String  FileDestination;
+    private String  FileDestination;
     private static final String JAXB_XML_GAME_PACKAGE_NAME = "resources.jaxb.generated";
     public EngineLoader(String fileDestination) {
         this.FileDestination = fileDestination;
+    }
+
+    public EngineLoader(){
+
     }
 
     public Engine loadEngineFromXml(String filePath) throws invalidXMLfileException {
@@ -28,7 +32,26 @@ public class EngineLoader {
 
         return convertToEngine(cteEnigma);
     }
-    private CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
+
+    public Engine loadEngineFromInputStream(InputStream in) throws invalidXMLfileException {
+        CTEEnigma cteEnigma = null;
+        try {
+            cteEnigma = deserializeFrom(in);
+
+        } catch (JAXBException e) {
+            throw new invalidXMLfileException("TO CHECKKKKK"); //todo
+        }
+
+        return convertToEngine(cteEnigma);
+    }
+
+
+
+
+
+
+
+    public static CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return (CTEEnigma) u.unmarshal(in);

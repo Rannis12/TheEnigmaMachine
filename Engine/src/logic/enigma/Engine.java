@@ -35,6 +35,9 @@ public class Engine implements Serializable, Cloneable {
         amountOfDecodedStrings = 0;
     }
 
+    public Engine (){
+
+    }
     @Override
     public Object clone(){
         Engine engineCopy = null;

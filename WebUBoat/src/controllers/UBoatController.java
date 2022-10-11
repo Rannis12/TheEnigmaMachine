@@ -67,7 +67,6 @@ public class UBoatController {
 
                 /*thirdTabController.DisableAllButtonsAndTextFields();*/
 
-
                 amountOfDecodedStrings.unbind();
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 

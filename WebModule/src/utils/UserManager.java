@@ -32,13 +32,6 @@ public class UserManager {
                 agents.add(name);
                 break;
         }
-//        usersSet.add(username);
-
-        /*//checking
-        for (String str:usersSet) {
-            System.out.println(str);
-        }
-        System.out.println("done.");*/
     }
 
     public synchronized void removeUser(String username) {

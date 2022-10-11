@@ -5,6 +5,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import dtos.EngineFullDetailsDTO;
+import dtos.EngineMinimalDetailsDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -42,15 +43,6 @@ public class FileUploadServlet extends HttpServlet {
         StringBuilder fileContent = new StringBuilder();
 
         for (Part part : parts) {
-            /*printPart(part, out);
-
-            //to write the content of the file to an actual file in the system (will be created at c:\samplefile)
-            part.write("samplefile");
-
-
-            //to write the content of the file to a string
-            fileContent.append(readFromInputStream(part.getInputStream()));*/
-
             Engine engine = ServletUtils.getEngine(getServletContext());
 
             EngineLoader engineLoader = new EngineLoader();
@@ -63,8 +55,8 @@ public class FileUploadServlet extends HttpServlet {
             //overloading engine details on the response, in order to update uboat.
             response.setContentType("application/json");
             Gson gson = new Gson();
-            EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();
-            String json = gson.toJson(engineFullDetailsDTO);
+            EngineMinimalDetailsDTO engineMinimalDetailsDTO = engine.getEngineMinimalDetails();
+            String json = gson.toJson(engineMinimalDetailsDTO);
 
             try(PrintWriter out = response.getWriter()) {
                 out.println(json);
@@ -72,8 +64,6 @@ public class FileUploadServlet extends HttpServlet {
             }
 
         }
-
-//        printFileContent(fileContent.toString(), out);
     }
 
     private void printPart(Part part, PrintWriter out) {

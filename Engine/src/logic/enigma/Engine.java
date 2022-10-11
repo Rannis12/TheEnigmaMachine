@@ -38,6 +38,7 @@ public class Engine implements Serializable, Cloneable {
     public Engine (){
 
     }
+
     @Override
     public Object clone(){
         Engine engineCopy = null;
@@ -176,7 +177,9 @@ public class Engine implements Serializable, Cloneable {
         int rotorsAmount = rotors.getRotorsAmount();
         int reflectorsAmount = reflectors.getAmountOfReflectors();
 
-        String plugBoardString = plugBoard.getPlugBoardPairs();
+//        String plugBoardString = plugBoard.getPlugBoardPairs();  checking.
+        String plugBoardString = null;
+
         String chosenReflector = reflectors.getReflectorID();
         String rotorsFirstPositions = rotors.getRotorsFirstPositionsString();
         String rotorsCurrentPositions = rotors.getRotorsCurrentPositions();

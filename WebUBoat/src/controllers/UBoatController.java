@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.gson.Gson;
 import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 import okhttp3.*;
+import util.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -104,6 +106,13 @@ public class UBoatController {
         Call call = HTTP_CLIENT.newCall(request);
 
         Response response = call.execute();
+
+        //getting response body from json (includes machine minimal details).
+
+        EngineMinimalDetailsDTO detailsFromJson = Constants.GSON_INSTANCE
+                                                            .fromJson(response.body().string(), EngineMinimalDetailsDTO.class);
+
+        firstTabController.showDetails(detailsFromJson);
     }
 
     private void setAgentAmountSlider() {

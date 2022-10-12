@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import dtos.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -25,29 +22,28 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static util.Constants.RANDOM_CONFIGURATION;
+
 public class UBoatController {
     private UBoatMainAppController uBoatMainAppController;
     public static String BASE_URL = "http://localhost:8080";
     public static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
-   // @FXML private ThirdTabController thirdTabController;
     @FXML private Label xmlPathLabel;
     private Engine engine;
     private int currConfigurationDecodedAmount;
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
     private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty();
 
+    private StringProperty configuration = new SimpleStringProperty();
 
     @FXML public void initialize() {
         if(firstTabController != null && secondTabController != null /*&& thirdTabController != null*/){
             firstTabController.setMainController(this);
             secondTabController.setMainPageController(this);
-            /*thirdTabController.setMainPageController(this);*/
         }
 
-//        loadLoginPage();
-//        loadChatRoomPage();
 
     }
     @FXML
@@ -65,11 +61,14 @@ public class UBoatController {
 
                 secondTabController.disableAllButtonsAndTextFields();
                 secondTabController.clearCurrentConfigurationTA();
-//                secondTabController.getStatisticsTA().clear();
 
                 /*thirdTabController.DisableAllButtonsAndTextFields();*/
 
                 amountOfDecodedStrings.unbind();
+                configuration.unbind();
+
+                bindingsToConfigurationsControllers();
+
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 
                 resetCurrConfigurationDecodedAmount();
@@ -83,6 +82,12 @@ public class UBoatController {
 
             }
         }
+    }
+
+    private void bindingsToConfigurationsControllers() {
+        firstTabController.getConfigurationTF().textProperty().bind(configuration);
+        secondTabController.getConfigurationTF().textProperty().bind(configuration);
+
     }
 
     /**
@@ -104,8 +109,8 @@ public class UBoatController {
                 .build();
 
         Call call = HTTP_CLIENT.newCall(request);
-
         Response response = call.execute();
+
 
         //getting response body from json (includes machine minimal details).
 
@@ -115,6 +120,7 @@ public class UBoatController {
         firstTabController.showDetails(detailsFromJson);
     }
 
+
     private void setAgentAmountSlider() {
         int agentMaxAmount = engine.getAgentMaxAmount();
         /*thirdTabController.setAgentAmountSlider(agentMaxAmount);*/
@@ -123,7 +129,7 @@ public class UBoatController {
     public void updateConfigurationLabel() {
         EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
 
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
@@ -152,14 +158,33 @@ public class UBoatController {
         return false;
     }
     public void randomConfiguration() {
-        engine.randomEngine();
+
+        Request request = new Request.Builder()
+                .url(RANDOM_CONFIGURATION)
+                .post(RequestBody.create(new byte[]{}))
+                .build();
+
+        Call call = HTTP_CLIENT.newCall(request);
+
+        try {
+            Response response = call.execute();
+            configuration.set(response.body().string());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
     }
     public EngineFullDetailsDTO getEngineFullDetails(){
         return engine.getEngineFullDetails();
     }
 
-    public String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
-                                String rotorsPositions, String chosenReflector, String plugBoardString) {
+    public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
+                                String rotorsPositions, String chosenReflector) {
         String finalInfoToPrint = "<";
 
         for (int i = 0; i < RotorsOrganization.size(); i++) {
@@ -177,9 +202,9 @@ public class UBoatController {
         }
         finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
 
-        if (!plugBoardString.equals("")) {
+        /*if (!plugBoardString.equals("")) {
             finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
-        }
+        }*/
         return finalInfoToPrint;
     }
 

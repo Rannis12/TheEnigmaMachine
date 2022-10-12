@@ -34,20 +34,19 @@ public class FileUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-//        PrintWriter out = response.getWriter();
 
         Collection<Part> parts = request.getParts();
 
-//        out.println("Total parts : " + parts.size());
-
-        StringBuilder fileContent = new StringBuilder();
+//        StringBuilder fileContent = new StringBuilder();
 
         for (Part part : parts) {
             Engine engine = ServletUtils.getEngine(getServletContext());
 
             EngineLoader engineLoader = new EngineLoader();
             try {
+
                 engine = engineLoader.loadEngineFromInputStream(part.getInputStream());
+
             } catch (exceptions.invalidXMLfileException e) {
                 throw new RuntimeException(e);
             }
@@ -66,7 +65,7 @@ public class FileUploadServlet extends HttpServlet {
         }
     }
 
-    private void printPart(Part part, PrintWriter out) {
+/*    private void printPart(Part part, PrintWriter out) {
         StringBuilder sb = new StringBuilder();
         sb
             .append("Parameter Name: ").append(part.getName()).append("\n")
@@ -79,14 +78,10 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         out.println(sb.toString());
-    }
+    }*/
 
     private String readFromInputStream(InputStream inputStream) {
         return new Scanner(inputStream).useDelimiter("\\Z").next();
     }
 
-    private void printFileContent(String content, PrintWriter out) {
-        out.println("File content:");
-        out.println(content);
-    }
 }

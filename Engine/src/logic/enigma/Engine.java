@@ -19,6 +19,7 @@ public class Engine implements Serializable, Cloneable {
 
     private BattleField battleField;
 
+    Set<String> tmp;
     //agentMaxAmount field no required anymore.
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE,
            String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary) {
@@ -36,7 +37,7 @@ public class Engine implements Serializable, Cloneable {
     }
 
     public Engine (){
-
+        tmp = new HashSet<>();
     }
 
     @Override

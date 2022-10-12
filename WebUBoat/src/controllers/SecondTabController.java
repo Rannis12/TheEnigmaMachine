@@ -20,8 +20,7 @@ public class SecondTabController {
     @FXML private Button clearBtn;
     @FXML private Button resetBtn;
     @FXML private TextArea teamDetailsTA;
-    @FXML
-    private Button logoutBtn;
+    @FXML private Button logoutBtn;
 /*    @FXML
     void processBtnListener(ActionEvent event) {
         mainPageController.setDecodedCorrectly(false);
@@ -125,10 +124,8 @@ public class SecondTabController {
         clearBtn.setDisable(true);
     }
 
-
-    @FXML
-    public void initialize(){
-
+    public TextField getConfigurationTF() {
+        return currentConfiguration;
     }
 
 

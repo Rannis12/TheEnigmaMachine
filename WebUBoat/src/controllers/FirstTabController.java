@@ -204,7 +204,7 @@ public class FirstTabController implements Initializable {
 
         EngineFullDetailsDTO engineFullDetailsDTO = UBoatController.getEngineFullDetails();
         String newConfiguration = UBoatController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector(), engineFullDetailsDTO.getPlugBoardString());
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
 
 //        initializeConfigurationTF.setText(newConfiguration);
         UBoatController.setDecodingAndClearButtonsDisable(false);
@@ -225,5 +225,9 @@ public class FirstTabController implements Initializable {
     public void clearConfigurationTextFields() {
 //        initializeConfigurationTF.clear();
         currentConfigurationTF.clear();
+    }
+
+    public TextField getConfigurationTF() {
+        return currentConfigurationTF;
     }
 }

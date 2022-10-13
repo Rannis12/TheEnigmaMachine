@@ -77,7 +77,7 @@ public class LoginController {
                     );
                 } else {
                     Platform.runLater(() -> {
-//                        chatAppMainController.updateUserName(userName);
+                        uBoatMainAppController.updateUserName(userName);
                         uBoatMainAppController.switchToUBoatRoom();
                     });
                 }

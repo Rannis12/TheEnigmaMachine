@@ -19,14 +19,27 @@
          <children>
             <VBox id="titleVB" alignment="CENTER" layoutX="3.0" layoutY="3.0" prefHeight="66.0" prefWidth="600.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="3.0">
                <children>
-                  <Label alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="UBoat">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
+                  <GridPane layoutX="10.0" layoutY="40.0" prefHeight="35.0" prefWidth="589.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="30.0" prefWidth="108.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="80.0" prefWidth="420.6666259765625" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="30.0" prefWidth="420.6666259765625" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <padding>
-                        <Insets bottom="3.0" />
+                        <Insets top="4.0" />
                      </padding>
-                  </Label>
+                     <children>
+                        <Label alignment="CENTER" style="-fx-font-size: 17px; -fx-font-weight: bold;" text="UBoat" GridPane.columnIndex="1">
+                           <padding>
+                              <Insets bottom="3.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="userLabel" alignment="CENTER" prefWidth="124.0" text="Hello, " />
+                     </children>
+                  </GridPane>
                   <GridPane prefHeight="35.0" prefWidth="589.0">
                     <columnConstraints>
                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="21.0" prefWidth="108.0" />

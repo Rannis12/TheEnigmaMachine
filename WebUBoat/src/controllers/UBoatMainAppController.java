@@ -1,5 +1,8 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,10 +25,13 @@ public class UBoatMainAppController {
     private BorderPane uBoatComponent;
     private BorderPane loginComponent;
 
+    private final StringProperty currentUserName = new SimpleStringProperty(JHON_DOE);
     @FXML public void initialize() {
 
         loadLoginPage();
         loadUBoatRoomPage();
+
+        uBoatController.getUserLabel().textProperty().bind(Bindings.concat("Hello ", currentUserName));
     }
 
 
@@ -69,5 +75,9 @@ public class UBoatMainAppController {
     public void switchToUBoatRoom() {
         setMainPanelTo(uBoatComponent);
 //        uBoatController.setActive(); //refreshing the list of chat user's in aviad's code.
+    }
+
+    public void updateUserName(String userName) {
+        currentUserName.set(userName);
     }
 }

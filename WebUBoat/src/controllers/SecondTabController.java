@@ -1,5 +1,6 @@
 package controllers;
 
+import client.http.HttpClientUtil;
 import com.google.gson.Gson;
 import dtos.DecodedStringAndConfigurationDTO;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import okhttp3.*;
+import util.Constants;
 
 import java.io.IOException;
 
@@ -90,17 +92,31 @@ public class SecondTabController {
 
     @FXML
     void resetBtnListener(ActionEvent event) throws InterruptedException {
-        UBoatController.resetEngineToUserInitChoice();
-        UBoatController.updateConfigurationLabel();/*instead of this we can do ++ and then -- to
-        the integerProperty and the listener will update automatically, but it's weird*/
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/reset-engine")
+                .get()
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+
+        try {
+            Response response = call.execute();
+            String conf = response.body().string();
+            conf = conf.trim();
+
+            UBoatController.setTabsConfiguration(conf);
+        } catch (IOException e) {
+            throw new RuntimeException("error in reset the engine");
+        }
+
+//        UBoatController.updateConfigurationLabel();/*instead of this we can do ++ and then -- to
+//        the integerProperty and the listener will update automatically, but it's weird*/
 
         clearEncryptTextFields();
-//        charInputTF.setDisable(true);
-//        doneBtn.setDisable(true);
         lineInputTF.setDisable(true);
-//        processBtn.setDisable(true);
-        decodeResultTF.setText("Reset has been made successfully!!");
 
+        decodeResultTF.setText("Reset has been made successfully!!");
     }
 
     @FXML

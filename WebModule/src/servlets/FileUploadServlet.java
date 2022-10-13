@@ -37,10 +37,7 @@ public class FileUploadServlet extends HttpServlet {
         Engine engine = null;
         Collection<Part> parts = request.getParts();
 
-//        StringBuilder fileContent = new StringBuilder();
-
         for (Part part : parts) {
-//            Engine engine = ServletUtils.getEngine(getServletContext());
 
             EngineLoader engineLoader = new EngineLoader();
             try {

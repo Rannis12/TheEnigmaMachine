@@ -210,8 +210,9 @@ public class UBoatController {
 
 
     public void setTabsConfiguration(String newConfiguration) {
-        firstTabController.setCurrentConfigurationTF(newConfiguration);
-        secondTabController.setCurrentConfigurationTF(newConfiguration);
+        configuration.set(newConfiguration);
+//        firstTabController.setCurrentConfigurationTF(newConfiguration);
+//        secondTabController.setCurrentConfigurationTF(newConfiguration);
         /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
 
 //        secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');

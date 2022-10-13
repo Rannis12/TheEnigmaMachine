@@ -10,16 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import okhttp3.*;
+
+import java.io.IOException;
 
 
 public class SecondTabController {
 
     private MainPageController mainPageController;
     private boolean shouldDecodeLine; //false = should decode char
-
-
-
-
 
     @FXML private TextField currentConfiguration;
     @FXML private TextField decodeResultTF;
@@ -33,29 +32,31 @@ public class SecondTabController {
     @FXML private TextField charInputTF;
     @FXML private TextArea statisticsTA;
 
-    @FXML
-    void processBtnListener(ActionEvent event) {
-        mainPageController.setDecodedCorrectly(false);
+    private final static String BASE_URL = "http://localhost:8080";
+        @FXML
+        void processBtnListener(ActionEvent event) {
+            mainPageController.setDecodedCorrectly(false);
 
-        String tmp = lineInputTF.getText();
-        if(!tmp.equals("")){
-            try {
-                DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
-                decodeResultTF.setText(newInfo.getDecodedString());
-                mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
-                mainPageController.setDecodedCorrectly(true);
+            String tmp = lineInputTF.getText();
+            if(!tmp.equals("")){
+                try {
+                    DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
+                    decodeResultTF.setText(newInfo.getDecodedString());
+                    mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
+                    mainPageController.setDecodedCorrectly(true);
 
 
-                mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
+                    mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
 
-                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
-                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
-            } catch (invalidInputException e) {
-                mainPageController.popUpError(e.getMessage());
+    //                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
+    //                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
+                } catch (invalidInputException e) {
+                    mainPageController.popUpError(e.getMessage());
+                }
             }
+
         }
 
-    }
 
     @FXML
     void clearBtnListener(ActionEvent event) {

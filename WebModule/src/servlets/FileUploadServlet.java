@@ -34,18 +34,19 @@ public class FileUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-
+        Engine engine = null;
         Collection<Part> parts = request.getParts();
 
 //        StringBuilder fileContent = new StringBuilder();
 
         for (Part part : parts) {
-            Engine engine = ServletUtils.getEngine(getServletContext());
+//            Engine engine = ServletUtils.getEngine(getServletContext());
 
             EngineLoader engineLoader = new EngineLoader();
             try {
 
                 engine = engineLoader.loadEngineFromInputStream(part.getInputStream());
+                ServletUtils.setEngine(getServletContext(), engine);
 
             } catch (exceptions.invalidXMLfileException e) {
                 throw new RuntimeException(e);

@@ -1,10 +1,17 @@
 package controllers;
 
+import com.google.gson.Gson;
+import dtos.DecodedStringAndConfigurationDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import okhttp3.*;
+
+import java.io.IOException;
+
+import static controllers.UBoatController.BASE_URL;
 
 
 public class SecondTabController {
@@ -19,31 +26,62 @@ public class SecondTabController {
     @FXML private TextField decodeResultTF;
     @FXML private Button clearBtn;
     @FXML private Button resetBtn;
+    @FXML private Button processBtn;
     @FXML private TextArea teamDetailsTA;
     @FXML private Button logoutBtn;
-/*    @FXML
+    @FXML
     void processBtnListener(ActionEvent event) {
-        mainPageController.setDecodedCorrectly(false);
+        UBoatController.setDecodedCorrectly(false);
+        String tmp = lineInputTF.getText().toUpperCase();
 
-        String tmp = lineInputTF.getText();
-        if(!tmp.equals("")){
+        if(!tmp.equals("")) {
             try {
-                DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
-                decodeResultTF.setText(newInfo.getDecodedString());
-                mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
-                mainPageController.setDecodedCorrectly(true);
+                String resourceName = "/decode-string";
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + resourceName).newBuilder();
+                urlBuilder.addQueryParameter("toDecode", tmp);
+                String finalUrl = urlBuilder.build().toString();
+
+                Request request = new Request.Builder()
+                        .url(finalUrl)
+                        .get()
+                        .build();
+
+                Call call = new OkHttpClient().newCall(request);
 
 
-                mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
+                Response response = call.execute();
+                String json = response.body().string();
+
+                Gson gson = new Gson();
+                DecodedStringAndConfigurationDTO dto = gson.fromJson(json, DecodedStringAndConfigurationDTO.class);
+
+                decodeResultTF.setText(dto.getDecodedString());
+                UBoatController.setTabsConfiguration(dto.getCurrConfiguration());
+
+                UBoatController.setDecodedCorrectly(true);
+
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+
+
+//                DecodeStringInfo newInfo = mainPageController.decodeString(lineInputTF.getText());
+//                decodeResultTF.setText(newInfo.getDecodedString());
+//                mainPageController.increaseDecodedStringAmount();//this is for the current configuration amount of decoded strings(output in statistics)
+
+
+
+//                mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
 
 //                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
 //                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
-            } catch (invalidInputException e) {
-                mainPageController.popUpError(e.getMessage());
-            }
-        }
+//            } catch (invalidInputException e) {
+//                mainPageController.popUpError(e.getMessage());
+//            }
+//        }
 
-    }*/
+        }
+    }
 
     @FXML
     void clearBtnListener(ActionEvent event) {

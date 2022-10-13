@@ -37,7 +37,7 @@ public class Engine implements Serializable, Cloneable {
     }
 
     public Engine (){
-        tmp = new HashSet<>();
+//        tmp = new HashSet<>();
     }
 
     @Override

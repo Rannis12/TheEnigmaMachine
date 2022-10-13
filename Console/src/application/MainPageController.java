@@ -28,7 +28,7 @@ public class MainPageController {
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
     private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty();
 
-
+    private final static String BASE_URL = "http://localhost:8080";
     @FXML public void initialize() {
         if(firstTabController != null && secondTabController != null && thirdTabController != null){
             firstTabController.setMainController(this);

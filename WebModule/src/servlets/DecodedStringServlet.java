@@ -1,26 +1,60 @@
-package servlets;/*
-package uboat.servlets;
 
+package servlets;
+
+import dtos.DecodedStringAndConfigurationDTO;
+import dtos.EngineFullDetailsDTO;
+import exceptions.invalidInputException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import okhttp3.*;
+
+import logic.enigma.Engine;
+
+import utils.ServletUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "UploadString", urlPatterns = "upload-string")
+import static controllers.UBoatController.makeCodeForm;
+import static util.Constants.GSON_INSTANCE;
+
+
+@WebServlet(name = "DecodeString", urlPatterns = "/decode-string")
 public class DecodedStringServlet extends HttpServlet {
-    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient(); //?? not sure how to use this object.
-    public final String BASE_URL = "http://localhost:8080";
-    public final String ADD_UPLOAD_STRING = "upload-string";
+//    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient(); //?? not sure how to use this object.
+//    public final String BASE_URL = "http://localhost:8080";
+//    public final String ADD_UPLOAD_STRING = "upload-string";
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Engine engine = ServletUtils.getEngine(getServletContext());
+        String decodedString = null;
+        resp.setContentType("text/plain");
+        try {
+            decodedString = engine.decodeStr(req.getParameter("toDecode")).getDecodedString();
 
-//        String toEncodeString = "abc";
+
+        } catch (invalidInputException e) {
+            throw new RuntimeException("couldn't decode the string.");
+        }
+
+        EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();
+        String configuration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector());
+
+        DecodedStringAndConfigurationDTO dto = new DecodedStringAndConfigurationDTO(decodedString, configuration);
+
+        String json = GSON_INSTANCE.toJson(dto, DecodedStringAndConfigurationDTO.class);
+
+        resp.getWriter().println(json);
+
+    }
+}
+
+
+
+/*//        String toEncodeString = "abc";
         String toEncodeString = req.getParameter("toEncode"); //getting "toEncode" String from the queryParameter.
 
 
@@ -35,8 +69,4 @@ public class DecodedStringServlet extends HttpServlet {
                 .build();
 
         Call call = HTTP_CLIENT.newCall(request);
-        Response response = call.execute();
-
-    }
-}
-*/
+        Response response = call.execute();*/

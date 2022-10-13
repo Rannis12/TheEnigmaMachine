@@ -26,12 +26,21 @@ public class ServletUtils {
 		return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static Engine getEngine(ServletContext servletContext){
+	public static Engine getEngine(ServletContext servletContext){ //we need to make sure not to do get before we made an engine.
 		synchronized (engineManagerLock) {
 			if (servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME) == null) {
-				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, new Engine());
+//				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, new Engine());
+				return null;
 			}
 		}
 		return (Engine) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
+	}
+
+	public static void setEngine(ServletContext servletContext, Engine engine) {
+		synchronized (engineManagerLock) {
+			if (servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, engine);
+			}
+		}
 	}
 }

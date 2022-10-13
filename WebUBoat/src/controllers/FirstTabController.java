@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.gson.Gson;
 import dtos.*;
 import exceptions.invalidInputException;
 import javafx.collections.FXCollections;
@@ -9,9 +10,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import okhttp3.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static controllers.UBoatController.BASE_URL;
 
 
 public class FirstTabController implements Initializable {
@@ -69,10 +74,28 @@ public class FirstTabController implements Initializable {
         try {
             int chosenReflector = (Integer) reflectorChoiceBox.getValue();
             reflectorDTO = new ReflectorDTO(chosenReflector);
+            InitializeEngineToJsonDTO initializeEngineToJsonDTO = new InitializeEngineToJsonDTO(rotorsFirstPositionDTO, plugBoardDTO,
+                    reflectorDTO, rotorsIndexesDTO);
 
-            UBoatController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
+            Gson gson = new Gson();
+            String json = gson.toJson(initializeEngineToJsonDTO, InitializeEngineToJsonDTO.class);
+
+            Request request = new Request.Builder()
+                    .url(BASE_URL + "/manual-conf")
+                    .post(RequestBody.create(json.getBytes()))
+                    .build();
+
+            Call call = new OkHttpClient().newCall(request);
+            Response response = call.execute();
+
+            String conf = response.body().string();
+            conf = conf.trim();
+            UBoatController.setTabsConfiguration(conf);
+
+//            UBoatController.setConfiguration();
+//            UBoatController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
             operationsAfterValidInput();
-            UBoatController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
+//            UBoatController.resetCurrConfigurationDecodedAmount();//reset the amount of strings decoded with current configuration
 //            mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
 
             chooseReflectorLabel.setVisible(false);
@@ -81,13 +104,15 @@ public class FirstTabController implements Initializable {
         }
         catch (RuntimeException ex) {
             UBoatController.popUpError("Please choose reflector before setting a new machine!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
     }
     @FXML
     void randomBtnListener(ActionEvent event) {
-        UBoatController.randomConfiguration();
+        UBoatController.randomConfiguration(); //creating new request, and updating the configuration label.
 
         operationsAfterValidInput();
         UBoatController.resetCurrConfigurationDecodedAmount();
@@ -202,9 +227,9 @@ public class FirstTabController implements Initializable {
         machineInitializeLabel.setTextFill(Color.RED);
 
 
-        EngineFullDetailsDTO engineFullDetailsDTO = UBoatController.getEngineFullDetails();
-        String newConfiguration = UBoatController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
+//        EngineFullDetailsDTO engineFullDetailsDTO = UBoatController.getEngineFullDetails();
+//        String newConfiguration = UBoatController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
+//                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
 
 //        initializeConfigurationTF.setText(newConfiguration);
         UBoatController.setDecodingAndClearButtonsDisable(false);

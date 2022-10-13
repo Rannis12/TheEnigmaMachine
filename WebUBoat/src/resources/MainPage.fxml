@@ -21,9 +21,9 @@
                <children>
                   <GridPane layoutX="10.0" layoutY="40.0" prefHeight="35.0" prefWidth="589.0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="21.0" prefWidth="108.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="135.0" minWidth="100.0" percentWidth="30.0" prefWidth="108.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="80.0" prefWidth="420.6666259765625" />
-                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="21.0" prefWidth="420.6666259765625" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" percentWidth="30.0" prefWidth="420.6666259765625" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

@@ -73,7 +73,6 @@ public class UBoatController {
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 
                 resetCurrConfigurationDecodedAmount();
-//                firstTabController.getDecodedStrings().textProperty().bind(amountOfDecodedStrings.asObject().asString());
 
                 amountOfDecodedStrings.addListener(e -> {
                     updateConfigurationLabel();

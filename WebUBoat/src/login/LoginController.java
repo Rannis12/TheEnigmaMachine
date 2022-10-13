@@ -27,7 +27,6 @@ import java.net.URL;
 public class LoginController {
 
     @FXML private TextField nameTF;
-    @FXML private Button loginBtn;
     @FXML private Label errorMessageLabel;
     private UBoatMainAppController uBoatMainAppController;
 
@@ -62,8 +61,8 @@ public class LoginController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
-                    System.out.println("Something went wrong: " + e.getMessage());
-                    errorMessageProperty.set("Something went wrong: " + e.getMessage());
+                    System.out.println("Error: " + e.getMessage());
+                    errorMessageProperty.set("Error: " + e.getMessage());
                 });
             }
 
@@ -73,7 +72,7 @@ public class LoginController {
                 if (response.code() != 200) {
 
                     Platform.runLater(() ->
-                        errorMessageProperty.set("Something went wrong: " + responseBody)
+                        errorMessageProperty.set("Error: " + responseBody)
                     );
                 } else {
                     Platform.runLater(() -> {

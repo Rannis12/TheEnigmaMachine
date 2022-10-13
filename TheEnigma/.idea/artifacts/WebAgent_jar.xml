@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WebAgent:jar">
+    <output-path>$PROJECT_DIR$/../out/artifacts/WebAgent_jar</output-path>
+    <root id="archive" name="WebAgent.jar">
+      <element id="module-output" name="WebAgent" />
+    </root>
+  </artifact>
+</component>

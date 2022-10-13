@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WebAllies:jar">
+    <output-path>$PROJECT_DIR$/../out/artifacts/WebAllies_jar</output-path>
+    <root id="archive" name="WebAllies.jar">
+      <element id="module-output" name="WebAllies" />
+    </root>
+  </artifact>
+</component>

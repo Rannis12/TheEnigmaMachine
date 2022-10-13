@@ -22,17 +22,16 @@ public class SecondTabController {
     private boolean shouldDecodeLine; //false = should decode char
 
     @FXML private TextField currentConfiguration;
-    @FXML private Button decodeLineBtn;
     @FXML private TextField lineInputTF;
     @FXML private Button readyBtn;
     @FXML private TextField decodeResultTF;
     @FXML private Button clearBtn;
     @FXML private Button resetBtn;
-    @FXML private Button processBtn;
+    @FXML private Button EncryptBtn;
     @FXML private TextArea teamDetailsTA;
     @FXML private Button logoutBtn;
     @FXML
-    void processBtnListener(ActionEvent event) {
+    void EncryptBtnListener(ActionEvent event) {
         UBoatController.setDecodedCorrectly(false);
         String tmp = lineInputTF.getText().toUpperCase();
 
@@ -114,24 +113,8 @@ public class SecondTabController {
 //        the integerProperty and the listener will update automatically, but it's weird*/
 
         clearEncryptTextFields();
-        lineInputTF.setDisable(true);
 
         decodeResultTF.setText("Reset has been made successfully!!");
-    }
-
-    @FXML
-    void decodeLineListener(ActionEvent event) {
-        clearEncryptTextFields();
-
-        lineInputTF.setDisable(false);
-//        processBtn.setDisable(false);
-        clearBtn.setDisable(false);
-
-//        doneBtn.setDisable(true);
-
-//        charInputTF.setDisable(!lineInputTF.isDisable());
-
-        shouldDecodeLine = true;
     }
 
     @FXML
@@ -152,10 +135,7 @@ public class SecondTabController {
     }
 
     public void setDecodingButtonsDisable(boolean setToDisable) {
-        decodeLineBtn.setDisable(setToDisable);
-//        decodeCharBtn.setDisable(setToDisable);
         resetBtn.setDisable(setToDisable);
-
     }
 
     public void clearEncryptTextFields(){
@@ -167,12 +147,16 @@ public class SecondTabController {
     public void clearCurrentConfigurationTA() {
         currentConfiguration.clear();
     }
+    public void enableEncryptFunction() {
+        lineInputTF.setDisable(false);
+        EncryptBtn.setDisable(false);
+        resetBtn.setDisable(false);
+    }
 
     public void disableAllButtonsAndTextFields() {
 //        decodeCharBtn.setDisable(true);
 //        charInputTF.setDisable(true);
 //        doneBtn.setDisable(true);
-        decodeLineBtn.setDisable(true);
         lineInputTF.setDisable(true);
 //        processBtn.setDisable(true);
         clearBtn.setDisable(true);

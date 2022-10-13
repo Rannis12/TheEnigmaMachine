@@ -74,10 +74,6 @@ public class UBoatController {
 
                 resetCurrConfigurationDecodedAmount();
 
-                amountOfDecodedStrings.addListener(e -> {
-                    updateConfigurationLabel();
-                });
-
                 uploadFileToServer(file);
 
             }
@@ -123,18 +119,18 @@ public class UBoatController {
 
     private void setAgentAmountSlider() {
         int agentMaxAmount = engine.getAgentMaxAmount();
-        /*thirdTabController.setAgentAmountSlider(agentMaxAmount);*/
+        /*thirdTabController .setAgentAmountSlider(agentMaxAmount);*/
     }
 
-    public void updateConfigurationLabel() {
+    /*public void updateConfigurationLabel() {
         EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()*//*, engineFullDetailsDTO.getPlugBoardString()*//*);
 
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
-        /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
-    }
+        *//*thirdTabController.setCurrentConfigurationTF(newConfiguration);*//*
+    }*/
     public boolean loadFileFromXml(String fileDestination){
         try {
 
@@ -169,15 +165,9 @@ public class UBoatController {
         try {
             Response response = call.execute();
             configuration.set(response.body().string());
-
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
-
     }
     public EngineFullDetailsDTO getEngineFullDetails(){
         return engine.getEngineFullDetails();
@@ -284,6 +274,9 @@ public class UBoatController {
 
     public Label getUserLabel() {
         return userLabel;
+    }
+    public void enableEncryptFunction() {
+        secondTabController.enableEncryptFunction();
     }
 }
 

@@ -101,6 +101,7 @@ public class FirstTabController implements Initializable {
             chooseReflectorLabel.setVisible(false);
             reflectorChoiceBox.setVisible(false);
             setMachineBtn.setDisable(true);
+
         }
         catch (RuntimeException ex) {
             UBoatController.popUpError("Please choose reflector before setting a new machine!");
@@ -115,7 +116,7 @@ public class FirstTabController implements Initializable {
         UBoatController.randomConfiguration(); //creating new request, and updating the configuration label.
 
         operationsAfterValidInput();
-        UBoatController.resetCurrConfigurationDecodedAmount();
+
 //        mainPageController.setTabsConfiguration(initializeConfigurationTF.getText());
     }
     @FXML
@@ -166,10 +167,7 @@ public class FirstTabController implements Initializable {
         }
     }
     @FXML
-    void userInitPlugBoardListener(ActionEvent event)
-
-
-    {
+    void userInitPlugBoardListener(ActionEvent event){
         try {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();
@@ -225,14 +223,14 @@ public class FirstTabController implements Initializable {
     public void operationsAfterValidInput(){
         clearAllUsersTextFields();
         machineInitializeLabel.setTextFill(Color.RED);
-
-
 //        EngineFullDetailsDTO engineFullDetailsDTO = UBoatController.getEngineFullDetails();
 //        String newConfiguration = UBoatController.makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-//                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
-
+//        engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
 //        initializeConfigurationTF.setText(newConfiguration);
-        UBoatController.setDecodingAndClearButtonsDisable(false);
+
+        UBoatController.resetCurrConfigurationDecodedAmount();
+        UBoatController.enableEncryptFunction();
+        //UBoatController.setDecodingAndClearButtonsDisable(false);
 
     }
     public void clearAllUsersTextFields(){

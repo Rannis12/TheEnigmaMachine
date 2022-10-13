@@ -31,6 +31,7 @@ public class UBoatController {
     @FXML private FirstTabController firstTabController;
     @FXML private SecondTabController secondTabController;
     @FXML private Label xmlPathLabel;
+    @FXML private Label userLabel;
     private Engine engine;
     private int currConfigurationDecodedAmount;
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
@@ -282,5 +283,8 @@ public class UBoatController {
         this.uBoatMainAppController = uBoatMainAppController;
     }
 
+    public Label getUserLabel() {
+        return userLabel;
+    }
 }
 

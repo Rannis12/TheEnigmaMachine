@@ -309,6 +309,32 @@ public class Engine implements Serializable, Cloneable {
         }
         return rotorsIndexesString;
     }*/
+
+    public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
+                                      String rotorsPositions, String chosenReflector) {
+
+        String finalInfoToPrint = "<";
+
+        for (int i = 0; i < RotorsOrganization.size(); i++) {
+            if (i + 1 != RotorsOrganization.size())
+                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
+            else
+                finalInfoToPrint += RotorsOrganization.get(i);
+        }
+        finalInfoToPrint = finalInfoToPrint + "><";
+        for (int i = 0; i < rotorsPositions.length(); i++) {
+            if (i + 1 != notchesPlaces.size())
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
+            else
+                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
+        }
+        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
+
+        /*if (!plugBoardString.equals("")) {
+            finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
+        }*/
+        return finalInfoToPrint;
+    }
 }
 
 

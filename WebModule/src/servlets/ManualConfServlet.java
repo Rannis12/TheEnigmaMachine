@@ -19,8 +19,11 @@ import java.io.Reader;
 import java.util.Collection;
 import java.util.Scanner;
 
-import static controllers.UBoatController.makeCodeForm;
-import static util.Constants.GSON_INSTANCE;
+import static logic.enigma.Engine.makeCodeForm;
+import static utils.Constants.GSON_INSTANCE;
+
+//import static controllers.UBoatController.makeCodeForm;
+//import static util.Constants.GSON_INSTANCE;
 
 @WebServlet(name = "ManualConfServlet", urlPatterns = "/manual-conf")
 public class ManualConfServlet extends HttpServlet {

@@ -1,10 +1,8 @@
 package login;
 
-//import client.http.HttpClientUtil;
 import client.http.HttpClientUtil;
 import com.sun.istack.internal.NotNull;
-//import controllers.UBoatController;
-import controllers.UBoatMainAppController;
+import controllers.AlliesMainAppController;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,8 +21,9 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML private TextField nameTF;
+    @FXML private Button loginBtn;
     @FXML private Label errorMessageLabel;
-    private UBoatMainAppController uBoatMainAppController;
+    private AlliesMainAppController alliesMainAppController;
 
     private StringProperty errorMessageProperty = new SimpleStringProperty();
 
@@ -57,8 +56,8 @@ public class LoginController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
-                    System.out.println("Error: " + e.getMessage());
-                    errorMessageProperty.set("Error: " + e.getMessage());
+                    System.out.println("Something went wrong: " + e.getMessage());
+                    errorMessageProperty.set("Something went wrong: " + e.getMessage());
                 });
             }
 
@@ -68,20 +67,20 @@ public class LoginController {
                 if (response.code() != 200) {
 
                     Platform.runLater(() ->
-                        errorMessageProperty.set("Error: " + responseBody)
+                        errorMessageProperty.set("Something went wrong: " + responseBody)
                     );
                 } else {
                     Platform.runLater(() -> {
-                        uBoatMainAppController.updateUserName(userName);
-                        uBoatMainAppController.switchToUBoatRoom();
+//                        uBoatMainAppController.updateUserName(userName);
+//                        uBoatMainAppController.switchToUBoatRoom();
                     });
                 }
             }
         });
     }
 
-    public void setUBoatMainAppController(UBoatMainAppController uBoatMainAppController) {
-        this.uBoatMainAppController = uBoatMainAppController;
+    public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
+        this.alliesMainAppController = alliesMainAppController;
     }
 
 

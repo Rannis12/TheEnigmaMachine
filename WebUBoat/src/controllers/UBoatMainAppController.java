@@ -34,8 +34,6 @@ public class UBoatMainAppController {
         uBoatController.getUserLabel().textProperty().bind(Bindings.concat("Hello ", currentUserName));
     }
 
-
-
     private void loadLoginPage() {
         URL loginPageUrl = getClass().getResource(UBOAT_LOGIN_PAGE_FXML_RESOURCE_LOCATION);
         try {

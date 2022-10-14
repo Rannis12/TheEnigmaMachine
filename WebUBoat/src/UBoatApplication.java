@@ -24,7 +24,7 @@ public class UBoatApplication extends Application{
         primaryStage.setTitle("UBoat App");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(700);
-        primaryStage.setMinWidth(500);
+        primaryStage.setMinWidth(700);
         primaryStage.show();
     }
 

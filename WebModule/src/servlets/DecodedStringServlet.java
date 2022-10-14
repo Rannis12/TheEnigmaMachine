@@ -1,6 +1,7 @@
 
 package servlets;
 
+import com.google.gson.Gson;
 import dtos.DecodedStringAndConfigurationDTO;
 import dtos.EngineFullDetailsDTO;
 import exceptions.invalidInputException;
@@ -16,8 +17,9 @@ import utils.ServletUtils;
 
 import java.io.IOException;
 
-import static controllers.UBoatController.makeCodeForm;
-import static util.Constants.GSON_INSTANCE;
+//import static controllers.UBoatController.makeCodeForm;
+import static logic.enigma.Engine.makeCodeForm;
+//import static util.Constants.GSON_INSTANCE;
 
 
 @WebServlet(name = "DecodeString", urlPatterns = "/decode-string")
@@ -45,7 +47,7 @@ public class DecodedStringServlet extends HttpServlet {
 
         DecodedStringAndConfigurationDTO dto = new DecodedStringAndConfigurationDTO(decodedString, configuration);
 
-        String json = GSON_INSTANCE.toJson(dto, DecodedStringAndConfigurationDTO.class);
+        String json = new Gson().toJson(dto, DecodedStringAndConfigurationDTO.class);
 
         resp.getWriter().println(json);
 

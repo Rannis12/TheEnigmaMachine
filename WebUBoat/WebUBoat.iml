@@ -21,14 +21,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="Console" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../gson-2.8.8.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="WebModule" />
   </component>
 </module>

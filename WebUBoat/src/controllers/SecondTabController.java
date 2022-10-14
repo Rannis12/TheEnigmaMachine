@@ -1,6 +1,6 @@
 package controllers;
 
-import client.http.HttpClientUtil;
+//import client.http.HttpClientUtil;
 import com.google.gson.Gson;
 import dtos.DecodedStringAndConfigurationDTO;
 import javafx.event.ActionEvent;
@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import okhttp3.*;
-import util.Constants;
 
 import java.io.IOException;
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static logic.enigma.Engine.makeCodeForm;
 import static util.Constants.RANDOM_CONFIGURATION;
 
 public class UBoatController {
@@ -129,11 +130,10 @@ public class UBoatController {
     public void updateConfigurationLabel() {
         EngineFullDetailsDTO engineFullDetailsDTO = getEngineFullDetails();
         String newConfiguration = makeCodeForm(engineFullDetailsDTO.getNotchesCurrentPlaces(), engineFullDetailsDTO.getUsedRotorsOrganization(),
-                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
+                engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector());
 
         firstTabController.setCurrentConfigurationTF(newConfiguration);
         secondTabController.setCurrentConfigurationTF(newConfiguration);
-        /*thirdTabController.setCurrentConfigurationTF(newConfiguration);*/
     }
     public boolean loadFileFromXml(String fileDestination){
         try {
@@ -174,39 +174,35 @@ public class UBoatController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
-
     }
     public EngineFullDetailsDTO getEngineFullDetails(){
         return engine.getEngineFullDetails();
     }
 
-    public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
-                                String rotorsPositions, String chosenReflector) {
-        String finalInfoToPrint = "<";
-
-        for (int i = 0; i < RotorsOrganization.size(); i++) {
-            if (i + 1 != RotorsOrganization.size())
-                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
-            else
-                finalInfoToPrint += RotorsOrganization.get(i);
-        }
-        finalInfoToPrint = finalInfoToPrint + "><";
-        for (int i = 0; i < rotorsPositions.length(); i++) {
-            if (i + 1 != notchesPlaces.size())
-                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
-            else
-                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
-        }
-        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
-
-        /*if (!plugBoardString.equals("")) {
-            finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
-        }*/
-        return finalInfoToPrint;
-    }
+//    public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
+//                                String rotorsPositions, String chosenReflector) {
+//        String finalInfoToPrint = "<";
+//
+//        for (int i = 0; i < RotorsOrganization.size(); i++) {
+//            if (i + 1 != RotorsOrganization.size())
+//                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
+//            else
+//                finalInfoToPrint += RotorsOrganization.get(i);
+//        }
+//        finalInfoToPrint = finalInfoToPrint + "><";
+//        for (int i = 0; i < rotorsPositions.length(); i++) {
+//            if (i + 1 != notchesPlaces.size())
+//                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
+//            else
+//                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
+//        }
+//        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
+//
+//        /*if (!plugBoardString.equals("")) {
+//            finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
+//        }*/
+//        return finalInfoToPrint;
+//    }
 
 
     public void setTabsConfiguration(String newConfiguration) {

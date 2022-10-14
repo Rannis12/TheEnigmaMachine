@@ -30,7 +30,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.11" level="application_server_libraries" />
-    <orderEntry type="module" module-name="WebUBoat" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

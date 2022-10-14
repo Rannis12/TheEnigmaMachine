@@ -1,10 +1,8 @@
 package login;
 
-//import client.http.HttpClientUtil;
 import client.http.HttpClientUtil;
 import com.sun.istack.internal.NotNull;
-//import controllers.UBoatController;
-import controllers.UBoatMainAppController;
+import controllers.AlliesMainAppController;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -25,7 +23,7 @@ public class LoginController {
     @FXML private TextField nameTF;
     @FXML private Button loginBtn;
     @FXML private Label errorMessageLabel;
-    private UBoatMainAppController uBoatMainAppController;
+    private AlliesMainAppController alliesMainAppController;
 
     private StringProperty errorMessageProperty = new SimpleStringProperty();
 
@@ -73,16 +71,16 @@ public class LoginController {
                     );
                 } else {
                     Platform.runLater(() -> {
-                        uBoatMainAppController.updateUserName(userName);
-                        uBoatMainAppController.switchToUBoatRoom();
+//                        uBoatMainAppController.updateUserName(userName);
+//                        uBoatMainAppController.switchToUBoatRoom();
                     });
                 }
             }
         });
     }
 
-    public void setUBoatMainAppController(UBoatMainAppController uBoatMainAppController) {
-        this.uBoatMainAppController = uBoatMainAppController;
+    public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
+        this.alliesMainAppController = alliesMainAppController;
     }
 
 

@@ -9,13 +9,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.enigma.Engine;
-import util.Constants;
+//import util.Constants;
 import utils.ServletUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static controllers.UBoatController.makeCodeForm;
+import static logic.enigma.Engine.makeCodeForm;
+
+//import static controllers.UBoatController.makeCodeForm;
 
 @WebServlet(name = "RandomConfServlet", urlPatterns = "/random-conf")
 public class RandomConfServlet extends HttpServlet {

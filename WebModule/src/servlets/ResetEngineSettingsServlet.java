@@ -11,7 +11,9 @@ import utils.ServletUtils;
 
 import java.io.IOException;
 
-import static controllers.UBoatController.makeCodeForm;
+import static logic.enigma.Engine.makeCodeForm;
+
+//import static controllers.UBoatController.makeCodeForm;
 
 @WebServlet(name = "ResetEngineSettingsServlet", urlPatterns = "/reset-engine")
 public class ResetEngineSettingsServlet extends HttpServlet {

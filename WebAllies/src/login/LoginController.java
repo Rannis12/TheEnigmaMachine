@@ -44,7 +44,7 @@ public class LoginController {
                 .parse("http://localhost:8080/loginShortResponse")
                 .newBuilder()
                 .addQueryParameter("username", userName)
-                .addQueryParameter("type", "UBoat")
+                .addQueryParameter("type", "Allie")
                 .build()
                 .toString();
 
@@ -55,8 +55,8 @@ public class LoginController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
-                    System.out.println("Something went wrong: " + e.getMessage());
-                    errorMessageProperty.set("Something went wrong: " + e.getMessage());
+                    System.out.println("Error: " + e.getMessage());
+                    errorMessageProperty.set("Error: " + e.getMessage());
                 });
             }
 

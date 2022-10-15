@@ -19,7 +19,7 @@ public class Run extends Application{
 
 
         Scene scene = new Scene(root, 500, 620);
-        primaryStage.setTitle("UBoat Login");
+        primaryStage.setTitle("Allie Login");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(500);

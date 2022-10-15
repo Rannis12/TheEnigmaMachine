@@ -21,7 +21,6 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML private TextField nameTF;
-    @FXML private Button loginBtn;
     @FXML private Label errorMessageLabel;
     private AlliesMainAppController alliesMainAppController;
 

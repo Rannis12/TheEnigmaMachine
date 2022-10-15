@@ -214,9 +214,8 @@ public class UBoatController {
 //        secondTabController.getStatisticsTA().appendText(newConfiguration + '\n');
     }
 
-    public void setDecodingAndClearButtonsDisable(boolean setToDisable) {
-        secondTabController.setDecodingButtonsDisable(setToDisable);
-        /*thirdTabController.setDecodingButtonsDisable(setToDisable);*/
+    public void enableEncryptFunction() {
+        secondTabController.enableEncryptFunction();
     }
     public int getUsedAmountOfRotors() {
         return engine.getEngineMinimalDetails().getUsedAmountOfRotors();

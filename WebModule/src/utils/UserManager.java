@@ -41,8 +41,8 @@ public class UserManager {
                 alliesMap.put(name, new Allie());
 
                 //YET CHECKED!!
-                usernameToUBoatMap.get(parentName)
-                        .addAllie(alliesMap.get(name));
+//                usernameToUBoatMap.get(parentName)
+//                        .addAllie(alliesMap.get(name));
 
                 break;
             case "Agent":

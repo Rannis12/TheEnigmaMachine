@@ -1,6 +1,7 @@
 package logic.enigma;
 
 import dtos.*;
+import entities.UBoat;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
 
@@ -17,7 +18,7 @@ public class Engine implements Serializable, Cloneable {
     private int amountOfDecodedStrings;
     private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
-    private BattleField battleField;
+    private UBoat UBoat;
 
     Set<String> tmp;
     //agentMaxAmount field no required anymore.

@@ -6,6 +6,7 @@ package servlets;
 import com.google.gson.Gson;
 import dtos.EngineFullDetailsDTO;
 import dtos.EngineMinimalDetailsDTO;
+import entities.UBoat;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -37,13 +38,20 @@ public class FileUploadServlet extends HttpServlet {
         Engine engine = null;
         Collection<Part> parts = request.getParts();
 
+        String userName = request.getParameter("username");
+
         for (Part part : parts) {
 
             EngineLoader engineLoader = new EngineLoader();
             try {
 
                 engine = engineLoader.loadEngineFromInputStream(part.getInputStream());
-                ServletUtils.setEngine(getServletContext(), engine);
+
+
+                UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoat(userName);
+                uBoat.setEngine(engine);
+
+//                ServletUtils.setEngine(getServletContext(), engine);
 
             } catch (exceptions.invalidXMLfileException e) {
                 throw new RuntimeException(e);

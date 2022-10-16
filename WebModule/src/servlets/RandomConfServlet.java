@@ -25,7 +25,8 @@ public class RandomConfServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Engine engine = ServletUtils.getEngine(getServletContext());
+        String username = req.getParameter("username");
+        Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.randomEngine();
 
         resp.setContentType("text/plain");

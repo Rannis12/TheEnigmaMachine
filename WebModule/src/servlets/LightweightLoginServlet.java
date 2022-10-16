@@ -11,6 +11,8 @@ import utils.UserManager;
 
 import java.io.IOException;
 
+import static utils.Constants.PARENT_NAME_PARAMETER;
+
 @WebServlet(name = "LoginShortResponseServlet", urlPatterns = "/loginShortResponse")
 public class LightweightLoginServlet extends HttpServlet {
 
@@ -25,6 +27,7 @@ public class LightweightLoginServlet extends HttpServlet {
 
             String usernameFromParameter = request.getParameter("username");
             String type = request.getParameter("type");
+            String parentName = request.getParameter(PARENT_NAME_PARAMETER);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter - not standard situation. it's a conflict
 
@@ -44,7 +47,7 @@ public class LightweightLoginServlet extends HttpServlet {
                 As the servlet is singleton - it is promised that all threads will be synchronized on the very same instance (crucial here)
 
                 A better code would be to perform only as little and as necessary things we need here inside the synchronized block and avoid
-                do here other not related actions (such as response setup. this is shown here in that manner just to stress this issue
+                do here other not related actions (such as response setup). this is shown here in that manner just to stress this issue
                  */
                 synchronized (this) {
                     if (userManager.isUserExists(usernameFromParameter)) {
@@ -56,7 +59,7 @@ public class LightweightLoginServlet extends HttpServlet {
                     }
                     else {
                         //add the new user to the users list
-                        userManager.addUser(usernameFromParameter, type);
+                        userManager.addUser(usernameFromParameter, type, parentName);
                         //set the username in a session so it will be available on each request
                         //the true parameter means that if a session object does not exists yet
                         //create a new one

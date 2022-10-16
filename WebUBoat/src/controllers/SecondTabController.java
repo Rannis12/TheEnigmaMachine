@@ -17,7 +17,7 @@ import static controllers.UBoatController.BASE_URL;
 
 public class SecondTabController {
 
-    private UBoatController UBoatController;
+    private UBoatController uBoatController;
     private boolean shouldDecodeLine; //false = should decode char
 
     @FXML private TextField currentConfiguration;
@@ -31,14 +31,16 @@ public class SecondTabController {
     @FXML private Button logoutBtn;
     @FXML
     void EncryptBtnListener(ActionEvent event) {
-        UBoatController.setDecodedCorrectly(false);
-        String tmp = lineInputTF.getText().toUpperCase();
+        uBoatController.setDecodedCorrectly(false);
+        String toDecode = lineInputTF.getText().toUpperCase();
 
-        if(!tmp.equals("")) {
+        if(!toDecode.equals("")) {
             try {
                 String resourceName = "/decode-string";
                 HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL + resourceName).newBuilder();
-                urlBuilder.addQueryParameter("toDecode", tmp);
+                urlBuilder.addQueryParameter("toDecode", toDecode)
+                        .addQueryParameter("username", uBoatController.getUserName());
+
                 String finalUrl = urlBuilder.build().toString();
 
                 Request request = new Request.Builder()
@@ -56,9 +58,9 @@ public class SecondTabController {
                 DecodedStringAndConfigurationDTO dto = gson.fromJson(json, DecodedStringAndConfigurationDTO.class);
 
                 decodeResultTF.setText(dto.getDecodedString());
-                UBoatController.setTabsConfiguration(dto.getCurrConfiguration());
+                uBoatController.setTabsConfiguration(dto.getCurrConfiguration());
 
-                UBoatController.setDecodedCorrectly(true);
+                uBoatController.setDecodedCorrectly(true);
 
             }catch(IOException e){
                 throw new RuntimeException(e);
@@ -91,8 +93,15 @@ public class SecondTabController {
     @FXML
     void resetBtnListener(ActionEvent event) throws InterruptedException {
 
+        String finalUrl = HttpUrl
+                .parse(BASE_URL + "/reset-engine")
+                .newBuilder()
+                .addQueryParameter("username", uBoatController.getUserName())
+                .build()
+                .toString();
+
         Request request = new Request.Builder()
-                .url(BASE_URL + "/reset-engine")
+                .url(finalUrl)
                 .get()
                 .build();
 
@@ -103,7 +112,7 @@ public class SecondTabController {
             String conf = response.body().string();
             conf = conf.trim();
 
-            UBoatController.setTabsConfiguration(conf);
+            uBoatController.setTabsConfiguration(conf);
         } catch (IOException e) {
             throw new RuntimeException("error in reset the engine");
         }
@@ -125,8 +134,8 @@ public class SecondTabController {
 
     }
 
-    public void setMainPageController(UBoatController UBoatController) {
-        this.UBoatController = UBoatController;
+    public void setMainPageController(UBoatController uBoatController) {
+        this.uBoatController = uBoatController;
     }
 
     public void setCurrentConfigurationTF(String currConfiguration) {

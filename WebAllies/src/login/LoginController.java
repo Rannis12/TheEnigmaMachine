@@ -23,7 +23,6 @@ public class LoginController {
     @FXML private TextField nameTF;
     @FXML private Label errorMessageLabel;
     private AlliesMainAppController alliesMainAppController;
-
     private StringProperty errorMessageProperty = new SimpleStringProperty();
 
     @FXML
@@ -70,8 +69,8 @@ public class LoginController {
                     );
                 } else {
                     Platform.runLater(() -> {
-//                        uBoatMainAppController.updateUserName(userName);
-//                        uBoatMainAppController.switchToUBoatRoom();
+                        alliesMainAppController.updateUserName(userName);
+                        alliesMainAppController.switchToAlliesRoom();
                     });
                 }
             }

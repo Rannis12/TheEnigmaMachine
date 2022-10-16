@@ -104,8 +104,16 @@ public class UBoatController {
                         //.addFormDataPart("key1", "value1") // you can add multiple, different parts as needed
                         .build();
 
+        String finalUrl = HttpUrl
+                .parse(BASE_URL + RESOURCE)
+                .newBuilder()
+                .addQueryParameter("username", uBoatMainAppController.getUserName())
+                .build()
+                .toString();
+
+
         Request request = new Request.Builder()
-                .url(BASE_URL + RESOURCE)
+                .url(finalUrl)
                 .post(body)
                 .build();
 
@@ -159,8 +167,15 @@ public class UBoatController {
     }
     public void randomConfiguration() {
 
+        String finalUrl = HttpUrl
+                .parse(RANDOM_CONFIGURATION)
+                .newBuilder()
+                .addQueryParameter("username", uBoatMainAppController.getUserName())
+                .build()
+                .toString();
+
         Request request = new Request.Builder()
-                .url(RANDOM_CONFIGURATION)
+                .url(finalUrl)
                 .post(RequestBody.create(new byte[]{}))
                 .build();
 
@@ -279,6 +294,10 @@ public class UBoatController {
 
     public Label getUserLabel() {
         return userLabel;
+    }
+
+    public String getUserName(){
+        return uBoatMainAppController.getUserName();
     }
 }
 

@@ -41,7 +41,9 @@ public class ManualConfServlet extends HttpServlet {
 
         InitializeEngineToJsonDTO initializeEngineToJsonDTO = GSON_INSTANCE.fromJson(jsonManualData, InitializeEngineToJsonDTO.class);
 
-        Engine engine = ServletUtils.getEngine(getServletContext());
+        String username = req.getParameter("username");
+
+        Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.setNewMachine(initializeEngineToJsonDTO.getRotorsFirstPositionDTO(), initializeEngineToJsonDTO.getPlugBoardDTO(),
                 initializeEngineToJsonDTO.getReflectorDTO(), initializeEngineToJsonDTO.getRotorsIndexesDTO());
 

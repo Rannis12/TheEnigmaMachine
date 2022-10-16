@@ -26,14 +26,26 @@ public class ServletUtils {
 		return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static Engine getEngine(ServletContext servletContext){ //we need to make sure not to do get before we made an engine.
-		synchronized (engineManagerLock) {
+	public static Engine getEngine(ServletContext servletContext, String userName){ //we need to make sure not to do get before we made an engine.
+/*		synchronized (engineManagerLock) {
 			if (servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME) == null) {
 //				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, new Engine());
 				return null;
 			}
 		}
-		return (Engine) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
+		return (Engine) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);*/
+		UserManager userManager = getUserManager(servletContext);
+		synchronized (engineManagerLock) {
+			if (userManager.getUBoat(userName) == null) {
+				userManager.addUBoat(userName);
+//				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, new Engine());
+				return null;
+			}
+		}
+		return userManager.getUBoat(userName).getEngine();
+
+
+
 	}
 
 	public static void setEngine(ServletContext servletContext, Engine engine) {

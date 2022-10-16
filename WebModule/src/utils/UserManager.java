@@ -1,5 +1,9 @@
 package utils;
 
+import entities.Agent;
+import entities.Allie;
+import entities.UBoat;
+
 import java.util.*;
 
 /*
@@ -10,28 +14,42 @@ of the user of this class to handle the synchronization of isUserExists with oth
 public class UserManager {
 
     private final Set<String> usersSet; //UBoats
-    private final Set<String> allies;
-    private final Set<String> agents;
+    private final Map<String, UBoat> usernameToUBoatMap;
+    private final Map<String, Allie> alliesMap;
+    private final Map<String, Agent> agentsMap;
+    private final Map<String, String> battleFieldNameToUserNameMap;
 
     public UserManager() {
         usersSet = new HashSet<>();
-        allies = new HashSet<>();
-        agents = new HashSet<>();
+        usernameToUBoatMap = new HashMap<>();
+        alliesMap = new HashMap<>();
+        agentsMap = new HashMap<>();
+        battleFieldNameToUserNameMap = new HashMap<>();
+//        allies = new HashSet<>();
+//        agents = new HashSet<>();
 
     }
 
-    public synchronized void addUser(String name, String type) {
+    //parentName should be someone is above you in the tree. for example, Allie's Parent is UBoat, and UBoat doesn't have a parent.
+    public synchronized void addUser(String name, String type, String parentName) {
+        usersSet.add(name);
         switch(type){
             case "UBoat":
-                usersSet.add(name);
+                usernameToUBoatMap.put(name, new UBoat());
                 break;
             case "Allie":
-                allies.add(name);
+                alliesMap.put(name, new Allie());
+
+                //YET CHECKED!!
+                usernameToUBoatMap.get(parentName)
+                        .addAllie(alliesMap.get(name));
+
                 break;
             case "Agent":
-                agents.add(name);
+//                agents.add(name);
                 break;
         }
+
     }
 
     public synchronized void removeUser(String username) {
@@ -43,6 +61,15 @@ public class UserManager {
     }
 
     public boolean isUserExists(String username) {
-        return (usersSet.contains(username) || allies.contains(username) || agents.contains(username));
+//        return (usersSet.contains(username) || allies.contains(username) || agents.contains(username));
+        return usersSet.contains(username);
+    }
+
+    public UBoat getUBoat(String name){
+        return usernameToUBoatMap.get(name);
+    }
+
+    public void addUBoat(String name){
+        usernameToUBoatMap.put(name, new UBoat());
     }
 }

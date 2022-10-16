@@ -24,7 +24,7 @@ public class FirstTabController implements Initializable {
     private PlugBoardDTO plugBoardDTO = null;
     private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
     private ReflectorDTO reflectorDTO = null;
-    private UBoatController UBoatController;
+    private UBoatController uBoatController;
 
     @FXML
     private Button randomBtn;
@@ -80,8 +80,16 @@ public class FirstTabController implements Initializable {
             Gson gson = new Gson();
             String json = gson.toJson(initializeEngineToJsonDTO, InitializeEngineToJsonDTO.class);
 
+            String finalUrl = HttpUrl
+                    .parse(BASE_URL + "/manual-conf")
+                    .newBuilder()
+                    .addQueryParameter("username", uBoatController.getUserName())
+                    .build()
+                    .toString();
+
+
             Request request = new Request.Builder()
-                    .url(BASE_URL + "/manual-conf")
+                    .url(finalUrl)
                     .post(RequestBody.create(json.getBytes()))
                     .build();
 
@@ -90,7 +98,7 @@ public class FirstTabController implements Initializable {
 
             String conf = response.body().string();
             conf = conf.trim();
-            UBoatController.setTabsConfiguration(conf);
+            uBoatController.setTabsConfiguration(conf);
 
 //            UBoatController.setConfiguration();
 //            UBoatController.setNewMachine(rotorsFirstPositionDTO, plugBoardDTO, reflectorDTO, rotorsIndexesDTO);
@@ -104,7 +112,7 @@ public class FirstTabController implements Initializable {
 
         }
         catch (RuntimeException ex) {
-            UBoatController.popUpError("Please choose reflector before setting a new machine!");
+            uBoatController.popUpError("Please choose reflector before setting a new machine!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -113,7 +121,7 @@ public class FirstTabController implements Initializable {
     }
     @FXML
     void randomBtnListener(ActionEvent event) {
-        UBoatController.randomConfiguration(); //creating new request, and updating the configuration label.
+        uBoatController.randomConfiguration(); //creating new request, and updating the configuration label.
 
         operationsAfterValidInput();
 
@@ -123,7 +131,7 @@ public class FirstTabController implements Initializable {
     void manualBtnListener(ActionEvent event) {
         userRotorsInput.setDisable(false);
         clearAllUsersTextFields();
-        instructionTF.setText("enter " + UBoatController.getUsedAmountOfRotors() + " rotors ID's " +
+        instructionTF.setText("enter " + uBoatController.getUsedAmountOfRotors() + " rotors ID's " +
                 "from left to right divided by comma. for example 23,542,231");
 
 
@@ -137,7 +145,7 @@ public class FirstTabController implements Initializable {
         String rotorsPosition = userRotorsInput.getText();
         try {
             rotorsIndexesDTO = new RotorsIndexesDTO();
-            UBoatController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
+            uBoatController.checkRotorIndexesValidity(rotorsPosition, rotorsIndexesDTO);
             userRotorsInput.setDisable(true);
 
             userInitPlaces.setDisable(false);
@@ -145,7 +153,7 @@ public class FirstTabController implements Initializable {
 
         } catch (invalidInputException ex) {
             userRotorsInput.clear();
-            UBoatController.popUpError(ex.getMessage());
+            uBoatController.popUpError(ex.getMessage());
         }
 
     }
@@ -154,7 +162,7 @@ public class FirstTabController implements Initializable {
         String rotorsFirstPositions = userInitPlaces.getText();
         rotorsFirstPositions = rotorsFirstPositions.toUpperCase();
         try {
-            UBoatController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
+            uBoatController.checkRotorsFirstPositionsValidity(rotorsFirstPositions);
             rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
             userInitPlaces.setDisable(true);
 
@@ -163,7 +171,7 @@ public class FirstTabController implements Initializable {
             instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
         } catch (invalidInputException ex) {
             userInitPlaces.clear();
-            UBoatController.popUpError(ex.getMessage());
+            uBoatController.popUpError(ex.getMessage());
         }
     }
     @FXML
@@ -172,7 +180,7 @@ public class FirstTabController implements Initializable {
             String tmpString = userInitPlugBoard.getText();
             tmpString = tmpString.toUpperCase();
             plugBoardDTO = new PlugBoardDTO();
-            UBoatController.checkPlugBoardValidity(tmpString, plugBoardDTO);
+            uBoatController.checkPlugBoardValidity(tmpString, plugBoardDTO);
             plugBoardDTO.setInitString(tmpString);
             userInitPlugBoard.setDisable(true);
 
@@ -183,7 +191,7 @@ public class FirstTabController implements Initializable {
             instructionTF.setText("Choose reflectors from the following:");
         } catch (invalidInputException ex) {
             userInitPlugBoard.clear();
-            UBoatController.popUpError(ex.getMessage());
+            uBoatController.popUpError(ex.getMessage());
         }
     }
 
@@ -213,8 +221,8 @@ public class FirstTabController implements Initializable {
         //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings())); // solved with bind
 
     }
-    public void setMainController(UBoatController UBoatController) {
-        this.UBoatController = UBoatController;
+    public void setMainController(UBoatController uBoatController) {
+        this.uBoatController = uBoatController;
     }
     public void enableButtons() {
         randomBtn.setDisable(false);
@@ -228,8 +236,8 @@ public class FirstTabController implements Initializable {
 //        engineFullDetailsDTO.getRotorsCurrentPositions(), engineFullDetailsDTO.getChosenReflector()/*, engineFullDetailsDTO.getPlugBoardString()*/);
 //        initializeConfigurationTF.setText(newConfiguration);
 
-        UBoatController.resetCurrConfigurationDecodedAmount();
-        UBoatController.enableEncryptFunction();
+        uBoatController.resetCurrConfigurationDecodedAmount();
+        uBoatController.enableEncryptFunction();
         //UBoatController.setDecodingAndClearButtonsDisable(false);
 
     }

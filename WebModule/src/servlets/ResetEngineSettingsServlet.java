@@ -24,7 +24,9 @@ public class ResetEngineSettingsServlet extends HttpServlet {
 
         //working only when there's only one uBoat, in case there's more, we will need to request the specific uboat engine.
 
-        Engine engine = ServletUtils.getEngine(getServletContext());
+        String username = req.getParameter("username");
+
+        Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.resetEngineToUserInitChoice();
 
         EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();

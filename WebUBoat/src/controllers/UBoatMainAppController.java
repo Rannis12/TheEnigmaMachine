@@ -78,4 +78,8 @@ public class UBoatMainAppController {
     public void updateUserName(String userName) {
         currentUserName.set(userName);
     }
+
+    public String getUserName() {
+        return currentUserName.get();
+    }
 }

@@ -72,4 +72,14 @@ public class UserManager {
     public void addUBoat(String name){
         usernameToUBoatMap.put(name, new UBoat());
     }
+
+    public synchronized Set<String> getBattleFieldNames() {
+        Set<String> battleFieldNames = new HashSet<>();
+
+        for (String key : usernameToUBoatMap.keySet()) {
+            String name = usernameToUBoatMap.get(key).getBattleName();
+            battleFieldNames.add(name);
+        }
+        return battleFieldNames;
+    }
 }

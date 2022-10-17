@@ -8,14 +8,15 @@ public class AlliesController {
 
     private AlliesMainAppController alliesMainAppController;
     private DashboardController dashboardController;
-//    private ContestController contestController;
+    private ContestController contestController;
+
     @FXML private Label userLabel;
 
     @FXML
     public void initialize(){
-        if(dashboardController != null/* && contestController != null*/) {
+        if(dashboardController != null && contestController != null) {
             dashboardController.setAlliesController(this);
-//        contestController.setAlliesController(this);
+            contestController.setAlliesController(this);
         }
     }
 
@@ -26,6 +27,10 @@ public class AlliesController {
 
     public Label getUserLabel() {
         return userLabel;
+    }
+
+    public void setActive() {
+        contestController.startBattleFieldListRefresher();
     }
 }
 

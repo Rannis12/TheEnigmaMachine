@@ -3,14 +3,20 @@ package controllers;
 //import client.http.HttpClientUtil;
 import com.google.gson.Gson;
 import dtos.DecodedStringAndConfigurationDTO;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static controllers.UBoatController.BASE_URL;
 
@@ -29,6 +35,8 @@ public class SecondTabController {
     @FXML private Button EncryptBtn;
     @FXML private TextArea teamDetailsTA;
     @FXML private Button logoutBtn;
+
+
     @FXML
     void EncryptBtnListener(ActionEvent event) {
         uBoatController.setDecodedCorrectly(false);

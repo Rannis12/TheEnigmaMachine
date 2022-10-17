@@ -19,24 +19,24 @@ public class ContestController {
 
     private AlliesController alliesController;
 //    private ListProperty battleFieldNames = new SimpleListProperty();
-    private ObservableList<String> battleFieldNames;
-    private TimerTask battleFieldListRefresher;
-    private Timer timer;
+//    private ObservableList<String> battleFieldNames;
+//    private TimerTask battleFieldListRefresher;
+//    private Timer timer;
+//        private final IntegerProperty totalUsers;
+    @FXML private ChoiceBox<?> contestsCB;
     private final BooleanProperty autoUpdate;
-    private final IntegerProperty totalUsers;
-    @FXML private ChoiceBox<String> contestsCB;
     @FXML private Button processBtn;
 
 
     public ContestController(){
-        totalUsers = new SimpleIntegerProperty();
+//        totalUsers = new SimpleIntegerProperty();
         autoUpdate = new SimpleBooleanProperty();
-        battleFieldNames = new SimpleListProperty<>();
+//        battleFieldNames = new SimpleListProperty<>();
     }
 
     @FXML
     public void initialize(){
-        contestsCB.setItems(battleFieldNames); //maybe cause problems.
+//        contestsCB.setItems(battleFieldNames); //maybe cause problems.
     }
 
     @FXML
@@ -49,7 +49,9 @@ public class ContestController {
         this.alliesController = alliesController;
     }
 
-    private void updateBattleFieldList(List<String> bfNames) {
+    //Ofek can ignore it
+   /*
+   private void updateBattleFieldList(List<String> bfNames) {
         Platform.runLater(() -> {
             battleFieldNames.clear();
 //            items.clear();
@@ -61,10 +63,10 @@ public class ContestController {
     public void startBattleFieldListRefresher() {
         battleFieldListRefresher = new BattleFieldRefresher(
                 autoUpdate,
-                /*httpStatusUpdate::updateHttpLine,*/
+                *//*httpStatusUpdate::updateHttpLine,*//*
                 this::updateBattleFieldList);
         timer = new Timer();
         timer.schedule(battleFieldListRefresher, REFRESH_RATE, REFRESH_RATE);
-    }
+    }*/
 
 }

@@ -30,7 +30,7 @@ public class AlliesController {
     }
 
     public void setActive() {
-        contestController.startBattleFieldListRefresher();
+        dashboardController.startBattleFieldListRefresher();
     }
 }
 

@@ -8,5 +8,18 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="WebModule" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../okHttp/okio-2.8.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../okHttp/okhttp-4.9.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../okHttp/annotations-13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../okHttp/kotlin-stdlib-1.4.10.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../okHttp/kotlin-stdlib-common-1.4.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -73,12 +73,6 @@ public class UBoatController {
 
                 amountOfDecodedStrings = new SimpleIntegerProperty(0);
 
-                resetCurrConfigurationDecodedAmount();
-
-                amountOfDecodedStrings.addListener(e -> {
-                    updateConfigurationLabel();
-                });
-
                 uploadFileToServer(file);
 
             }
@@ -194,31 +188,6 @@ public class UBoatController {
         return engine.getEngineFullDetails();
     }
 
-//    public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
-//                                String rotorsPositions, String chosenReflector) {
-//        String finalInfoToPrint = "<";
-//
-//        for (int i = 0; i < RotorsOrganization.size(); i++) {
-//            if (i + 1 != RotorsOrganization.size())
-//                finalInfoToPrint += (RotorsOrganization.get(i) + ",");
-//            else
-//                finalInfoToPrint += RotorsOrganization.get(i);
-//        }
-//        finalInfoToPrint = finalInfoToPrint + "><";
-//        for (int i = 0; i < rotorsPositions.length(); i++) {
-//            if (i + 1 != notchesPlaces.size())
-//                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + "),";
-//            else
-//                finalInfoToPrint = finalInfoToPrint + rotorsPositions.charAt(i) + "(" + notchesPlaces.get(i) + ")>";
-//        }
-//        finalInfoToPrint = finalInfoToPrint +"<" + chosenReflector + ">";
-//
-//        /*if (!plugBoardString.equals("")) {
-//            finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
-//        }*/
-//        return finalInfoToPrint;
-//    }
-
 
     public void setTabsConfiguration(String newConfiguration) {
         configuration.set(newConfiguration);
@@ -269,9 +238,6 @@ public class UBoatController {
     public int getCurrConfigurationDecodedAmount() {
         return currConfigurationDecodedAmount;
     }
-    public void resetCurrConfigurationDecodedAmount() {
-        currConfigurationDecodedAmount = 0;
-    }
     public void resetEngineToUserInitChoice() {
         engine.resetEngineToUserInitChoice();
     }
@@ -298,6 +264,10 @@ public class UBoatController {
 
     public String getUserName(){
         return uBoatMainAppController.getUserName();
+    }
+
+    public void resetCurrConfigurationDecodedAmount() {
+        currConfigurationDecodedAmount = 0;
     }
 }
 

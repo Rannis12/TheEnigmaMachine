@@ -69,7 +69,7 @@ public class EngineLoader {
         CTEBattlefield CteBattlefield = cteEnigma.getCTEBattlefield();
 
         if(checkCTEEnigma(alphaBetFromCTE, rotorCount, cteReflectors, cteRotorsLIST, cteDecipher, CteBattlefield) == true) {
-            newEngine =  new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE/*, cteDecipher.getAgents() */, cteDecipher.getCTEDictionary());
+            newEngine =  new Engine(cteReflectors, cteRotorsLIST, rotorCount, alphaBetFromCTE/*, cteDecipher.getAgents() */, cteDecipher.getCTEDictionary(), CteBattlefield);
             //dictionary = new Dictionary(newEngine.getKeyBoard(), cteDecipher.getCTEDictionary());
         }
         return newEngine;

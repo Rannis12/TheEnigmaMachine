@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logic.enigma.Engine;
 import utils.ServletUtils;
+import utils.UserManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +47,9 @@ public class ManualConfServlet extends HttpServlet {
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.setNewMachine(initializeEngineToJsonDTO.getRotorsFirstPositionDTO(), initializeEngineToJsonDTO.getPlugBoardDTO(),
                 initializeEngineToJsonDTO.getReflectorDTO(), initializeEngineToJsonDTO.getRotorsIndexesDTO());
+
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        userManager.setUBoat(engine.getUBoat(), username);
 
         EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();
 

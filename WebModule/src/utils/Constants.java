@@ -13,7 +13,7 @@ public class Constants {
 
 
     public final static String PARENT_NAME_PARAMETER = "parent_name";
-    public static final String BATTLE_FIELD_LIST = BASE_URL + "/battlefield-list";
+    public static final String BATTLE_FIELD_LIST = BASE_URL + "/battlefields-list";
 
     //GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

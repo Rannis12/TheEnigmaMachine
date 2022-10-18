@@ -7,8 +7,8 @@ import javafx.scene.control.Labeled;
 public class AlliesController {
 
     private AlliesMainAppController alliesMainAppController;
-    private DashboardController dashboardController;
-    private ContestController contestController;
+    @FXML private DashboardController dashboardController;
+    @FXML private ContestController contestController;
 
     @FXML private Label userLabel;
 

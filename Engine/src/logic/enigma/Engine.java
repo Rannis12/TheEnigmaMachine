@@ -1,6 +1,7 @@
 package logic.enigma;
 
 import dtos.*;
+import dtos.web.ContestDetailsDTO;
 import entities.UBoat;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
@@ -18,12 +19,12 @@ public class Engine implements Serializable, Cloneable {
     private int amountOfDecodedStrings;
     private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
-    private UBoat UBoat;
+    private UBoat uBoat;
 
     Set<String> tmp;
     //agentMaxAmount field no required anymore.
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE,
-           String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary) {
+           String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary, CTEBattlefield cteBattlefield) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
         dictionary = new Dictionary(keyBoard, cteDictionary);
@@ -35,6 +36,8 @@ public class Engine implements Serializable, Cloneable {
         machineStatisticsDTO = new MachineStatisticsDTO();
 
         amountOfDecodedStrings = 0;
+
+        uBoat = new UBoat(cteBattlefield);
     }
 
     public Engine (){
@@ -335,6 +338,11 @@ public class Engine implements Serializable, Cloneable {
             finalInfoToPrint = finalInfoToPrint + "<" + plugBoardString + ">";
         }*/
         return finalInfoToPrint;
+    }
+
+    public UBoat getUBoat() {
+        uBoat.setEngine(this);
+        return uBoat;
     }
 }
 

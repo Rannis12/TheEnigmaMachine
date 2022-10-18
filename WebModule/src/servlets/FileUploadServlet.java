@@ -47,7 +47,6 @@ public class FileUploadServlet extends HttpServlet {
 
                 engine = engineLoader.loadEngineFromInputStream(part.getInputStream());
 
-
                 UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoat(userName);
                 uBoat.setEngine(engine);
 

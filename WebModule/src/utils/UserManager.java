@@ -1,5 +1,6 @@
 package utils;
 
+import dtos.web.ContestDetailsDTO;
 import entities.Agent;
 import entities.Allie;
 import entities.UBoat;
@@ -76,10 +77,27 @@ public class UserManager {
     public synchronized Set<String> getBattleFieldNames() {
         Set<String> battleFieldNames = new HashSet<>();
 
-        for (String key : usernameToUBoatMap.keySet()) {
-            String name = usernameToUBoatMap.get(key).getBattleName();
-            battleFieldNames.add(name);
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            battleFieldNames.add(entry.getValue().getBattleName());
+        }
+            return battleFieldNames;
+    }
+
+    public synchronized Set<ContestDetailsDTO> getBattleFields() {
+        Set<ContestDetailsDTO> battleFieldNames = new HashSet<>();
+
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            UBoat uBoat= entry.getValue();
+            String username = entry.getKey();
+
+            battleFieldNames.add(new ContestDetailsDTO(uBoat.getBattleName(), username, uBoat.getGameStatus(),
+                    uBoat.getDifficulty(), "need to create the string."));
         }
         return battleFieldNames;
+    }
+
+    public void setUBoat(UBoat uBoat, String username) {
+        usernameToUBoatMap.put(username, uBoat);
+
     }
 }

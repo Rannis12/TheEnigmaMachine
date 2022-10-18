@@ -4,6 +4,7 @@ package logic;
 //import chat.client.util.http.HttpClientUtil;
 import client.http.HttpClientUtil;
 import com.sun.istack.internal.NotNull;
+import dtos.web.ContestDetailsDTO;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,14 +24,13 @@ import static utils.Constants.GSON_INSTANCE;
 public class BattleFieldRefresher extends TimerTask {
 
 //    private final Consumer<String> httpRequestLoggerConsumer;
-    private final Consumer<List<String>> usersListConsumer;
+    private final Consumer<List<ContestDetailsDTO>> usersListConsumer;
     private int requestNumber;
-    private final BooleanProperty shouldUpdate;
+//    private final BooleanProperty shouldUpdate;
 
 
-    public BattleFieldRefresher(BooleanProperty shouldUpdate/*, Consumer<String> httpRequestLoggerConsumer*/, Consumer<List<String>> usersListConsumer) {
-        this.shouldUpdate = shouldUpdate;
-//        this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
+    public BattleFieldRefresher(/*BooleanProperty shouldUpdate,*/ Consumer<List<ContestDetailsDTO>> usersListConsumer) {
+//        this.shouldUpdate = shouldUpdate;
         this.usersListConsumer = usersListConsumer;
         requestNumber = 0;
     }
@@ -38,9 +38,9 @@ public class BattleFieldRefresher extends TimerTask {
     @Override
     public void run() {
 
-        if (!shouldUpdate.get()) {
+       /* if (!shouldUpdate.get()) {
             return;
-        }
+        }*/
 
         final int finalRequestNumber = ++requestNumber;
 //        httpRequestLoggerConsumer.accept("About to invoke: " + Constants.BATTLE_FIELD_LIST + " | Users Request # " + finalRequestNumber);
@@ -54,10 +54,10 @@ public class BattleFieldRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonArrayOfUsersNames = response.body().string();
+                String jsonArrayOfDtos = response.body().string();
 //                httpRequestLoggerConsumer.accept("Users Request # " + finalRequestNumber + " | Response: " + jsonArrayOfUsersNames);
-                String[] usersNames = GSON_INSTANCE.fromJson(jsonArrayOfUsersNames, String[].class);
-                usersListConsumer.accept(Arrays.asList(usersNames));
+                ContestDetailsDTO[] dtos = GSON_INSTANCE.fromJson(jsonArrayOfDtos, ContestDetailsDTO[].class);
+                usersListConsumer.accept(Arrays.asList(dtos));
             }
         });
     }

@@ -1,6 +1,7 @@
 package servlets;
 
 import com.google.gson.Gson;
+import dtos.web.ContestDetailsDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@WebServlet(name = "BattleFieldServlet", urlPatterns = "/battlefield-list")
+@WebServlet(name = "BattleFieldsServlet", urlPatterns = "/battlefields-list")
 public class BattleFieldListServlet extends HttpServlet {
 
     @Override
@@ -24,8 +25,8 @@ public class BattleFieldListServlet extends HttpServlet {
         try (PrintWriter out = resp.getWriter()) {
             Gson gson = new Gson();
             UserManager userManager = ServletUtils.getUserManager(getServletContext());
-            Set<String> battleFieldNames = userManager.getBattleFieldNames();
-            String json = gson.toJson(battleFieldNames);
+            Set<ContestDetailsDTO> battleFields = userManager.getBattleFields();
+            String json = gson.toJson(battleFields);
             out.println(json);
             out.flush();
         }

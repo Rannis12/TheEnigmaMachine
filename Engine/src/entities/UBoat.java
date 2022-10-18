@@ -1,6 +1,7 @@
 package entities;
 
 import logic.enigma.Engine;
+import resources.jaxb.generated.CTEBattlefield;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 public class UBoat {
     private String battleName;
     private String difficulty;
+    private String gameStatus;
     private int maxAmountOfAllies;
     private Set<Allie> allies;
 
@@ -22,8 +24,18 @@ public class UBoat {
         this.battleName = battleName;
         this.difficulty = difficulty;
         this.maxAmountOfAllies = maxAmountOfAllies;
+        gameStatus = "Not Ready";
 
         this.allies = new HashSet<>();
+    }
+
+    public UBoat(CTEBattlefield cteBattlefield) {
+        difficulty = cteBattlefield.getLevel();
+        maxAmountOfAllies = cteBattlefield.getAllies();
+        battleName = cteBattlefield.getBattleName();
+        gameStatus = "Not Ready";
+
+        allies = new HashSet<>();
     }
 
     public String getBattleName() {
@@ -52,5 +64,13 @@ public class UBoat {
 
     public void addAllie(Allie allie) { //YET CHECKED!!
         allies.add(allie);
+    }
+
+    public String getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(String gameStatus){
+        this.gameStatus = gameStatus;
     }
 }

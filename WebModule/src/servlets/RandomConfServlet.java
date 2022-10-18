@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.enigma.Engine;
 //import util.Constants;
 import utils.ServletUtils;
+import utils.UserManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,6 +29,9 @@ public class RandomConfServlet extends HttpServlet {
         String username = req.getParameter("username");
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.randomEngine();
+
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        userManager.setUBoat(engine.getUBoat(), username);
 
         resp.setContentType("text/plain");
 

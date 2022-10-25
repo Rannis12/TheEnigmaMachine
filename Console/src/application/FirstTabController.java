@@ -1,6 +1,6 @@
 package application;
 
-import dtos.*;
+import dtos.engine.*;
 import exceptions.invalidInputException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.net.URL;

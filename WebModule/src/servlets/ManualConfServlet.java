@@ -1,24 +1,19 @@
 package servlets;
 
-import com.google.gson.Gson;
-import dtos.EngineFullDetailsDTO;
+import dtos.engine.EngineFullDetailsDTO;
 import dtos.InitializeEngineToJsonDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import logic.enigma.Engine;
 import utils.ServletUtils;
 import utils.UserManager;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.util.Collection;
-import java.util.Scanner;
 
 import static logic.enigma.Engine.makeCodeForm;
 import static utils.Constants.GSON_INSTANCE;

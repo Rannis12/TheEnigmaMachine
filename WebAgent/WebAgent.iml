@@ -18,5 +18,10 @@
         <jarDirectory url="file://$MODULE_DIR$/../../okHttp" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="WebModule" />
+    <orderEntry type="module" module-name="DTO" />
+    <orderEntry type="module" module-name="Refresher" />
+    <orderEntry type="module" module-name="Engine" />
+    <orderEntry type="module" module-name="DecryptionManager" />
   </component>
 </module>

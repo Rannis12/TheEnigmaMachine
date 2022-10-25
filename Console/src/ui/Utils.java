@@ -1,6 +1,7 @@
 package ui;
 
 import dtos.*;
+import dtos.engine.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import logic.enigma.Dictionary;
@@ -8,7 +9,6 @@ import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.*;
 
 import static logic.enigma.EngineLoader.isFileExistAndXML;

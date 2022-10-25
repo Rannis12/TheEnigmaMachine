@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uboat.client.controllers.FirstTabController">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="488.0" prefWidth="672.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+         <items>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="200.0" prefWidth="331.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="439.0" prefWidth="301.0" spacing="7.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label alignment="CENTER" text="Calibration" textFill="#ea0505">
+                           <font>
+                              <Font name="Arial Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER" fillHeight="false" maxHeight="300.0" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="0.0" prefHeight="60.0" prefWidth="266.0" spacing="50.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="randomBtn" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#randomBtnListener" prefHeight="60.0" prefWidth="90.0" text="random">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></Button>
+                              <Button fx:id="manualBtn" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#manualBtnListener" prefHeight="60.0" prefWidth="90.0" text="manual">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></Button>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <VBox spacing="30.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" maxHeight="44.0" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="302.0" spacing="10.0">
+                                 <children>
+                                    <Label alignment="CENTER" maxHeight="20.0" maxWidth="125.0" minHeight="17.0" minWidth="78.0" prefHeight="20.0" prefWidth="78.0" text="Instrusctions:" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Label>
+                                    <TextArea fx:id="instructionTF" editable="false" maxHeight="48.0" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="214.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <TextField fx:id="userRotorsInput" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userRotorsInputListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
+                              <TextField fx:id="userInitPlaces" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlacesListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors first positions input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
+                              <TextField fx:id="userInitPlugBoard" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlugBoardListener" prefHeight="25.0" prefWidth="381.0" promptText="Plugboard input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" fillHeight="false" spacing="10.0">
+                                 <children>
+                                    <Label fx:id="chooseReflectorLabel" prefHeight="20.0" prefWidth="130.0" text="Choose Reflector:" visible="false">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ChoiceBox fx:id="reflectorChoiceBox" prefHeight="25.0" prefWidth="41.0" visible="false">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </ChoiceBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <Button fx:id="setMachineBtn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#setMachine" text="Set Machine!">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <Label fx:id="machineInitializeLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="180.0" styleClass="machineInitSuccessLabel" stylesheets="@firstTabStyleSheet.css" text="Machine initialize successfully!" textFill="#faf2f2" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="300.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutY="-1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="266.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-1.0">
+                     <children>
+                        <Label alignment="TOP_CENTER" style="-fx-text-fill: #DE3163;" text="Current Machine Configuration">
+                           <font>
+                              <Font name="Arial Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="currentConfigurationTF" alignment="CENTER" editable="false" maxWidth="1.7976931348623157E308" prefWidth="301.0" style="-fx-border-color: #1C2833; -fx-border-radius: 5px; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="40.0" top="10.0" />
+                           </VBox.margin></TextField>
+                        <VBox alignment="TOP_CENTER" prefHeight="170.0" prefWidth="302.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="detailsLabel" alignment="CENTER" prefHeight="14.0" prefWidth="62.0" text="Details:">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <GridPane fx:id="rowOneInTabOne" maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="63.0" minWidth="63.0" prefWidth="63.0" />
+                                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="576.6666564941406" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <padding>
+                                    <Insets bottom="2.0" top="4.0" />
+                                 </padding>
+                                 <children>
+                                    <Label fx:id="rotorsDetails" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" left="5.0" top="3.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label prefHeight="26.0" prefWidth="66.0" text="Rotors:">
+                                       <font>
+                                          <Font name="System Bold" size="17.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <GridPane maxHeight="27.0" prefHeight="27.0" prefWidth="556.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="170.0" minWidth="162.0" prefWidth="162.0" />
+                                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="80.0" prefWidth="477.6666564941406" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label fx:id="reflectorsAmount" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="27.0" prefWidth="479.0" style="-fx-background-color: #FFF; -fx-border-color: #CC9999; -fx-text-fill: #f4978e; -fx-border-width: 2px;" text="..." GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="2.0" />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets bottom="3.0" left="5.0" top="3.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label prefHeight="26.0" prefWidth="168.0" text="Reflectors Amount:">
+                                       <font>
+                                          <Font name="System Bold" size="17.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets top="55.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

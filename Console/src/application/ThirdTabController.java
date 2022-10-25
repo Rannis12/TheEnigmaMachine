@@ -241,7 +241,7 @@ public class ThirdTabController {
             amountOfTasksTF.setVisible(true);
 
 
-            decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
+//            decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
             //start running tasks
             decryptionManager.encode();
         }
@@ -257,7 +257,7 @@ public class ThirdTabController {
     @FXML
     void stopBtnListener(ActionEvent event) {
 
-        decryptionManager.stopAllAgents(); //shutdown all threads.
+//        decryptionManager.stopAllAgents(); //shutdown all threads.
 
         totalTimeTF.clear();
         amountOfTasksLabel.setVisible(false);

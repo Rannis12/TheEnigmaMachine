@@ -1,7 +1,7 @@
 package servlets;
 
 import dtos.DecodedStringAndConfigurationDTO;
-import dtos.EngineFullDetailsDTO;
+import dtos.engine.EngineFullDetailsDTO;
 import exceptions.invalidInputException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +13,7 @@ import logic.enigma.Engine;
 
 import utils.Constants;
 import utils.ServletUtils;
+import utils.UserManager;
 
 import java.io.IOException;
 
@@ -26,14 +27,18 @@ public class DecodedStringServlet extends HttpServlet {
         String username = req.getParameter("username");
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
         String decodedString = null;
+
         resp.setContentType("text/plain");
 
         try {
             decodedString = engine.decodeStr(req.getParameter("toDecode")).getDecodedString();
-
+            ServletUtils.setDecodedString(decodedString);
+//            ServletUtils.getUserManager(getServletContext()).setUBoatStatus(username, );
 
         } catch (invalidInputException e) {
-            throw new RuntimeException("couldn't decode the string.");
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            resp.getOutputStream().println("couldn't decode the string.");
+            return;
         }
 
         EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();

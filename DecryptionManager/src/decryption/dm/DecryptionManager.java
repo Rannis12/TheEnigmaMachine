@@ -1,3 +1,4 @@
+/*
 package decryption.dm;
 
 import decryption.DecryptTask;
@@ -39,7 +40,6 @@ public class DecryptionManager {
     public static long startTime; //measuring the time we start create tasks.
     private Producer producer; //creates all the tasks.
     private Consumer<MissionDTO> dmConsumer;
-//    private Consumer<ProgressUpdateDTO> dmProgressConsumer;
     private DoubleProperty createdSoFar;
 
     public int getAmountOfMissions() {
@@ -52,6 +52,43 @@ public class DecryptionManager {
     private TextField totalTimeTF;
     private BooleanProperty isSystemPause;
 
+    public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy){
+        this.engine = engineCopy; // right now this isn't a copy.
+
+        //all of those 4 members will get their data from the server.
+        */
+/*amountOfAgents;
+        sizeOfMission;
+        toEncode;
+        decryptionSelection;*//*
+
+        this.dictionary = engine.getDictionary();
+
+        BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE); //maybe the max size of the queue here isn't 1000?
+
+        producer = new Producer(engine.getEngineFullDetails().getUsedAmountOfRotors(),
+                engine.getKeyBoard().getAlphaBet(),
+                blockingQueue, (Engine)engine.clone());
+
+
+        threadPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 20, TimeUnit.SECONDS,
+                blockingQueue,
+                new CustomThreadFactory());
+
+        blockingQueueResponses = new LinkedBlockingQueue();
+        setThreadOfResponses(); //??
+
+        createdSoFar = new SimpleDoubleProperty();
+        amountOfMissions = new SimpleDoubleProperty();
+
+//        this.totalTimeTF = totalTimeTF;
+
+        threadPool.prestartAllCoreThreads(); //makes the threadpool run.
+
+        producer.calculatePossibleMissions(); //calculates the missions.
+    }
+
+    //ex.2 ctor.
     public DecryptionManager(DecryptionManagerDTO decryptionManagerDTO, Engine engineCopy,
                              Consumer<MissionDTO> consumer,
                              BooleanProperty isSystemPause, BooleanProperty isStopBtnClicked,
@@ -161,7 +198,7 @@ public class DecryptionManager {
                     amountOfMissions.set(possibleOptions * engine.getAllExistingReflectors().size()
                             * fact(engine.getEngineFullDetails().getUsedAmountOfRotors()));
                     break;
-                case "Impossible":
+                case "Insane":
                     amountOfMissions.set(possibleOptions * engine.getAllExistingReflectors().size()
                             * fact(engine.getEngineFullDetails().getUsedAmountOfRotors()) *
                             nCr(engine.getEngineFullDetails().getRotorsAmount(), engine.getEngineFullDetails().getUsedAmountOfRotors()));
@@ -350,3 +387,4 @@ public class DecryptionManager {
         threadPool.shutdownNow();
     }
 }
+*/

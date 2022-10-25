@@ -11,6 +11,12 @@ public class Dictionary implements Serializable {
     private Set<String> dictionary;
     private String excludedCharacters;
 
+
+    public Dictionary(Set<String> dictionary, String excludedCharacters){
+        this.dictionary = dictionary;
+        this.excludedCharacters = excludedCharacters;
+    }
+
     Dictionary(KeyBoard keyBoard, CTEDictionary cteDictionary) {
         dictionary = new HashSet<>();
         excludedCharacters = cteDictionary.getExcludeChars();
@@ -73,5 +79,9 @@ public class Dictionary implements Serializable {
                 sorted();
 
         return wordsInDictionary;
+    }
+
+    public Set<String> getDictionary() {
+        return dictionary;
     }
 }

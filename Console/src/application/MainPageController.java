@@ -1,6 +1,7 @@
 package application;
 
 import dtos.*;
+import dtos.engine.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import javafx.beans.property.BooleanProperty;

@@ -1,9 +1,7 @@
 package client.http;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import dtos.entities.AgentDTO;
+import okhttp3.*;
 
 import java.util.function.Consumer;
 
@@ -34,6 +32,15 @@ public class HttpClientUtil {
         call.enqueue(callback);
     }
 
+    public static void runAsyncPost(String finalUrl, String agentJson, Callback callback) {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(RequestBody.create(agentJson.getBytes()))
+                .build();
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+
+        call.enqueue(callback);
+    }
     public static void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();

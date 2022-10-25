@@ -1,8 +1,6 @@
 package servlets;
 
-import com.google.gson.Gson;
-import dtos.EngineFullDetailsDTO;
-import dtos.EngineMinimalDetailsDTO;
+import dtos.engine.EngineFullDetailsDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

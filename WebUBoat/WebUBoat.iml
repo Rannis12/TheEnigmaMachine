@@ -31,5 +31,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="Refresher" />
+    <orderEntry type="module" module-name="WebAllies" />
   </component>
 </module>

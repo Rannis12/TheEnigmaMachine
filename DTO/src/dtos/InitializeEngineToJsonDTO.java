@@ -1,5 +1,10 @@
 package dtos;
 
+import dtos.engine.PlugBoardDTO;
+import dtos.engine.ReflectorDTO;
+import dtos.engine.RotorsFirstPositionDTO;
+import dtos.engine.RotorsIndexesDTO;
+
 public class InitializeEngineToJsonDTO {
 
     private RotorsFirstPositionDTO rotorsFirstPositionDTO;

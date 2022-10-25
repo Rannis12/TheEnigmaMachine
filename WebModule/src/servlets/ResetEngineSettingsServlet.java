@@ -1,6 +1,6 @@
 package servlets;
 
-import dtos.EngineFullDetailsDTO;
+import dtos.engine.EngineFullDetailsDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

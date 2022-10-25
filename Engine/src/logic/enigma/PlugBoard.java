@@ -1,6 +1,6 @@
 package logic.enigma;
 
-import dtos.PlugBoardDTO;
+import dtos.engine.PlugBoardDTO;
 import exceptions.invalidInputException;
 
 import java.io.Serializable;

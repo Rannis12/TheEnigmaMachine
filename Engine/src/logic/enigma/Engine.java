@@ -1,7 +1,7 @@
 package logic.enigma;
 
 import dtos.*;
-import dtos.web.ContestDetailsDTO;
+import dtos.engine.*;
 import entities.UBoat;
 import exceptions.invalidInputException;
 import resources.jaxb.generated.*;
@@ -201,7 +201,8 @@ public class Engine implements Serializable, Cloneable {
         int rotorsAmount = rotors.getRotorsAmount();
         int reflectorsAmount = reflectors.getAmountOfReflectors();
 
-        return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings);
+        DictionaryDTO dictionaryDTO = new DictionaryDTO(dictionary.getDictionary(), dictionary.getExcludedCharacters());
+        return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings, dictionaryDTO);
     }
 
     public int getAgentMaxAmount() {

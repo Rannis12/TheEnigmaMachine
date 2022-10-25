@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" minWidth="100.0" prefHeight="465.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uboat.client.controllers.SecondTabController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="79.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="75.0" prefWidth="580.0" spacing="5.0" AnchorPane.bottomAnchor="385.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="299.0" style="-fx-text-fill: #DE3163;" text="Current Machine Configuration">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="currentConfiguration" alignment="CENTER" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="364.0" style="-fx-border-color: #1C2833; -fx-border-width: 2; -fx-border-radius: 5px;" />
+         </children>
+      </VBox>
+      <HBox fx:id="middleHBox" layoutX="-1.0" layoutY="81.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="310.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="81.0">
+         <children>
+            <SplitPane dividerPositions="0.7976588628762542" HBox.hgrow="ALWAYS">
+               <items>
+                  <AnchorPane fx:id="leftAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="290.0" minWidth="210.0" prefHeight="384.0" prefWidth="543.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" layoutX="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="300.0" prefHeight="369.0" prefWidth="600.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label alignment="TOP_CENTER" maxHeight="100.0" maxWidth="250.0" prefWidth="250.0" style="-fx-text-fill: #f4978e;" text="Encrypt" VBox.vgrow="NEVER">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="8.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="287.0" spacing="10.0">
+                                 <children>
+                                    <TextField fx:id="lineInputTF" alignment="CENTER" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="25.0" prefWidth="200.0" style="-fx-border-radius: 5px;" HBox.hgrow="ALWAYS">
+                                       <padding>
+                                          <Insets bottom="10.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Button fx:id="EncryptBtn" disable="true" mnemonicParsing="false" onAction="#EncryptBtnListener" prefHeight="27.0" prefWidth="117.0" style="-fx-border-radius: 10px;" text="Encrypt" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="18.0" layoutY="58.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="452.0" spacing="10.0">
+                                 <children>
+                                    <TextField fx:id="searchInDictionaryTF" alignment="CENTER" disable="true" onKeyPressed="#searchInDictionaryListener" prefHeight="31.0" prefWidth="177.0" promptText="Search In Dictionary" HBox.hgrow="NEVER" />
+                                    <TextArea fx:id="dictionaryTA" editable="false" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label alignment="TOP_CENTER" maxHeight="170.0" maxWidth="250.0" prefHeight="0.0" prefWidth="100.0" text="Output:">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="3.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <TextField fx:id="decodeResultTF" alignment="CENTER" editable="false" maxHeight="25.0" maxWidth="320.0" prefHeight="25.0" prefWidth="320.0" style="-fx-border-radius: 10px;">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </TextField>
+                                    <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Button fx:id="clearBtn" alignment="TOP_LEFT" disable="true" mnemonicParsing="false" onAction="#clearBtnListener" text="Clear fields">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                             <effect>
+                                                <InnerShadow />
+                                             </effect>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Button fx:id="resetBtn" disable="true" mnemonicParsing="false" onAction="#resetBtnListener" text="Reset settings">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Button fx:id="readyBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#readyBtnListener" prefHeight="40.0" prefWidth="100.0" text="Ready" textFill="RED">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="190.0" prefWidth="406.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label maxHeight="20.0" maxWidth="97.0" minHeight="20.0" minWidth="97.0" prefHeight="20.0" prefWidth="97.0" text="Candidates:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </Label>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" right="10.0" />
+                                       </HBox.margin>
+                                       <content>
+                                          <FlowPane fx:id="candidatesFP" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="155.0" prefWidth="282.0" prefWrapLength="200.0" style="-fx-border-color: #1C2833;" vgap="10.0">
+                                             <padding>
+                                                <Insets left="5.0" top="5.0" />
+                                             </padding>
+                                          </FlowPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="8.0" right="5.0" />
+                           </padding>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Reflection>
+                                       <input>
+                                          <Shadow />
+                                       </input>
+                                    </Reflection>
+                                 </bumpInput>
+                              </Lighting>
+                           </effect>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="rightAP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="271.0">
+                     <children>
+                        <VBox alignment="CENTER" layoutX="-7.0" layoutY="-5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                              <Insets bottom="15.0" right="3.0" />
+                           </padding>
+                           <children>
+                              <Label text="Team details">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <FlowPane fx:id="teamsFP" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: BLACK;" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                              </FlowPane>
+                              <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#logoutBtnListener" prefHeight="37.0" prefWidth="100.0" text="Logout" textFill="RED">
+                                 <VBox.margin>
+                                    <Insets left="15.0" top="5.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </items>
+            </SplitPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

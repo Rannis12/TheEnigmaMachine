@@ -39,7 +39,7 @@ public class EngineLoader {
             cteEnigma = deserializeFrom(in);
 
         } catch (JAXBException e) {
-            throw new invalidXMLfileException("TO CHECKKKKK"); //todo
+            throw new invalidXMLfileException("Can't deserializeFrom inputStream from some reason. "); //todo
         }
 
         return convertToEngine(cteEnigma);

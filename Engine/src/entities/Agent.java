@@ -1,12 +1,16 @@
 package entities;
 
-public class Agent {
+import java.io.Serializable;
 
-    private final String agentName;
-    private final String allieName;
-    private final int amountOfThreads;
-    private final int amountOfMissions;
+public class Agent implements Serializable {
 
+    private String agentName;
+    private String allieName;
+    private int amountOfThreads;
+    private int amountOfMissions;
+
+    public Agent(){
+    }
 
     public Agent(String agentName, String allieName, int amountOfThreads, int amountOfMissions) {
         this.agentName = agentName;

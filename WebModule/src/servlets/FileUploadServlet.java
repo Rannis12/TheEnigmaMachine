@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
+import utils.Constants;
 import utils.ServletUtils;
 
 import java.io.ByteArrayInputStream;
@@ -69,13 +70,13 @@ public class FileUploadServlet extends HttpServlet {
 
             //overloading engine details on the response, in order to update uboat.
             response.setContentType("application/json");
-            Gson gson = new Gson();
+
             EngineMinimalDetailsDTO engineMinimalDetailsDTO = engine.getEngineMinimalDetails();
 
             engineMinimalDetailsDTO.setUBoatDTO(engine.getBattleField().getBattleName() , engine.getBattleField().getDifficulty());
             engineMinimalDetailsDTO.setInputStreamAsString(fileContent.toString());
 
-            String json = gson.toJson(engineMinimalDetailsDTO);
+            String json = Constants.GSON_INSTANCE.toJson(engineMinimalDetailsDTO);
 
             try(PrintWriter out = response.getWriter()) {
                 out.println(json);

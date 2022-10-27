@@ -4,15 +4,12 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="WebModule" />
-          <element id="module-output" name="WebUBoat" />
-          <element id="module-output" name="Engine" />
-          <element id="module-output" name="DTO" />
           <element id="library" level="project" name="apache-tomcat-10.0.11" />
           <element id="module-output" name="Console" />
           <element id="module-output" name="DecryptionManager" />
-          <element id="module-output" name="WebAllies" />
-          <element id="module-output" name="Refresher" />
+          <element id="module-output" name="Engine" />
+          <element id="module-output" name="DTO" />
+          <element id="module-output" name="WebModule" />
         </element>
         <element id="directory" name="lib">
           <element id="file-copy" path="$PROJECT_DIR$/../../okHttp/okio-2.8.0.jar" />

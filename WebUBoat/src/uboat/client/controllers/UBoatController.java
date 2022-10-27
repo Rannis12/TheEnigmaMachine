@@ -32,7 +32,6 @@ public class UBoatController {
     @FXML private SecondTabController secondTabController;
     @FXML private Label xmlPathLabel;
     @FXML private Label userLabel;
-//    private Engine engine;
     private int currConfigurationDecodedAmount;
     private BooleanProperty decodedCorrectly = new SimpleBooleanProperty();
     private IntegerProperty amountOfDecodedStrings = new SimpleIntegerProperty();

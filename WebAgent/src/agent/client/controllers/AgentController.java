@@ -1,7 +1,5 @@
 package agent.client.controllers;
 
-import client.http.HttpClientUtil;
-import com.sun.istack.internal.NotNull;
 import dtos.DecodeStringInfo;
 import dtos.MissionDTO;
 import dtos.web.DataToAgentEngineDTO;
@@ -15,15 +13,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.concurrent.ScheduledService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
 import logic.ContestStatusRefresher;
 import logic.IsContestEndRefresher;
 import logic.enigma.Dictionary;
@@ -66,9 +61,6 @@ public class AgentController {
     BooleanProperty isActiveContest = new SimpleBooleanProperty(false);
     private int amountOfThreads;
     private int amountOfMissions;
-
-//    private BooleanProperty canTakeMissions = new SimpleBooleanProperty();
-//    private IntegerProperty amountOfMissionsLeftInThreadPool = new SimpleIntegerProperty();
     private String toEncode;
     private IntegerProperty amountOfMissionsGotSoFar = new SimpleIntegerProperty();
     private IntegerProperty amountOfCompletedMissionsSoFar = new SimpleIntegerProperty();
@@ -88,8 +80,8 @@ public class AgentController {
             }
         });
 //        allieNameLabel.setText(agentMainAppController.getAllieName());
-        withdrawMissionAmountLabel.textProperty().bind(Bindings.concat("", amountOfCompletedMissionsSoFar.get()));
-        missionInQueueLabel.textProperty().bind(Bindings.concat("", amountOfMissionsGotSoFar.get()));
+//        withdrawMissionAmountLabel.textProperty().bind(amountOfCompletedMissionsSoFar.asObject().asString());
+//        missionInQueueLabel.textProperty().bind(amountOfMissionsGotSoFar.asObject().asString());
 
     }
 
@@ -146,27 +138,10 @@ public class AgentController {
             String jsonDto = response.body().string();
             DecryptTaskDTO[] dtos = GSON_INSTANCE.fromJson(jsonDto, DecryptTaskDTO[].class);
 
-            System.out.println("got : " + dtos.length + " missions.");
+//            System.out.println("got : " + dtos.length + " missions.");
 
             putMissionsInThreadPool(Arrays.asList(dtos));
 
-        /*HttpClientUtil.runAsync(finalUrl, new Callback() {
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                agentMainAppController.popUpError("Error in start Polling Missions request.");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonDto = response.body().string();
-                DecryptTaskDTO[] dtos = GSON_INSTANCE.fromJson(jsonDto, DecryptTaskDTO[].class);
-
-                System.out.println("got : " + dtos.length + " missions.");
-
-                putMissionsInThreadPool(Arrays.asList(dtos));
-            }
-        });*/
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -378,8 +353,6 @@ public class AgentController {
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads, 20, TimeUnit.SECONDS, blockingQueue);
     }
 
-
-
     /**
      * This is what the agent supposed to do - Agent's Job.
      * He gets a string, remove all the forbidden characters from it - in case there is,
@@ -389,7 +362,6 @@ public class AgentController {
      */
     private class DecryptTask implements Runnable {
         private Engine engine;
-//        private BlockingQueue<Runnable> blockingQueue;
         private Dictionary dictionary;
         private String excludedCharacters;
         private String toEncodeString;
@@ -399,7 +371,7 @@ public class AgentController {
 
 
         public DecryptTask(Engine copyEngine, int sizeOfMission,
-                           String toEncodeString/*, BlockingQueue blockingQueue*/, ArrayList<String> initialPositions){
+                           String toEncodeString, ArrayList<String> initialPositions){
 
             engine = copyEngine;
 
@@ -407,7 +379,6 @@ public class AgentController {
             this.toEncodeString = toEncodeString;
             this.dictionary = engine.getDictionary();
             this.excludedCharacters = dictionary.getExcludedCharacters();
-//            this.blockingQueue = blockingQueue;
 
             this.initialPositions = new ArrayList<>();
             for (String config : initialPositions) {
@@ -429,7 +400,6 @@ public class AgentController {
         @Override
         public void run(){
             try {
-//                amountOfMissionsLeftInThreadPool.set(blockingQueue.size());
 
                 System.out.println("about to start a decrypt task");
                 for (int i = 0; i < sizeOfMission; i++) {
@@ -575,15 +545,10 @@ public class AgentController {
         });
     }
 
-
-    /*IsContestEndRefresher*/
     private void isThereAWinner(MissionDTO missionDTO) {
 
         if (missionDTO != null) {
             if (missionDTO.isWinner()) {
-
-
-
 //                popUpWinner(missionDTO.getAgentID() + " was the first to found!");
 //                allieNameLabel.setText("Winner");
 

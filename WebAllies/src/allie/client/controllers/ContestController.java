@@ -3,6 +3,7 @@ package allie.client.controllers;
 import client.http.HttpClientUtil;
 import com.sun.deploy.util.BlackList;
 import com.sun.istack.internal.NotNull;
+import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
 import dtos.entities.AgentDTO;
 import dtos.web.ContestDetailsDTO;
@@ -24,10 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import logic.AgentsRefresher;
-import logic.ContestStatusRefresher;
-import logic.SoloBattleFieldRefresher;
-import logic.TeamInformationRefresher;
+import logic.*;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -46,8 +44,10 @@ import static utils.Constants.*;
 public class ContestController {
 
     private AlliesController alliesController;
-    private ObservableList<AgentDTO> agentsDataObservableList = FXCollections.observableArrayList();
+    private ObservableList<AgentDTO> agentsDataObservableList;
+    private ObservableList<MissionDTO> candidatesDataObservableList;
     private TimerTask battleFieldListRefresher;
+    private TimerTask candidatesRefresher;
     private Timer timer;
     @FXML private TextField battleNameTF;
     @FXML private TextField usernameTF;
@@ -59,14 +59,25 @@ public class ContestController {
     @FXML private TextField missionSizeTF;
     @FXML private TextField toEncodeTF;
     @FXML private TableView<AgentDTO> agentsTable;
+
     @FXML private TableColumn<?, ?> agentNameCol;
     @FXML private TableColumn<?, ?> missionsCol;
     @FXML private TableColumn<?, ?> candidatesCol;
+
+    @FXML private TableView<MissionDTO> candidatesTV;
+    @FXML private TableColumn<?, ?> encryptedStringCol;
+    @FXML private TableColumn<?, ?> allieNameCol;
+    @FXML private TableColumn<?, ?> rotorsCol;
+    @FXML private TableColumn<?, ?> reflectorCol;
+    @FXML private TableColumn<?, ?> agentCol;
+
+
     private Timer teamInformationTimer;
     private Timer tableViewTimer;
     private Timer contestRefresherTimer;
     BooleanProperty isAllieReady = new SimpleBooleanProperty();
     private BooleanProperty isContestStart = new SimpleBooleanProperty();
+    private Timer candidatesTimer;
 
 
     public ContestController(){
@@ -77,6 +88,7 @@ public class ContestController {
         isAllieReady.set(false);
         isContestStart.set(false);
         readyBtn.setTextFill(Color.RED);
+
         isAllieReady.addListener(e ->{
             if(isAllieReady.getValue()){
                 readyBtn.setTextFill(Color.GREEN);
@@ -88,11 +100,25 @@ public class ContestController {
         isContestStart.addListener(e ->{
             if(isContestStart.getValue()) {
                 startCreatingMissions();
+                startGetCandidatesRefresher();
             }
         });
 
-//        contestsCB.setItems(battleFieldNames); //maybe cause problems.
         initAgentsTable();
+        initCandidatesTable();
+    }
+
+    private void initCandidatesTable() {
+        encryptedStringCol.setCellValueFactory(new PropertyValueFactory<>("DecodedTo"));
+        allieNameCol.setCellValueFactory(new PropertyValueFactory<>("allieName"));
+        rotorsCol.setCellValueFactory(new PropertyValueFactory<>("rotorsPositionsAndOrder"));
+        reflectorCol.setCellValueFactory(new PropertyValueFactory<>("chosenReflector"));
+        agentCol.setCellValueFactory(new PropertyValueFactory<>("agentID"));
+
+        candidatesDataObservableList = FXCollections.observableArrayList();
+
+        candidatesTV.setItems(candidatesDataObservableList);
+
     }
 
     @FXML
@@ -327,9 +353,7 @@ public class ContestController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                String jsonDto = response.body().string();
-//                ShouldStartContestDTO dto = GSON_INSTANCE.fromJson(jsonDto, ShouldStartContestDTO.class);
-//                consumer.accept(dto);
+
             }
         });
     }
@@ -342,6 +366,33 @@ public class ContestController {
                 "Ally");
         contestRefresherTimer = new Timer();
         contestRefresherTimer.schedule(battleFieldListRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+
+    private void updateCandidatesTableView(List<MissionDTO> dtoList) {
+        Platform.runLater(() -> {
+            insertToCandidatesTableView(dtoList);
+        });
+    }
+
+    private void insertToCandidatesTableView(List<MissionDTO> dtoList) {
+
+        candidatesDataObservableList.clear();
+
+        for (MissionDTO dto : dtoList) {
+            if(dto != null){
+                candidatesDataObservableList.add(dto);
+            }
+        }
+    }
+
+    public void startGetCandidatesRefresher() {
+        candidatesRefresher = new GetCandidatesRefresher(
+                this::updateCandidatesTableView,
+                alliesController.getCurrentUserName(),
+                "Ally");
+        candidatesTimer = new Timer();
+        candidatesTimer.schedule(candidatesRefresher, REFRESH_RATE, REFRESH_RATE);
     }
 
 }

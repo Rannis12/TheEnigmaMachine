@@ -1,5 +1,6 @@
 package utils;
 
+import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
 import dtos.entities.AgentDTO;
 import dtos.entities.AllieDTO;
@@ -9,6 +10,8 @@ import dtos.web.ShouldStartContestDTO;
 import entities.Agent;
 import entities.Allie;
 import entities.UBoat;
+import logic.enigma.BattleField;
+import logic.enigma.Engine;
 
 import java.util.*;
 
@@ -24,6 +27,7 @@ public class UserManager {
     private final Map<String, Allie> alliesMap;
     private final Map<String, Agent> agentsMap;
     private final Map<String, String> uBoatsNameToInputStreamString;
+    private final Map<String, List<MissionDTO>> uBoatNameToCandidates;
 
     public UserManager() {
         usersSet = new HashSet<>();
@@ -31,6 +35,7 @@ public class UserManager {
         alliesMap = new LinkedHashMap<>();
         agentsMap = new LinkedHashMap<>();
         uBoatsNameToInputStreamString = new LinkedHashMap<>();
+        uBoatNameToCandidates = new LinkedHashMap<>();
 
     }
 
@@ -40,6 +45,7 @@ public class UserManager {
         switch(type){
             case "UBoat":
                 usernameToUBoatMap.put(name, new UBoat());
+                uBoatNameToCandidates.put(name, new ArrayList<>()); //? maybe different ctor
                 break;
             case "Allie":
                 alliesMap.put(name, new Allie());
@@ -94,8 +100,10 @@ public class UserManager {
         return battleFieldNames;
     }
 
-    public synchronized void setUBoat(UBoat uBoat, String username) {
+    public synchronized void setUBoat(BattleField battleField, String username, Engine engine) {
+        UBoat uBoat = new UBoat(battleField.getBattleName(), battleField.getDifficulty(), battleField.getAmountOfAllies());
         usernameToUBoatMap.put(username, uBoat);
+        uBoat.setEngine(engine);
 
     }
 
@@ -226,7 +234,7 @@ public class UserManager {
                         }
                     }
 
-                    dto = new ShouldStartContestDTO(ServletUtils.getDecodedString(), true);
+                    dto = new ShouldStartContestDTO(ServletUtils.getToEncodeString(), true);
                     return dto;
                 }
             }
@@ -309,9 +317,13 @@ public class UserManager {
 
     public synchronized List<DecryptTaskDTO> pollMissions(String agentName, int amountOfMissions) {
 
-        List<DecryptTaskDTO> dtoList = new ArrayList<>();
+//        List<DecryptTaskDTO> dtoList = new ArrayList<>();
+        List<DecryptTaskDTO> dtoList;
         Allie ally = getAllyNameByGivenAgentName(agentName);
 
+        dtoList = ally.pollMissions(amountOfMissions);
+
+        /*
         for (int i = 0; i < amountOfMissions; i++) {
             DecryptTaskDTO dto = ally.pollOneMission();
             if(dto == null){
@@ -320,8 +332,8 @@ public class UserManager {
             }else {
                 dtoList.add(dto);
             }
+        }*/
 
-        }
         return dtoList;
     }
 
@@ -334,5 +346,57 @@ public class UserManager {
             }
         }
         return null;
+    }
+
+    public synchronized void addNewCandidates(String battleName, List<MissionDTO> candidatesAsList) {
+
+        String uBoatUsername = null;
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            if(entry.getValue().getBattleName().equals(battleName)){
+                uBoatUsername = entry.getKey();
+                break;
+            }
+        }
+
+        List<MissionDTO> tmp = uBoatNameToCandidates.get(uBoatUsername);
+        for (MissionDTO dto : candidatesAsList) {
+            tmp.add(dto);
+        }
+    }
+
+    public synchronized List<MissionDTO> getCandidates(String userName, String client) {
+        List<MissionDTO> dtoList = null;
+        String uBoatName = null;
+
+        if(client.equals("UBoat")) {
+            return uBoatNameToCandidates.get(userName);
+
+        }else{ //client is ally
+
+            for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+                Set<Allie> allies = entry.getValue().getAllies();
+                for (Allie ally : allies) {
+                    if(ally.getAllieName().equals(userName)){
+                        uBoatName = entry.getKey();
+                        break;
+                    }
+                }
+            }
+
+            List<MissionDTO> tmp = uBoatNameToCandidates.get(uBoatName);
+            Set<Agent> agents = getAlly(userName).getAgents();
+            dtoList = new ArrayList<>();
+
+            for (MissionDTO dto : tmp) {
+                for (Agent agent : agents) {
+                    if(agent.getAgentName().equals(dto.getAgentID())){
+                        dtoList.add(dto);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return dtoList;
     }
 }

@@ -8,7 +8,8 @@ public class ServletUtils {
 	private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
 	private static final String ENGINE_MANAGER_ATTRIBUTE_NAME = "engine";
 
-	private static String decodedString;
+	private static String toDecode;
+	private static String toEncode;
 
 	/*
 	Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
@@ -17,6 +18,7 @@ public class ServletUtils {
 	private static final Object userManagerLock = new Object();
 	private static final Object engineManagerLock = new Object();
 	private static final Object decodeStringLock = new Object();
+	private static final Object encodeStringLock = new Object();
 
 
 	public static UserManager getUserManager(ServletContext servletContext) {
@@ -49,13 +51,27 @@ public class ServletUtils {
 		}
 	}
 
-	public static void setDecodedString(String decodedString) {
-		synchronized (decodeStringLock) {
-			ServletUtils.decodedString = decodedString;
+	public static void setToEncodeString(String toEncode) {
+		synchronized (encodeStringLock) {
+			ServletUtils.toEncode = toEncode;
 		}
 	}
 
-	public static String getDecodedString() {
-		return decodedString;
+	public static String getToEncodeString() {
+		return toEncode;
 	}
+
+	public static void setToDecodeString(String toDecode) {
+		synchronized (decodeStringLock) {
+			ServletUtils.toDecode = toDecode;
+		}
+	}
+
+	public static String getToDecodeString() {
+		return toDecode;
+	}
+
+
+
+
 }

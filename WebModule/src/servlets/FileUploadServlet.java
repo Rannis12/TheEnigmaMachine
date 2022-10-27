@@ -56,6 +56,7 @@ public class FileUploadServlet extends HttpServlet {
 //                engine = engineLoader.loadEngineFromInputStream(new ByteArrayInputStream(fileContent.toString().getBytes()));
 
                 UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoat(userName);
+                uBoat.setAfterCtor(engine.getBattleField().getBattleName(), engine.getBattleField().getDifficulty(), engine.getBattleField().getAmountOfAllies());
                 uBoat.setEngine(engine);
                 ServletUtils.getUserManager(getServletContext()).addInputStreamToMap(userName, fileContent.toString());
 
@@ -70,7 +71,7 @@ public class FileUploadServlet extends HttpServlet {
             response.setContentType("application/json");
             Gson gson = new Gson();
             EngineMinimalDetailsDTO engineMinimalDetailsDTO = engine.getEngineMinimalDetails();
-            engineMinimalDetailsDTO.setUBoatDTO(engine.getUBoat().getBattleName(), engine.getUBoat().getDifficulty());
+            engineMinimalDetailsDTO.setUBoatDTO(engine.getBattleField().getBattleName() , engine.getBattleField().getDifficulty());
             String json = gson.toJson(engineMinimalDetailsDTO);
 
             try(PrintWriter out = response.getWriter()) {

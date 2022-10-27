@@ -254,12 +254,13 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <TableView prefHeight="127.0" prefWidth="485.0" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="candidatesTV" prefHeight="127.0" prefWidth="485.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn editable="false" maxWidth="1.7976931348623157E308" prefWidth="167.0" sortable="false" text="Encrypted String" />
-                      <TableColumn editable="false" maxWidth="1.7976931348623157E308" prefWidth="96.0" sortable="false" text="Allie name" />
-                        <TableColumn editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="137.0" sortable="false" text="Rotors order/position" />
-                        <TableColumn editable="false" maxWidth="1.7976931348623157E308" prefWidth="77.33331298828125" sortable="false" text="Reflector ID" />
+                        <TableColumn fx:id="agentCol" editable="false" maxWidth="1.7976931348623157E308" prefWidth="94.82666015625" sortable="false" text="Agent Name" />
+                      <TableColumn fx:id="encryptedStringCol" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="104.9620361328125" sortable="false" text="Encrypted String" />
+                      <TableColumn fx:id="allieNameCol" editable="false" maxWidth="1.7976931348623157E308" prefWidth="101.010009765625" sortable="false" text="Allie name" />
+                        <TableColumn fx:id="rotorsCol" editable="false" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="110.339111328125" sortable="false" text="Rotors order/position" />
+                        <TableColumn fx:id="reflectorCol" editable="false" maxWidth="1.7976931348623157E308" prefWidth="78.87646484375" sortable="false" text="Reflector ID" />
                     </columns>
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.enigma.Engine;
 import utils.ServletUtils;
+import utils.UserManager;
 
 import java.io.IOException;
 
@@ -28,6 +29,9 @@ public class ResetEngineSettingsServlet extends HttpServlet {
 
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
         engine.resetEngineToUserInitChoice();
+
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        userManager.getUBoat(username).setEngine(engine);
 
         EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();
 

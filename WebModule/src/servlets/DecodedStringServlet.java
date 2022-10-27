@@ -2,6 +2,7 @@ package servlets;
 
 import dtos.DecodedStringAndConfigurationDTO;
 import dtos.engine.EngineFullDetailsDTO;
+import entities.UBoat;
 import exceptions.invalidInputException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,13 +27,22 @@ public class DecodedStringServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
+        String toDecode = req.getParameter("toDecode");
         String decodedString = null;
 
         resp.setContentType("text/plain");
 
         try {
-            decodedString = engine.decodeStr(req.getParameter("toDecode")).getDecodedString();
-            ServletUtils.setDecodedString(decodedString);
+            decodedString = engine.decodeStrWithoutPG(toDecode).getDecodedString();
+
+            //setting the engine again after decoding.
+
+            UserManager userManager = ServletUtils.getUserManager(getServletContext());
+            UBoat uBoat = userManager.getUBoat(username);
+            uBoat.setEngine(engine);
+
+            ServletUtils.setToDecodeString(toDecode);
+            ServletUtils.setToEncodeString(decodedString);
 //            ServletUtils.getUserManager(getServletContext()).setUBoatStatus(username, );
 
         } catch (invalidInputException e) {

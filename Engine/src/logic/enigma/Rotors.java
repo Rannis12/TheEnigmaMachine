@@ -76,6 +76,16 @@ public class Rotors implements Serializable {
         }
         return notchesCurrentPlaces;
     }
+
+    public void setNotchesCurrentPlaces(ArrayList<Integer> notchesCurrentPlaces, KeyBoard keyBoard){
+        for (int i = 0; i < usedRotors; i++) {
+            char selectedPos = keyBoard.getCharFromRow(notchesCurrentPlaces.get(i));
+            rotors.get(rotorsIndexes.get(i) - 1).initRotor(selectedPos);
+//            notchesCurrentPlaces.add(rotors.get(rotorsIndexes.get(i) - 1).getNotchCurrentPlace());
+        }
+    }
+
+
     public String getRotorsFirstPositionsString() {
         return rotorsFirstPositionsString;
     }

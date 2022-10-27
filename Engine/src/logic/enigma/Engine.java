@@ -19,9 +19,8 @@ public class Engine implements Serializable, Cloneable {
     private int amountOfDecodedStrings;
     private Dictionary dictionary;        //engine shouldn't include Dictionary.
 
-    private UBoat uBoat;
-
-    Set<String> tmp;
+//    private UBoat uBoat;
+    private BattleField battleField;
     //agentMaxAmount field no required anymore.
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE,
            String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary, CTEBattlefield cteBattlefield) {
@@ -37,7 +36,8 @@ public class Engine implements Serializable, Cloneable {
 
         amountOfDecodedStrings = 0;
 
-        uBoat = new UBoat(cteBattlefield);
+
+        battleField = new BattleField(cteBattlefield);
     }
 
     public Engine (){
@@ -341,9 +341,18 @@ public class Engine implements Serializable, Cloneable {
         return finalInfoToPrint;
     }
 
-    public UBoat getUBoat() {
+    /*public UBoat getUBoat() {
         uBoat.setEngine(this);
         return uBoat;
+    }*/
+
+
+    public void setNotchesCurrentPlaces(ArrayList<Integer> notchesCurrentPlaces){
+        rotors.setNotchesCurrentPlaces(notchesCurrentPlaces, keyBoard);
+    }
+
+    public BattleField getBattleField() {
+        return battleField;
     }
 }
 

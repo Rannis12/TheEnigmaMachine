@@ -34,6 +34,7 @@ public class Constants {
 
     //UBoat
     public final static String JHON_DOE = "<Anonymous>";
+    public final static String GET_CANDIDATES_PATH = FULL_SERVER_PATH + "/get-candidates";
 
     // fxml locations
     public final static String UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/uboat/client/resources/uboat-template.fxml";
@@ -52,7 +53,9 @@ public class Constants {
     public final static String AGENT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/agent/client/resources/agent-template.fxml";
     public final static String POST_AGENT_SERVLET = FULL_SERVER_PATH + "/post-agent";
     public final static String AGENT_LIST = FULL_SERVER_PATH + "/agent-list";
-    public static final String START_POLL_MISSIONS_PATH = FULL_SERVER_PATH + "/agent-polling-missions";
+    public final static String START_POLL_MISSIONS_PATH = FULL_SERVER_PATH + "/agent-polling-missions";
+    public final static String POTENTIALLY_DECRYPT_DATA_PAGE_FXML_RESOURCE_LOCATION = "/agent/client/resources/potentially-decrypt.fxml";
+    public final static String AGENT_POST_CANDIDATES_PATH = FULL_SERVER_PATH + "/agent-post-candidates";
 
     //GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

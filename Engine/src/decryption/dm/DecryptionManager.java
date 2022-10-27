@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -48,7 +49,8 @@ public class DecryptionManager {
 
     private BlockingQueue<DecryptTaskDTO> blockingQueue;
 
-    public DecryptionManager(Engine engineAfterClone, String decryptionSelection, int missionSize){
+    public DecryptionManager(Engine engineAfterClone, String decryptionSelection,
+                             int missionSize, BlockingQueue<DecryptTaskDTO> blockingQueue){
 
         this.engine = engineAfterClone;
 
@@ -56,11 +58,11 @@ public class DecryptionManager {
         this.decryptionSelection = decryptionSelection;
         this.dictionary = engine.getDictionary();
 
-        this.blockingQueue = new LinkedBlockingQueue<>(QUEUE_MAX_SIZE); //maybe the max size of the queue here isn't 1000?
+        this.blockingQueue = blockingQueue; //maybe the max size of the queue here isn't 1000?
 
         producer = new Producer(engine.getEngineFullDetails().getUsedAmountOfRotors(),
                 engine.getKeyBoard().getAlphaBet(),
-                blockingQueue, (Engine)engine.clone());
+                this.blockingQueue, (Engine)engine.clone());
 
 
 /*        threadPool = new ThreadPoolExecutor(amountOfAgents, amountOfAgents, 20, TimeUnit.SECONDS,
@@ -137,9 +139,6 @@ public class DecryptionManager {
 
     }
 */
-    public DecryptTaskDTO pollOneMission() {
-        return blockingQueue.poll();
-    }
 
     /*private void setThreadOfResponses() { // NOT NECESSARY METHOD in ex.3
         new Thread(() -> {
@@ -273,7 +272,7 @@ public class DecryptionManager {
                     createdSoFar.set(createdSoFar.get() + 1);
 //                    updateProgress(createdSoFar.get(), amountOfMissions.get());
 
-                    System.out.println("queue size: " + blockingQueue.size());
+//                    System.out.println("queue size: " + blockingQueue.size());
 
 
                 } catch (InterruptedException e) {

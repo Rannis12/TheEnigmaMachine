@@ -5,19 +5,22 @@ import dtos.web.DecryptTaskDTO;
 import logic.enigma.Engine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class Allie implements Serializable {
+public class Allie  {
 
     private Set<Agent> agents;
     private String username; // maybe we won't need it.
     private String allieName;
     private int missionSize;
     private boolean status;
-
     private DecryptionManager decryptionManager;
-
+    private BlockingQueue<DecryptTaskDTO> blockingQueue = new LinkedBlockingQueue<>(1000);
 
     public Allie(){
 
@@ -67,14 +70,55 @@ public class Allie implements Serializable {
     }
 
     public void setDecryptionManager(Engine engineToClone, String difficulty){
-        decryptionManager = new DecryptionManager((Engine)engineToClone.clone(), difficulty, missionSize);
+        decryptionManager = new DecryptionManager(
+                (Engine)engineToClone.clone(), difficulty,
+                missionSize, blockingQueue);
     }
 
     public void encode() {
         decryptionManager.encode();
     }
 
-    public DecryptTaskDTO pollOneMission() {
-        return decryptionManager.pollOneMission();
+/*    public DecryptTaskDTO pollOneMission() {
+
+        DecryptTaskDTO dto = null;
+        synchronized (blockingQueue) {
+            dto = blockingQueue.poll();
+        }
+        return dto;
+    }*/
+
+    public List<DecryptTaskDTO> pollMissions(int amountToPoll){
+
+        List<DecryptTaskDTO> dtoList = new ArrayList<>();
+
+        synchronized (blockingQueue){
+            for (int i = 0; i < amountToPoll; i++) {
+                DecryptTaskDTO dto = blockingQueue.poll();
+                if(dto != null){
+                    dtoList.add(dto);
+                }else {
+                    break;
+                }
+            }
+        }
+
+        return dtoList;
     }
 }
+
+
+/*List<DecryptTaskDTO> dtoList = new ArrayList<>();
+        Allie ally = getAllyNameByGivenAgentName(agentName);
+
+        for (int i = 0; i < amountOfMissions; i++) {
+            DecryptTaskDTO dto = ally.pollOneMission();
+            if(dto == null){
+                return dtoList;
+
+            }else {
+                dtoList.add(dto);
+            }
+        }
+
+        return dtoList;*/

@@ -2,116 +2,197 @@ package agent.client.controllers;
 
 import client.http.HttpClientUtil;
 import com.sun.istack.internal.NotNull;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import decryption.DecryptTask;
-import decryption.dm.DecryptionManager;
-import dtos.DecryptionManagerDTO;
+import dtos.DecodeStringInfo;
+import dtos.MissionDTO;
+import dtos.web.DataToAgentEngineDTO;
 import dtos.web.DecryptTaskDTO;
 import dtos.web.ShouldStartContestDTO;
+import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.ScheduledService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import logic.ContestStatusRefresher;
+import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import utils.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static utils.Constants.*;
 
 public class AgentController {
 
     public static Object queueLock = new Object();
+    public static Object putMissionLock = new Object();
     private InputStream inputStream;
     private Engine engine;
-    private DecryptionManager decryptionManager;
+    private ThreadPoolExecutor threadPool;
+    private BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
     private AgentMainAppController agentMainAppController;
     @FXML private Label userLabel;
-    @FXML private Label check;
+    @FXML private Label allieNameLabel;
+    @FXML private FlowPane candidatesFP;
+    @FXML private Label withdrawMissionAmountLabel;
+    @FXML private Label missionInQueueLabel;
     private Timer contestRefresherTimer;
     private ContestStatusRefresher battleFieldListRefresher;
-    BooleanProperty isContestStart = new SimpleBooleanProperty(false);
+    BooleanProperty isActiveContest = new SimpleBooleanProperty(false);
     private int amountOfThreads;
     private int amountOfMissions;
 
     private BooleanProperty canTakeMissions = new SimpleBooleanProperty();
+    private IntegerProperty amountOfMissionsLeftInThreadPool = new SimpleIntegerProperty();
+    private String toEncode;
+    private IntegerProperty amountOfMissionsGotSoFar = new SimpleIntegerProperty();
+    private IntegerProperty amountOfCompletedMissionsSoFar = new SimpleIntegerProperty();
+
+    private int amountOfDecoding = 0;
+    private String allieName;
+
     @FXML
     public void initialize(){
 
-        isContestStart.addListener(e -> {
-            if(isContestStart.getValue()){
+        isActiveContest.addListener(e -> {
+            if(isActiveContest.getValue()){
                 startContest();
-
-//                decryptionManager = new DecryptionManager(new DecryptionManagerDTO(), engine);
             }
         });
+//        allieNameLabel.setText(agentMainAppController.getAllieName());
+        withdrawMissionAmountLabel.textProperty().bind(Bindings.concat("", amountOfCompletedMissionsSoFar.get()));
+        missionInQueueLabel.textProperty().bind(Bindings.concat("", amountOfMissionsGotSoFar.get()));
+
     }
 
     private void startContest() {
+
         setEngine();
-        startPollMissions();
-//        checkQueueStatus();
+        startPollMissionsThread();
+        threadPool.prestartAllCoreThreads();
 
     }
 
-    private void startPollMissions() {
-        new Thread(() -> {
-            String finalUrl = HttpUrl
-                    .parse(Constants.START_POLL_MISSIONS_PATH)
-                    .newBuilder()
-                    .addQueryParameter("username", agentMainAppController.getCurrentUserName())
-                    .addQueryParameter("amountOfMissions", String.valueOf(amountOfMissions))
-                    .build()
-                    .toString();
-
-            HttpClientUtil.runAsync(finalUrl, new Callback() {
-
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    agentMainAppController.popUpError(e.getMessage());
+    private void startPollMissionsThread() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(isActiveContest.get()){
+                    synchronized (queueLock){
+                        System.out.println("about to poll some missions.");
+                        pollMissions();
+                        if(!blockingQueue.isEmpty()){
+                            try{
+                                System.out.println("now waiting.");
+                                queueLock.wait();
+                            }catch (InterruptedException e){
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
                 }
+            }
+        });
 
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    String jsonDto = response.body().string();
-                    DecryptTaskDTO[] dtos = GSON_INSTANCE.fromJson(jsonDto, DecryptTaskDTO[].class);
-
-                    putMissionsInThreadPool(Arrays.asList(dtos));
-//                consumer.accept(dtos);
-                }
-            });
-        }).start();
-
+        thread.start();
     }
 
-    private void putMissionsInThreadPool(List<DecryptTaskDTO> dtos) {
-        int size = dtos.size();
+    private void pollMissions() {
 
-        for (int i = 0; i < size; i++) {
-//            threadPool.submit(new DecryptTask())
+        String finalUrl = HttpUrl
+                .parse(Constants.START_POLL_MISSIONS_PATH)
+                .newBuilder()
+                .addQueryParameter("username", agentMainAppController.getCurrentUserName())
+                .addQueryParameter("amountOfMissions", String.valueOf(amountOfMissions))
+                .build()
+                .toString();
 
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+        try {
+            Response response = call.execute();
+            String jsonDto = response.body().string();
+            DecryptTaskDTO[] dtos = GSON_INSTANCE.fromJson(jsonDto, DecryptTaskDTO[].class);
+
+            System.out.println("got : " + dtos.length + " missions.");
+
+            putMissionsInThreadPool(Arrays.asList(dtos));
+
+        /*HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                agentMainAppController.popUpError("Error in start Polling Missions request.");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String jsonDto = response.body().string();
+                DecryptTaskDTO[] dtos = GSON_INSTANCE.fromJson(jsonDto, DecryptTaskDTO[].class);
+
+                System.out.println("got : " + dtos.length + " missions.");
+
+                putMissionsInThreadPool(Arrays.asList(dtos));
+            }
+        });*/
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void setEngine(){
+
+    private void putMissionsInThreadPool(List<DecryptTaskDTO> dtos) {
+        if(dtos != null) {
+
+            int size = dtos.size();
+            amountOfMissionsGotSoFar.set(amountOfMissionsGotSoFar.get() + size);
+
+            synchronized (putMissionLock) {
+                for (int i = 0; i < size; i++) {
+                    System.out.println("about to submit task into threadPool");
+                    DecryptTaskDTO decryptTask = dtos.get(i);
+                    if (decryptTask != null) {
+                        threadPool.submit(new DecryptTask(
+                                (Engine) engine.clone(),
+                                decryptTask.getSizeOfMission(),
+                                toEncode,
+                                /*blockingQueue,*/
+                                decryptTask.getInitialPositions()));
+                    }
+                }
+            }
+        }
+    }
+
+    public void setEngine() {
 
         String finalUrl = HttpUrl
                 .parse(FULL_SERVER_PATH + "/get-fileContent")
@@ -121,7 +202,69 @@ public class AgentController {
                 .toString();
 
 
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+        try {
+            Response response = call.execute();
+            String responseBody = response.body().string();
+
+            DataToAgentEngineDTO dto = GSON_INSTANCE.fromJson(responseBody, DataToAgentEngineDTO.class);
+
+            inputStream = new ByteArrayInputStream(dto.getInputStreamAsString().getBytes());
+            try {
+                EngineLoader engineLoader = new EngineLoader();
+                engine = engineLoader.loadEngineFromInputStream(inputStream);
+
+                engine.initRotorIndexes(dto.getUsedRotorsOrganization());
+                engine.initSelectedReflector(dto.getSelectedReflector());
+
+//                engine.setNotchesCurrentPlaces(dto.getNotchesCurrentPlaces());
+
+
+            } catch (invalidXMLfileException e) {
+                popUpError(e.getMessage());
+            }
+
+        /* AllieDTO allieDTO = new AllieDTO(activeUserName);
+        String json = Constants.GSON_INSTANCE.toJson(allieDTO);
+
+        String finalUrl = HttpUrl
+                .parse(FULL_SERVER_PATH + JOIN_UBOAT)
+                .newBuilder()
+                .addQueryParameter("username", activeUserName)
+                .addQueryParameter(PARENT_NAME_PARAMETER, battleFieldNameLabel.getText())
+                .build()
+                .toString();
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(RequestBody.create(json.getBytes()))
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+        try {
+            Response response = call.execute();
+            String respJson = response.body().string();
+
+            UBoatDTO uBoatDTO = GSON_INSTANCE.fromJson(respJson, UBoatDTO.class);
+
+            if(uBoatDTO.getMaxAmountOfAllies() == uBoatDTO.getCurrentAmountOfAllies()){
+                joinBtn.setDisable(true);
+            }
+
+//            dashboardTab.setDisable(true); //after the allie join to the uboat, we need to lock this page, so he can't join again.
+            dashboardController.setDashboardTabDisable(true);
+
+            //refresh
+            dashboardController.startBattleFieldListForContestController(uBoatDTO.getBattleName());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }*/
+        /*HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -141,10 +284,16 @@ public class AgentController {
                     });
                 } else {
                     Platform.runLater(() -> {
-                        inputStream = new ByteArrayInputStream(responseBody.getBytes());
+                        DataToAgentEngineDTO dto = GSON_INSTANCE.fromJson(responseBody, DataToAgentEngineDTO.class);
+
+                        inputStream = new ByteArrayInputStream(dto.getInputStreamAsString().getBytes());
                         try {
                             EngineLoader engineLoader = new EngineLoader();
                             engine = engineLoader.loadEngineFromInputStream(inputStream);
+
+                            engine.initRotorIndexes(dto.getUsedRotorsOrganization());
+                            engine.initSelectedReflector(Integer.parseInt(dto.getChosenReflector()));
+
 
                         } catch (invalidXMLfileException e) {
                             popUpError(e.getMessage());
@@ -152,7 +301,11 @@ public class AgentController {
                     });
                 }
             }
-        });
+        })*/
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void popUpError(String errorMsg) {
@@ -182,7 +335,8 @@ public class AgentController {
         if (contestDTO != null) {
             if (contestDTO.isShouldStart()) {
 
-                isContestStart.set(true);
+                toEncode = contestDTO.getToEncode();
+                isActiveContest.set(true);
                 //stop refreshing some components after everyone is ready.
                 contestRefresherTimer.cancel();
 
@@ -211,19 +365,202 @@ public class AgentController {
         this.amountOfMissions = amountOfMissions;
     }
 
+    public void setAllieName(String allieName){
+        this.allieName = allieName;
 
-    private void takeMissions(){
-        if(canTakeMissions.get()){
-            synchronized (queueLock){
-                if(canTakeMissions.get()){
-                    try{
-                        queueLock.wait();
-                    }catch (InterruptedException ignored){
+    }
 
+    public void setThreadPool() {
+        threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads, 20, TimeUnit.SECONDS, blockingQueue);
+    }
+
+
+
+    /**
+     * This is what the agent supposed to do - Agent's Job.
+     * He gets a string, remove all the forbidden characters from it - in case there is,
+     * and encoding the result string.
+     * If it looks like the origin possible string (The dictionary will decide it),
+     * then he will Create MissionDTO - and insert it to blockingQueueResponses.
+     */
+    private class DecryptTask implements Runnable {
+        private Engine engine;
+//        private BlockingQueue<Runnable> blockingQueue;
+        private Dictionary dictionary;
+        private String excludedCharacters;
+        private String toEncodeString;
+        private int sizeOfMission;
+        private ArrayList<String> initialPositions;
+        private List<MissionDTO> candidatesList = new ArrayList<>();
+
+
+        public DecryptTask(Engine copyEngine, int sizeOfMission,
+                           String toEncodeString/*, BlockingQueue blockingQueue*/, ArrayList<String> initialPositions){
+
+            engine = copyEngine;
+
+            this.sizeOfMission = sizeOfMission;
+            this.toEncodeString = toEncodeString;
+            this.dictionary = engine.getDictionary();
+            this.excludedCharacters = dictionary.getExcludedCharacters();
+//            this.blockingQueue = blockingQueue;
+
+            this.initialPositions = new ArrayList<>();
+            for (String config : initialPositions) {
+                this.initialPositions.add(config);
+            }
+        }
+
+        /**In here the Agent should try to decode the String that the ThreadPool gave him.
+         * Pay attention!
+         * if mission's size is 4, then the Agent should do the WHOLE options.
+         * for example, if the Rotors first positions is A,A,A ,
+         * then the agent should do A,A,E , A,A,F, A,A,G , A,A,H - so each time he will start from different configuration,
+         * in order to cover all possible cases.
+         *
+         */
+
+        //the decryption here is without plugboard! therefor, we need to create a new method (not decodeStr),
+        //or add boolean value inside this method.
+        @Override
+        public void run(){
+            try {
+//                amountOfMissionsLeftInThreadPool.set(blockingQueue.size());
+
+                System.out.println("about to start a decrypt task");
+                for (int i = 0; i < sizeOfMission; i++) {
+
+                    boolean shouldContinueSearching = true;
+
+                    String initPos = initialPositions.get(initialPositions.size() - 1 - i);
+                    engine.initRotorsPositions(initPos);
+
+                    long start = System.nanoTime();
+                    DecodeStringInfo decodeStringInfo = engine.decodeStrWithoutPG(toEncodeString);
+
+                    String resultString = decodeStringInfo.getDecodedString();
+
+                    int numOfSeparates = getNumOfSeparates(resultString);
+                    String[] resultWordsArr = resultString.split(" ", numOfSeparates + 1);
+
+                    for (int t = 0; t < resultWordsArr.length && shouldContinueSearching; t++) {
+                        if (!dictionary.isExistInDictionary(resultWordsArr[t])) {
+                            shouldContinueSearching = false;
+                        }
+                    }
+
+                    if(shouldContinueSearching){
+//                        allieNameLabel.setText("found");
+
+                        MissionDTO missionDTO = new MissionDTO(agentMainAppController.getCurrentUserName(),
+                                resultString, engine.getEngineFullDetails().getChosenReflector(),
+                                initPos, engine.getEngineFullDetails().getUsedRotorsOrganization(),
+                                allieName);
+                        candidatesList.add(missionDTO);
+
+                    }
+//                    amountOfMissionsLeftInThreadPool.set(amountOfMissionsLeftInThreadPool.get() - 1);
+
+                    amountOfDecoding++;
+                    System.out.println("amount of time i decoded so far is: " + amountOfDecoding);
+                }
+
+                if(candidatesList.size() > 0) {
+                    uploadCandidates(candidatesList);
+                    updateFlowPane(candidatesList);
+                }
+                amountOfCompletedMissionsSoFar.set(amountOfCompletedMissionsSoFar.get() + 1);
+                //checking if the blocking queue is empty. if it is, we need to get more missions.
+                if(blockingQueue.isEmpty()) {
+
+                    System.out.println("about to poll missions");
+                    pollMissions();
+
+                    queueLock.notifyAll();
+                }
+
+            } catch (invalidInputException e) {
+                System.out.println("exception in decrypt task");
+            }
+        }
+
+
+        private int getNumOfSeparates(String string) {
+            int numOfSeparates = 0;
+            for (int i = 0; i < excludedCharacters.length(); i++) {//remove all excluded characters
+                string = string.replace(String.valueOf(excludedCharacters.charAt(i)), "");
+            }
+            for (int i = 0; i < string.length(); i++) {
+                if (string.charAt(i) == ' ') {
+                    numOfSeparates++;
+                }
+            }
+            return numOfSeparates;
+        }
+
+    }
+
+    private void uploadCandidates(List<MissionDTO> candidatesList) {
+
+        String finalUrl = HttpUrl
+                .parse(AGENT_POST_CANDIDATES_PATH)
+                .newBuilder()
+                .addQueryParameter("username", agentMainAppController.getCurrentUserName())
+                .addQueryParameter("allyName", agentMainAppController.getAllieName())
+//                .addQueryParameter("status", status)
+//                .addQueryParameter("battleField", battleNameTF.getText())
+                .build()
+                .toString();
+
+        String json = GSON_INSTANCE.toJson(candidatesList);
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(RequestBody.create(json.getBytes()))
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+        try {
+            call.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*try {
+            Response response = call.execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+*/
+
+    }
+
+    private void updateFlowPane(List<MissionDTO> missionsList) {
+
+        Platform.runLater(() -> {
+
+            for (MissionDTO dto : missionsList) {
+
+                if(dto != null){
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    URL url = getClass().getResource(POTENTIALLY_DECRYPT_DATA_PAGE_FXML_RESOURCE_LOCATION);
+                    fxmlLoader.setLocation(url);
+                    try {
+                        Parent root = fxmlLoader.load(url.openStream());
+                        DecryptConfController controller = fxmlLoader.getController();
+
+                        controller.setAgentLabel(dto.getAgentID());
+                        controller.setDecodedToLabel(dto.getDecodedTo());
+                        controller.setReflectorIDLabel(dto.getChosenReflector());
+                        controller.setRotorsPositionsAndOrderLabel(dto.getRotorsPositionsAndOrder());
+
+                        candidatesFP.getChildren().add(root);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
-        }
+        });
     }
-
 }

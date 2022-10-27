@@ -40,6 +40,7 @@ public class LoginController {
     @FXML private Label errorMessageLabel;
     @FXML private Button loginBtn;
 
+    private String allieName;
     private StringProperty errorMessageProperty = new SimpleStringProperty();
 
 
@@ -63,16 +64,16 @@ public class LoginController {
 
         try{
             String userName = nameTF.getText();
-            String allieSelection = alliesCB.getValue();
+            allieName = alliesCB.getValue();
 
             if(userName.equals("")){
                 throw new invalidInputException("Please enter a valid name.");
             }
-            if(allieSelection == null){
+            if(allieName == null){
                 throw new invalidInputException("please select allie.");
             }
 
-            AgentDTO agentDTO = new AgentDTO(nameTF.getText(), allieSelection,
+            AgentDTO agentDTO = new AgentDTO(nameTF.getText(), allieName,
                     threadsSpinner.getValue(), missionsSpinner.getValue());
 
             //request to join the allie team.
@@ -155,5 +156,9 @@ public class LoginController {
 
     public int getAmountOfThreads(){
         return threadsSpinner.getValue();
+    }
+
+    public String getAllieName() {
+        return allieName;
     }
 }

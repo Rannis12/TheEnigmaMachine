@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class UBoat implements Serializable {
+public class UBoat  {
     private String battleName;
     private String difficulty;
     private boolean gameStatus;
@@ -93,6 +93,13 @@ public class UBoat implements Serializable {
             alliesNames.add(allie.getAllieName());
         }
         return alliesNames;
+    }
+
+    public void setAfterCtor(String battleName, String difficulty, int maxAmountOfAllies){
+        this.battleName = battleName;
+        this.difficulty = difficulty;
+        this.maxAmountOfAllies = maxAmountOfAllies;
+        this.gameStatus = false;
     }
 
    /* public void setInputStreamAsString(String inputStreamAsString) {

@@ -1,3 +1,4 @@
+/*
 package decryption;
 
 import dtos.DecodeStringInfo;
@@ -10,13 +11,15 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 
+*/
 /**
  * This is what the agent supposed to do - Agent's Job.
  * He gets a string, remove all the forbidden characters from it - in case there is,
  * and encoding the result string.
  * If it looks like the origin possible string (The dictionary will decide it),
  * then he will Create MissionDTO - and insert it to blockingQueueResponses.
- */
+ *//*
+
 public class DecryptTask implements Runnable {
     private Engine engine;
     private BlockingQueue<MissionDTO> blockingQueueResponses;
@@ -45,14 +48,16 @@ public class DecryptTask implements Runnable {
 
     }
 
-    /**In here the Agent should try to decode the String that the ThreadPool gave him.
+    */
+/**In here the Agent should try to decode the String that the ThreadPool gave him.
      * Pay attention!
      * if mission's size is 4, then the Agent should do the WHOLE options.
      * for example, if the Rotors first positions is A,A,A ,
      * then the agent should do A,A,E , A,A,F, A,A,G , A,A,H - so each time he will start from different configuration,
      * in order to cover all possible cases.
      *
-     */
+     *//*
+
 
     //the decryption here is without plugboard! therefor, we need to create a new method (not decodeStr),
     //or add boolean value inside this method.
@@ -115,3 +120,4 @@ public class DecryptTask implements Runnable {
 }
 
 
+*/

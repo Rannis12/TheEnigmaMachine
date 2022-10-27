@@ -2,7 +2,7 @@ package entities;
 
 import java.io.Serializable;
 
-public class Agent implements Serializable {
+public class Agent  {
 
     private String agentName;
     private String allieName;

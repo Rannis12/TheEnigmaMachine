@@ -56,11 +56,10 @@ public class DecryptionManager {
         this.engine = engineCopy; // right now this isn't a copy.
 
         //all of those 4 members will get their data from the server.
-        */
-/*amountOfAgents;
+amountOfAgents;
         sizeOfMission;
         toEncode;
-        decryptionSelection;*//*
+        decryptionSelection;
 
         this.dictionary = engine.getDictionary();
 
@@ -220,7 +219,6 @@ public class DecryptionManager {
         private void createMissions(){
             //in order to initialize the progress bar.
             createdSoFar.set(0);
-
 
             startTime = System.nanoTime();
             switch (decryptionSelection) {

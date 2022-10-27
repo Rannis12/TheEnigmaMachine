@@ -22,7 +22,7 @@ public class AgentMainAppController {
     @FXML private AnchorPane mainPanel;
     @FXML private LoginController loginController;
     @FXML private AgentController agentController;
-    private BorderPane agentComponent;
+    private AnchorPane agentComponent;
     private BorderPane loginComponent;
 
     private StringProperty currentUserName = new SimpleStringProperty();
@@ -75,8 +75,11 @@ public class AgentMainAppController {
     public void switchToAgentRoom() {
         setMainPanelTo(agentComponent);
         agentController.setActive(); // start refreshing.
+
         agentController.setAmountOfThreads(loginController.getAmountOfThreads());
         agentController.setAmountOfMissions(loginController.getAmountOfMissions());
+        agentController.setAllieName(loginController.getAllieName());
+        agentController.setThreadPool();
     }
 
     public void updateUserName(String userName) {
@@ -95,4 +98,7 @@ public class AgentMainAppController {
     }
 
 
+    public String getAllieName() {
+        return loginController.getAllieName();
+    }
 }

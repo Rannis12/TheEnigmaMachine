@@ -2,6 +2,7 @@ package servlets;
 
 import dtos.engine.EngineFullDetailsDTO;
 import dtos.InitializeEngineToJsonDTO;
+import entities.UBoat;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -40,11 +41,14 @@ public class ManualConfServlet extends HttpServlet {
         String username = req.getParameter("username");
 
         Engine engine = ServletUtils.getEngine(getServletContext(), username);
+
         engine.setNewMachine(initializeEngineToJsonDTO.getRotorsFirstPositionDTO(), initializeEngineToJsonDTO.getPlugBoardDTO(),
                 initializeEngineToJsonDTO.getReflectorDTO(), initializeEngineToJsonDTO.getRotorsIndexesDTO());
 
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        userManager.setUBoat(engine.getUBoat(), username);
+        UBoat uBoat = userManager.getUBoat(username);
+        uBoat.setEngine(engine);
+//        userManager.setUBoat(engine.getBattleField(), username, engine);
 
         EngineFullDetailsDTO engineFullDetailsDTO = engine.getEngineFullDetails();
 

@@ -1,6 +1,7 @@
 package servlets;
 
 import dtos.engine.EngineFullDetailsDTO;
+import entities.UBoat;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +30,9 @@ public class RandomConfServlet extends HttpServlet {
         engine.randomEngine();
 
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        userManager.setUBoat(engine.getUBoat(), username);
+        UBoat uBoat = userManager.getUBoat(username);
+        uBoat.setEngine(engine);
+//        userManager.setUBoat(engine.getBattleField(), username, engine);
 
         resp.setContentType("text/plain");
 

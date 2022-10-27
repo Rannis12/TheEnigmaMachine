@@ -10,9 +10,11 @@ public class MissionDTO {
     private String DecodedTo;
     private String chosenReflector;
     private String rotorsPosition;
+    private String allieName;
     private String rotorsPositionsAndOrder;
 
-    public MissionDTO(String agentID, String decodedTo, String chosenReflector, String rotorsPosition, ArrayList<Integer> rotorsOrganization) {
+    public MissionDTO(String agentID, String decodedTo, String chosenReflector, String rotorsPosition, ArrayList<Integer> rotorsOrganization,
+                      String allieName) {
         this.rotorsPositionsAndOrder = "";
         for (int i = 0; i < rotorsOrganization.size(); i++) {
             if(i == rotorsOrganization.size() - 1)
@@ -25,6 +27,7 @@ public class MissionDTO {
         this.DecodedTo = decodedTo;
         this.chosenReflector = chosenReflector;
         this.rotorsPosition = rotorsPosition;
+        this.allieName = allieName;
     }
     public String getRotorsPositionsAndOrder() {
         return rotorsPositionsAndOrder;
@@ -42,5 +45,9 @@ public class MissionDTO {
     }
     public String getRotorsPosition() {
         return rotorsPosition;
+    }
+
+    public String getAllieName() {
+        return allieName;
     }
 }

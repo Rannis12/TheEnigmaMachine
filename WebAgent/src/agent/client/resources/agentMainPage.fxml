@@ -1,35 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agent.client.controllers.AgentController">
-   <top>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label alignment="TOP_LEFT" text="Agent" GridPane.columnIndex="1">
-               <font>
-                  <Font size="37.0" />
-               </font>
-            </Label>
-            <Label fx:id="userLabel" text="Hello, " />
-         </children>
-      </GridPane>
-   </top>
-   <center>
-      <Label fx:id="check" prefHeight="21.0" prefWidth="195.0" text="label" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agent.client.controllers.AgentController">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="1.0" prefHeight="400.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <GridPane prefHeight="64.0" prefWidth="587.0" style="-fx-background-color: #FFF; -fx-border-color: #f4978e; -fx-text-fill: #f4978e; -fx-border-width: 2px;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label fx:id="userLabel" prefHeight="21.0" prefWidth="169.0" style="-fx-border-style: dotted; -fx-border-radius: 10; -fx-border-width: 2;" text="Hello, " GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets left="10.0" />
+                            </GridPane.margin>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </Label>
+                        <Label alignment="TOP_CENTER" prefHeight="43.0" prefWidth="84.0" text="Agent" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="29.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                    </VBox.margin>
+                </GridPane>
+                <VBox alignment="CENTER" prefHeight="239.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <GridPane alignment="CENTER" maxHeight="280.0" prefHeight="280.0" prefWidth="603.0" VBox.vgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="220.33331298828125" minWidth="80.0" prefWidth="220.33331298828125" />
+                                <ColumnConstraints hgrow="ALWAYS" maxWidth="270.0" minWidth="10.0" prefWidth="217.66668701171875" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="20.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label text="Allie name :">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="allieNameLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="battleField name :" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="battleFieldNameLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="Contest status : " GridPane.rowIndex="2">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="contestStatusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="229.0" layoutY="77.0" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label layoutX="229.0" layoutY="107.0" text="Contest level : " GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="contestLevelLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="Teams : " GridPane.rowIndex="4">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="teamsLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="Mission in queue : " GridPane.rowIndex="5">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="missionInQueueLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="Withdrawed missions amount : " GridPane.rowIndex="6">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="withdrawMissionAmountLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                                <Label text="Candidates amount : " GridPane.rowIndex="7">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="candidatesAmountLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="70.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 3;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS">
+                                    <GridPane.margin>
+                                        <Insets right="10.0" />
+                                    </GridPane.margin></Label>
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER" prefHeight="133.0" prefWidth="600.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" minWidth="95.0" prefHeight="21.0" prefWidth="95.0" text="Candidates:" HBox.hgrow="NEVER">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Label>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="124.0" prefWidth="561.0" HBox.hgrow="ALWAYS">
+                            <content>
+                                <FlowPane fx:id="candidatesFP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="107.0" prefWidth="470.0" />
+                            </content>
+                            <HBox.margin>
+                                <Insets bottom="10.0" right="10.0" />
+                            </HBox.margin>
+                        </ScrollPane>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

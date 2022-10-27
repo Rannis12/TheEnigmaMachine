@@ -234,7 +234,7 @@ public class UserManager {
                         }
                     }
 
-                    dto = new ShouldStartContestDTO(ServletUtils.getToEncodeString(), true);
+                    dto = new ShouldStartContestDTO(/*ServletUtils.getToEncodeString()*/ entry.getValue().getToEncode(), true);
                     return dto;
                 }
             }
@@ -398,5 +398,57 @@ public class UserManager {
         }
 
         return dtoList;
+    }
+
+    public synchronized UBoat getUBoatByGivenBattleName(String battleName) {
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            if(entry.getValue().getBattleName().equals(battleName)){
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public void lookForAWinner(String battleName) {
+        String uBoatUsername = null;
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            if(entry.getValue().getBattleName().equals(battleName)){
+                uBoatUsername = entry.getKey();
+                break;
+            }
+        }
+
+        List<MissionDTO> tmp = uBoatNameToCandidates.get(uBoatUsername);
+        UBoat uBoat = usernameToUBoatMap.get(uBoatUsername);
+
+        for (MissionDTO dto : tmp) {
+            if(uBoat.getToDecode().equals(dto.getDecodedTo())){ //todo
+                uBoat.setThereIsAWinner(true);
+                dto.setWinner(true);
+                break;
+            }
+        }
+    }
+
+    public MissionDTO thereIsAWinner(String battleName) {
+        String uBoatUsername = null;
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            if(entry.getValue().getBattleName().equals(battleName)){
+                uBoatUsername = entry.getKey();
+                break;
+            }
+        }
+
+        if(usernameToUBoatMap.get(uBoatUsername).isThereIsAWinner()){
+            List<MissionDTO> tmp = uBoatNameToCandidates.get(uBoatUsername);
+            for (MissionDTO dto : tmp) {
+                if(dto.getDecodedTo().equals(usernameToUBoatMap.get(uBoatUsername).getToDecode())){
+                    dto.setWinner(true);
+                    return dto;
+                }
+            }
+        }
+
+        return null;
     }
 }

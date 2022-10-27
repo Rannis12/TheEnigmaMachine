@@ -12,6 +12,7 @@ public class MissionDTO {
     private String rotorsPosition;
     private String allieName;
     private String rotorsPositionsAndOrder;
+    private boolean isWinner;
 
     public MissionDTO(String agentID, String decodedTo, String chosenReflector, String rotorsPosition, ArrayList<Integer> rotorsOrganization,
                       String allieName) {
@@ -28,6 +29,7 @@ public class MissionDTO {
         this.chosenReflector = chosenReflector;
         this.rotorsPosition = rotorsPosition;
         this.allieName = allieName;
+        this.isWinner = false;
     }
     public String getRotorsPositionsAndOrder() {
         return rotorsPositionsAndOrder;
@@ -49,5 +51,13 @@ public class MissionDTO {
 
     public String getAllieName() {
         return allieName;
+    }
+
+    public void setWinner(boolean b) {
+        isWinner = b;
+    }
+
+    public boolean isWinner() {
+        return isWinner;
     }
 }

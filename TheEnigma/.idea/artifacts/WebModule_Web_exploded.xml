@@ -11,6 +11,8 @@
           <element id="library" level="project" name="apache-tomcat-10.0.11" />
           <element id="module-output" name="Console" />
           <element id="module-output" name="DecryptionManager" />
+          <element id="module-output" name="WebAllies" />
+          <element id="module-output" name="Refresher" />
         </element>
         <element id="directory" name="lib">
           <element id="file-copy" path="$PROJECT_DIR$/../../okHttp/okio-2.8.0.jar" />

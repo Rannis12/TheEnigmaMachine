@@ -95,7 +95,18 @@ public class AgentMainAppController {
         errorAlert.setHeaderText("Invalid input");
         errorAlert.setContentText(errorMsg);
         errorAlert.showAndWait();
+
     }
+
+    /*public void popUpWinner(String msg){
+        Alert winner = new Alert(Alert.AlertType.INFORMATION);
+        winner.setHeaderText("Done!");
+        winner.setContentText(msg);
+        winner.showAndWait();
+
+    }*/
+
+
 
 
     public String getAllieName() {

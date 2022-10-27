@@ -28,15 +28,19 @@ public class ShouldStartContestServlet extends HttpServlet {
         if(client.equals("Ally")) {
             Dto = ServletUtils.getUserManager(getServletContext())
                     .doesEveryOneReady(battleName);
-        }else{ //he is probably agent.
+        }else if (client.equals("Agent")){
             UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoatByGivenAgentName(agentName);
+            Dto = ServletUtils.getUserManager(getServletContext()).
+                    doesEveryOneReady(uBoat.getBattleName());
+        }else { //is a uBoat
+            UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoatByGivenBattleName(battleName);
             Dto = ServletUtils.getUserManager(getServletContext()).
                     doesEveryOneReady(uBoat.getBattleName());
         }
 
-        if(Dto.isShouldStart()){
+//        if(Dto.isShouldStart()){
 //            ServletUtils.getUserManager(getServletContext()).startCreateMissions(uBoat.getBattleName()); //start create all the missions. - need to check how to make this method occur only one time. todo
-        }
+//        }
 
         String json = Constants.GSON_INSTANCE.toJson(Dto, ShouldStartContestDTO.class);
         try(PrintWriter out = resp.getWriter()){

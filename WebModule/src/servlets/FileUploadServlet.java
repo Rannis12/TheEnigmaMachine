@@ -71,7 +71,10 @@ public class FileUploadServlet extends HttpServlet {
             response.setContentType("application/json");
             Gson gson = new Gson();
             EngineMinimalDetailsDTO engineMinimalDetailsDTO = engine.getEngineMinimalDetails();
+
             engineMinimalDetailsDTO.setUBoatDTO(engine.getBattleField().getBattleName() , engine.getBattleField().getDifficulty());
+            engineMinimalDetailsDTO.setInputStreamAsString(fileContent.toString());
+
             String json = gson.toJson(engineMinimalDetailsDTO);
 
             try(PrintWriter out = response.getWriter()) {

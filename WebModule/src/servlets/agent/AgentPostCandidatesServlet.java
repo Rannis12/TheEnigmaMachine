@@ -40,8 +40,7 @@ public class AgentPostCandidatesServlet extends HttpServlet {
 
         String battleName = userManager.getUBoatByGivenAgentName(agentName).getBattleName();
         userManager.addNewCandidates(battleName, candidatesAsList);
-
-
+        userManager.lookForAWinner(battleName);
 
     }
 }

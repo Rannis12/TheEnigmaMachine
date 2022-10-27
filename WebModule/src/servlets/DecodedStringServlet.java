@@ -41,8 +41,11 @@ public class DecodedStringServlet extends HttpServlet {
             UBoat uBoat = userManager.getUBoat(username);
             uBoat.setEngine(engine);
 
-            ServletUtils.setToDecodeString(toDecode);
-            ServletUtils.setToEncodeString(decodedString);
+            uBoat.setToDecode(toDecode);
+            uBoat.setToEncode(decodedString);
+
+//            ServletUtils.setToDecodeString(toDecode);
+//            ServletUtils.setToEncodeString(decodedString);
 //            ServletUtils.getUserManager(getServletContext()).setUBoatStatus(username, );
 
         } catch (invalidInputException e) {

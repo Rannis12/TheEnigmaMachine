@@ -12,6 +12,7 @@ public class EngineMinimalDetailsDTO implements Serializable {
     private final int amountOfDecodedStrings;
     private UBoatDTO uBoatDTO;
 
+    private String inputStreamAsString;
     private DictionaryDTO dictionaryDTO;
 
     public EngineMinimalDetailsDTO(int usedAmountOfRotors, int rotorsAmount, int reflectorsAmount, int amountOfDecodedStrings,
@@ -47,5 +48,13 @@ public class EngineMinimalDetailsDTO implements Serializable {
 
     public DictionaryDTO getDictionaryDTO() {
         return dictionaryDTO;
+    }
+
+    public String getInputStreamAsString() {
+        return inputStreamAsString;
+    }
+
+    public void setInputStreamAsString(String inputStreamAsString) {
+        this.inputStreamAsString = inputStreamAsString;
     }
 }

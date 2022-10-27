@@ -25,6 +25,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import logic.ContestStatusRefresher;
+import logic.IsContestEndRefresher;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
@@ -66,14 +67,16 @@ public class AgentController {
     private int amountOfThreads;
     private int amountOfMissions;
 
-    private BooleanProperty canTakeMissions = new SimpleBooleanProperty();
-    private IntegerProperty amountOfMissionsLeftInThreadPool = new SimpleIntegerProperty();
+//    private BooleanProperty canTakeMissions = new SimpleBooleanProperty();
+//    private IntegerProperty amountOfMissionsLeftInThreadPool = new SimpleIntegerProperty();
     private String toEncode;
     private IntegerProperty amountOfMissionsGotSoFar = new SimpleIntegerProperty();
     private IntegerProperty amountOfCompletedMissionsSoFar = new SimpleIntegerProperty();
 
     private int amountOfDecoding = 0;
     private String allieName;
+    private IsContestEndRefresher contestEndRefresher;
+    private Timer contestEndTimer;
 
     @FXML
     public void initialize(){
@@ -81,6 +84,7 @@ public class AgentController {
         isActiveContest.addListener(e -> {
             if(isActiveContest.getValue()){
                 startContest();
+                checkIfContestIsEnd();
             }
         });
 //        allieNameLabel.setText(agentMainAppController.getAllieName());
@@ -563,4 +567,48 @@ public class AgentController {
             }
         });
     }
+
+
+    private void startIsContestEndRefresher(MissionDTO missionDTO) {
+        Platform.runLater(() -> {
+            isThereAWinner(missionDTO);
+        });
+    }
+
+
+    /*IsContestEndRefresher*/
+    private void isThereAWinner(MissionDTO missionDTO) {
+
+        if (missionDTO != null) {
+            if (missionDTO.isWinner()) {
+
+
+
+//                popUpWinner(missionDTO.getAgentID() + " was the first to found!");
+//                allieNameLabel.setText("Winner");
+
+                isActiveContest.set(false);
+                contestEndTimer.cancel();
+
+                threadPool.shutdownNow();
+            }
+        }
+    }
+
+    public void checkIfContestIsEnd() {
+        contestEndRefresher = new IsContestEndRefresher(
+                this::startIsContestEndRefresher, "",
+                agentMainAppController.getCurrentUserName(),
+                "Agent");
+        contestEndTimer = new Timer();
+        contestEndTimer.schedule(contestEndRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    /*public void popUpWinner(String msg){
+        Alert winner = new Alert(Alert.AlertType.INFORMATION);
+        winner.setHeaderText("Done!");
+        winner.setContentText(msg);
+        winner.showAndWait();
+
+    }*/
 }

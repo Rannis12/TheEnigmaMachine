@@ -16,8 +16,11 @@ public class UBoat  {
     private int currentAmountOfAllies;
     private String inputStreamAsString;
     private Set<Allie> allies;
+    private boolean thereIsAWinner;
+    private String toDecode;
 
     private Engine engine;
+    private String toEncode;
 
     public UBoat(){
         allies = new LinkedHashSet<>();
@@ -30,6 +33,7 @@ public class UBoat  {
         this.gameStatus = false;
         this.currentAmountOfAllies = 0;
 
+        this.thereIsAWinner = false;
         this.allies = new HashSet<>();
     }
 
@@ -102,7 +106,31 @@ public class UBoat  {
         this.gameStatus = false;
     }
 
-   /* public void setInputStreamAsString(String inputStreamAsString) {
+    public boolean isThereIsAWinner() {
+        return thereIsAWinner;
+    }
+
+    public void setThereIsAWinner(boolean value) {
+        this.thereIsAWinner = value;
+    }
+
+    public String getToDecode() {
+        return toDecode;
+    }
+
+    public void setToDecode(String toDecode) {
+        this.toDecode = toDecode;
+    }
+
+
+    public void setToEncode(String toEncode){
+        this.toEncode = toEncode;
+    }
+    public String getToEncode() {
+        return toEncode;
+    }
+
+    /* public void setInputStreamAsString(String inputStreamAsString) {
         this.inputStreamAsString = inputStreamAsString;
     }
 

@@ -1,29 +1,32 @@
 package uboat.client.controllers;
 
-//import client.http.HttpClientUtil;
+
 import allie.client.controllers.TeamDetailsController;
 import client.http.HttpClientUtil;
 import com.google.gson.Gson;
 import com.sun.istack.internal.NotNull;
 import dtos.DecodedStringAndConfigurationDTO;
+import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
 import dtos.engine.DictionaryDTO;
-import dtos.web.ContestDetailsDTO;
-import exceptions.invalidInputException;
+import dtos.web.ShouldStartContestDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import logic.BattleFieldRefresher;
+import logic.ContestStatusRefresher;
+import logic.GetCandidatesRefresher;
+import logic.IsContestEndRefresher;
 import logic.TeamInformationRefresher;
 import logic.enigma.Dictionary;
 import okhttp3.*;
@@ -33,16 +36,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import static utils.Constants.*;
-import static utils.Constants.GSON_INSTANCE;
 
 
 public class SecondTabController {
 
     private UBoatController uBoatController;
     private boolean shouldDecodeLine; //false = should decode char
-
+    private ObservableList<MissionDTO> candidatesDataObservableList;
+    private Timer candidatesTimer;
+    private Timer contestRefresherTimer;
+    private Timer timer;
+    private Timer contestEndTimer;
+    private TimerTask candidatesRefresher;
+    private TimerTask contestStatusRefresher;
     @FXML
     private TextField currentConfiguration;
     @FXML
@@ -61,31 +70,51 @@ public class SecondTabController {
     private Button EncryptBtn;
     @FXML
     private FlowPane teamsFP;
+    @FXML private TableView<MissionDTO> candidatesTV;
+    @FXML private TableColumn<?, ?> encryptedStringCol;
+    @FXML private TableColumn<?, ?> allieNameCol;
+    @FXML private TableColumn<?, ?> rotorsCol;
+    @FXML private TableColumn<?, ?> reflectorCol;
+    @FXML private TableColumn<?, ?> agentCol;
+
     @FXML
     private Button logoutBtn;
 
     private BooleanProperty isUBoatReady = new SimpleBooleanProperty(false);
     private BooleanProperty isStringDecrypted = new SimpleBooleanProperty(false);
-    private Timer timer;
+
     private TeamInformationRefresher battleFieldListRefresher;
     private String battleName;
     private Dictionary dictionary = null;
 
+    private BooleanProperty isContestStart = new SimpleBooleanProperty(false);
+    private IsContestEndRefresher contestEndRefresher;
+
+
     @FXML
     public void initialize() {
-//        isUBoatReady.set(false);
+
         readyBtn.setTextFill(Color.RED);
         isUBoatReady.addListener(e -> {
             if (isUBoatReady.getValue()) {
                 readyBtn.setTextFill(Color.GREEN);
                 EncryptBtn.setDisable(true);
                 resetBtn.setDisable(true);
+                startShouldStartContestRefresher();
 
             } else {
                 readyBtn.setTextFill(Color.RED);
                 EncryptBtn.setDisable(false);
                 resetBtn.setDisable(false);
+                contestRefresherTimer.cancel();
+            }
+        });
 
+        isContestStart.addListener(e ->{
+            if(isContestStart.getValue()) {
+                readyBtn.setDisable(true);
+                startGetCandidatesRefresher();
+                checkIfContestIsEnd();
             }
         });
 
@@ -96,6 +125,8 @@ public class SecondTabController {
                 readyBtn.setDisable(true);
             }
         });
+
+        initCandidatesTable();
     }
 
 
@@ -354,6 +385,118 @@ public class SecondTabController {
     public void setDictionary(DictionaryDTO dictionaryDTO) {
         this.dictionary = new Dictionary(dictionaryDTO.getDictionary(), dictionaryDTO.getExcludedCharacters());
     }
+
+
+    private void initCandidatesTable() {
+        encryptedStringCol.setCellValueFactory(new PropertyValueFactory<>("DecodedTo"));
+        allieNameCol.setCellValueFactory(new PropertyValueFactory<>("allieName"));
+        rotorsCol.setCellValueFactory(new PropertyValueFactory<>("rotorsPositionsAndOrder"));
+        reflectorCol.setCellValueFactory(new PropertyValueFactory<>("chosenReflector"));
+        agentCol.setCellValueFactory(new PropertyValueFactory<>("agentID"));
+
+        candidatesDataObservableList = FXCollections.observableArrayList();
+
+        candidatesTV.setItems(candidatesDataObservableList);
+
+    }
+
+
+    private void updateCandidatesTableView(List<MissionDTO> dtoList) {
+        Platform.runLater(() -> {
+            insertToCandidatesTableView(dtoList);
+        });
+    }
+
+    private void insertToCandidatesTableView(List<MissionDTO> dtoList) {
+
+        candidatesDataObservableList.clear();
+
+        for (MissionDTO dto : dtoList) {
+            if(dto != null){
+                candidatesDataObservableList.add(dto);
+            }
+        }
+    }
+
+    public void startGetCandidatesRefresher() {
+        candidatesRefresher = new GetCandidatesRefresher(
+                this::updateCandidatesTableView,
+                uBoatController.getUserName(),
+                "UBoat");
+        candidatesTimer = new Timer();
+        candidatesTimer.schedule(candidatesRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void startShouldStartContestRefresher() {
+        contestStatusRefresher = new ContestStatusRefresher(
+                this::updateToEncodeTextFieldRefresher,
+                battleName,
+                "",
+                "UBoat");
+        contestRefresherTimer = new Timer();
+        contestRefresherTimer.schedule(contestStatusRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    private void updateToEncodeTextFieldRefresher(ShouldStartContestDTO contestDTO) {
+        Platform.runLater(() -> {
+            startContestRefresher(contestDTO);
+        });
+    }
+
+    private void startContestRefresher(ShouldStartContestDTO contestDTO) {
+
+        if (contestDTO != null) {
+            if (contestDTO.isShouldStart()) {
+//                toEncodeTF.setText(contestDTO.getToEncode());
+
+                isContestStart.set(true);
+                //stop refreshing some components after everyone is ready.
+                contestRefresherTimer.cancel();
+                timer.cancel();
+            }
+        }
+    }
+
+    private void startIsContestEndRefresher(MissionDTO missionDTO) {
+        Platform.runLater(() -> {
+            isThereAWinner(missionDTO);
+        });
+    }
+
+
+
+    private void isThereAWinner(MissionDTO missionDTO) {
+
+        if (missionDTO != null) {
+            if (missionDTO.isWinner()) {
+
+                contestEndTimer.cancel();
+                timer.cancel();
+                candidatesTimer.cancel();
+
+                uBoatController.popUpWinner(missionDTO.getAgentID() + " was the first to found!");
+                logoutBtn.setVisible(true);
+            }
+        }
+    }
+
+    public void checkIfContestIsEnd() {
+        contestEndRefresher = new IsContestEndRefresher(
+                this::startIsContestEndRefresher, battleName,
+                uBoatController.getUserName(),
+                "UBoat");
+        contestEndTimer = new Timer();
+        contestEndTimer.schedule(contestEndRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void setVisibleLogoutButton(boolean b) {
+        logoutBtn.setVisible(b);
+    }
+
+    public void enableReadyButton() {
+        readyBtn.setDisable(false);
+    }
+
 
 
     /*public void appendToStatistics(String statisticNewString) {

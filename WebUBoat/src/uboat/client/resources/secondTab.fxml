@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -125,7 +127,7 @@
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="190.0" prefWidth="406.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                              <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label maxHeight="20.0" maxWidth="97.0" minHeight="20.0" minWidth="97.0" prefHeight="20.0" prefWidth="97.0" text="Candidates:">
                                        <font>
@@ -135,23 +137,24 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </Label>
-                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets bottom="10.0" right="10.0" />
-                                       </HBox.margin>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <FlowPane fx:id="candidatesFP" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="155.0" prefWidth="282.0" prefWrapLength="200.0" style="-fx-border-color: #1C2833;" vgap="10.0">
-                                             <padding>
-                                                <Insets left="5.0" top="5.0" />
-                                             </padding>
-                                          </FlowPane>
+                                          <TableView fx:id="candidatesTV" prefHeight="200.0" prefWidth="200.0">
+                                            <columns>
+                                              <TableColumn fx:id="agentCol" prefWidth="75.0" text="Agent Name" />
+                                              <TableColumn fx:id="encryptedStringCol" prefWidth="75.0" text="Encrypted String" />
+                                                <TableColumn fx:id="allieNameCol" prefWidth="75.0" text="Ally Name" />
+                                                <TableColumn fx:id="rotorsCol" prefWidth="75.0" text="Rotors Order/Position" />
+                                                <TableColumn fx:id="reflectorCol" prefWidth="75.0" text="Reflector ID" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
                                        </content>
                                     </ScrollPane>
                                  </children>
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                              </HBox>
+                              </VBox>
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="8.0" right="5.0" />
@@ -190,7 +193,7 @@
                                     <Insets left="15.0" />
                                  </VBox.margin>
                               </FlowPane>
-                              <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#logoutBtnListener" prefHeight="37.0" prefWidth="100.0" text="Logout" textFill="RED">
+                              <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="CENTER" maxWidth="100.0" mnemonicParsing="false" onAction="#logoutBtnListener" prefHeight="37.0" prefWidth="100.0" text="Logout" textFill="RED" visible="false">
                                  <VBox.margin>
                                     <Insets left="15.0" top="5.0" />
                                  </VBox.margin>

@@ -35,6 +35,7 @@ public class Constants {
     //UBoat
     public final static String JHON_DOE = "<Anonymous>";
     public final static String GET_CANDIDATES_PATH = FULL_SERVER_PATH + "/get-candidates";
+    public final static String IS_THERE_A_WINNER_PATH = FULL_SERVER_PATH + "/is-contest-end";
 
     // fxml locations
     public final static String UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/uboat/client/resources/uboat-template.fxml";

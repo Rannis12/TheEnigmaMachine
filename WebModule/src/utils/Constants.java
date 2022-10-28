@@ -8,6 +8,7 @@ public class Constants {
     public final static String BASE_DOMAIN = "localhost";
 
 
+
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/webApp";
 
@@ -28,6 +29,7 @@ public class Constants {
     public final static String ALLIES_BELONGS_TO_BATTLE_FIELD = FULL_SERVER_PATH + "/allies-belongs-to-battleField";
     public final static String ALLY_POST_HIS_STATUS_PATH = FULL_SERVER_PATH + "/ready-status";
     public static final String START_CREATE_MISSIONS_PATH = FULL_SERVER_PATH + "/create-missions";
+    public static final String GET_CONTEST_PROGRESS_PATH = FULL_SERVER_PATH + "/get-progress";
     public final static String CONTEST_DATA_PAGE_FXML_RESOURCE_LOCATION = "/allie/client/resources/contestData.fxml";
 
     public final static int REFRESH_RATE = 2000;
@@ -57,6 +59,8 @@ public class Constants {
     public final static String START_POLL_MISSIONS_PATH = FULL_SERVER_PATH + "/agent-polling-missions";
     public final static String POTENTIALLY_DECRYPT_DATA_PAGE_FXML_RESOURCE_LOCATION = "/agent/client/resources/potentially-decrypt.fxml";
     public final static String AGENT_POST_CANDIDATES_PATH = FULL_SERVER_PATH + "/agent-post-candidates";
+    public final static String GET_CONTEST_DETAILS_FOR_AGENT_PATH = FULL_SERVER_PATH + "/details-for-agent";
+    public final static String AGENT_POST_DETAILS_PATH = FULL_SERVER_PATH + "/agent-post-details";
 
     //GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

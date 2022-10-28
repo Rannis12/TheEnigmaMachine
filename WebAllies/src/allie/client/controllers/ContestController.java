@@ -7,11 +7,14 @@ import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
 import dtos.entities.AgentDTO;
 import dtos.web.ContestDetailsDTO;
+import dtos.web.ContestProgressDTO;
 import dtos.web.ShouldStartContestDTO;
 import exceptions.invalidInputException;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,6 +59,10 @@ public class ContestController {
     @FXML private TextField missionSizeTF;
     @FXML private TextField toEncodeTF;
     @FXML private TableView<AgentDTO> agentsTable;
+    @FXML private TextField totalMissionsAmountTF;
+    @FXML private TextField missionsInQueueTF;
+    @FXML private TextField totalMissionsFinishedTF;
+
 
     @FXML private TableColumn<?, ?> agentNameCol;
     @FXML private TableColumn<?, ?> missionsCol;
@@ -77,9 +84,16 @@ public class ContestController {
     private Timer candidatesTimer;
     private IsContestEndRefresher contestEndRefresher;
     private Timer contestEndTimer;
+    private GetContestProgressRefresher contestProgress;
+    private Timer contestProgressTimer;
+    private IntegerProperty totalMissionsAmount;
+    private IntegerProperty missionsInQueue;
+    private IntegerProperty totalMissionsFinished;
+
 
 
     public ContestController(){
+
     }
 
     @FXML
@@ -105,11 +119,22 @@ public class ContestController {
                 startCreatingMissions();
                 startGetCandidatesRefresher();
                 checkIfContestIsEnd();
+                getContestDetails();
             }
         });
 
+        totalMissionsAmount = new SimpleIntegerProperty();
+        missionsInQueue = new SimpleIntegerProperty();
+        totalMissionsFinished = new SimpleIntegerProperty();
+
         initAgentsTable();
         initCandidatesTable();
+    }
+
+    public void bindToProgress() {
+        totalMissionsAmountTF.textProperty().bind(totalMissionsAmount.asObject().asString());
+        missionsInQueueTF.textProperty().bind(missionsInQueue.asObject().asString());
+        totalMissionsFinishedTF.textProperty().bind(totalMissionsFinished.asObject().asString());
     }
 
     private void initCandidatesTable() {
@@ -416,6 +441,7 @@ public class ContestController {
                 contestEndTimer.cancel();
                 timer.cancel();
                 candidatesTimer.cancel();
+                contestProgressTimer.cancel();
 
             }
         }
@@ -429,6 +455,38 @@ public class ContestController {
         contestEndTimer = new Timer();
         contestEndTimer.schedule(contestEndRefresher, REFRESH_RATE, REFRESH_RATE);
     }
+
+
+
+
+    private void ContestProgressRefresher(ContestProgressDTO contestProgressDTO) {
+        Platform.runLater(() -> {
+            updateContestProgress(contestProgressDTO);
+        });
+    }
+
+
+
+    private void updateContestProgress(ContestProgressDTO contestProgressDTO) {
+
+        if (contestProgressDTO != null) {
+
+            totalMissionsAmount.set(contestProgressDTO.getTotalAmountOfMissions());
+            missionsInQueue.set(contestProgressDTO.getMissionsInQueue());
+            totalMissionsFinished.set(contestProgressDTO.getTotalMissionsFinished());
+        }
+    }
+
+    public void getContestDetails() {
+        contestProgress = new GetContestProgressRefresher(
+                this::ContestProgressRefresher,
+                alliesController.getCurrentUserName());
+        contestProgressTimer = new Timer();
+        contestProgressTimer.schedule(contestProgress, REFRESH_RATE, REFRESH_RATE);
+    }
+
+
+
 
  /*   public void popUpWinner(String msg) {
         Alert winner = new Alert(Alert.AlertType.INFORMATION);

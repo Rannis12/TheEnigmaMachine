@@ -76,6 +76,7 @@ public class AlliesMainAppController {
 
     public void switchToAlliesRoom() {
         setMainPanelTo(alliesComponent);
+
         alliesController.setActive(); //refreshing the list of chat user's in aviad's code.
     }
 

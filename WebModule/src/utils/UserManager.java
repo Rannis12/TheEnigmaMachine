@@ -4,9 +4,7 @@ import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
 import dtos.entities.AgentDTO;
 import dtos.entities.AllieDTO;
-import dtos.web.ContestDetailsDTO;
-import dtos.web.DecryptTaskDTO;
-import dtos.web.ShouldStartContestDTO;
+import dtos.web.*;
 import entities.Agent;
 import entities.Allie;
 import entities.UBoat;
@@ -165,7 +163,7 @@ public class UserManager {
         for (Map.Entry<String,Agent> entry : agentsMap.entrySet()) {
             Agent agent = entry.getValue();
             agentDTOS.add(new AgentDTO(agent.getAgentName(), agent.getAllieName(),
-                    agent.getAmountOfThreads(), agent.getAmountOfMissions()));
+                    agent.getAmountOfThreads(), agent.getAmountOfMissions(), agent.getMissionsFinished()));
         }
         return agentDTOS;
     }
@@ -450,5 +448,36 @@ public class UserManager {
         }
 
         return null;
+    }
+
+    public ContestDetailsForAgentDTO getContestDetailsForAgent(String agentName) {
+
+        Allie allie = getAllyNameByGivenAgentName(agentName); //gets the ally, not his name.
+        UBoat uBoat = getUBoatByGivenAgentName(agentName);
+
+        return new ContestDetailsForAgentDTO(allie.getAllieName(), uBoat.getBattleName(),
+                uBoat.getDifficulty(), uBoat.getGameStatus(), uBoat.getCurrentAmountOfAllies());
+
+    }
+
+    public void postAgentDetails(String agentName, String allieName, AgentDTO agentDTO) {
+        Allie ally = alliesMap.get(allieName);
+
+        Set<Agent> agents = ally.getAgents();
+        for (Agent agent : agents) {
+            if(agent.getAgentName().equals(agentName)){
+                agent.setMissionsCompletedSoFar(agentDTO.getMissionsFinished());
+            }
+        }
+    }
+
+    public ContestProgressDTO getContestDetailsForAlly(String allyName) {
+
+        Allie ally = alliesMap.get(allyName);
+
+        return new ContestProgressDTO(ally.getInitAmountOfMissionsInQueue()
+                ,ally.getCurrentMissionsInQueue()
+                ,ally.getTotalMissionsCompleted());
+
     }
 }

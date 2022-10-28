@@ -74,7 +74,7 @@ public class LoginController {
             }
 
             AgentDTO agentDTO = new AgentDTO(nameTF.getText(), allieName,
-                    threadsSpinner.getValue(), missionsSpinner.getValue());
+                    threadsSpinner.getValue(), missionsSpinner.getValue(), 0);
 
             //request to join the allie team.
 

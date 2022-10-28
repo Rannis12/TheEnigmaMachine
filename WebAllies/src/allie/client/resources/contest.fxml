@@ -96,9 +96,9 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="totalMissionsAmountTF" GridPane.columnIndex="1" />
+                              <TextField fx:id="missionsInQueueTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="totalMissionsFinishedTF" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>

@@ -19,6 +19,8 @@ public class Allie  {
     private String allieName;
     private int missionSize;
     private boolean status;
+    private int amountOfMissionsInQueue;
+    private int currentMissionsInQueue;
     private DecryptionManager decryptionManager;
     private BlockingQueue<DecryptTaskDTO> blockingQueue = new LinkedBlockingQueue<>(1000);
 
@@ -73,20 +75,18 @@ public class Allie  {
         decryptionManager = new DecryptionManager(
                 (Engine)engineToClone.clone(), difficulty,
                 missionSize, blockingQueue);
+
+        amountOfMissionsInQueue = decryptionManager.getAmountOfMissions();
+        currentMissionsInQueue = decryptionManager.getAmountOfMissions();
+    }
+
+    public int getInitAmountOfMissionsInQueue() {
+        return amountOfMissionsInQueue;
     }
 
     public void encode() {
         decryptionManager.encode();
     }
-
-/*    public DecryptTaskDTO pollOneMission() {
-
-        DecryptTaskDTO dto = null;
-        synchronized (blockingQueue) {
-            dto = blockingQueue.poll();
-        }
-        return dto;
-    }*/
 
     public List<DecryptTaskDTO> pollMissions(int amountToPoll){
 
@@ -95,6 +95,7 @@ public class Allie  {
         synchronized (blockingQueue){
             for (int i = 0; i < amountToPoll; i++) {
                 DecryptTaskDTO dto = blockingQueue.poll();
+                currentMissionsInQueue--;
                 if(dto != null){
                     dtoList.add(dto);
                 }else {
@@ -105,20 +106,17 @@ public class Allie  {
 
         return dtoList;
     }
-}
 
+    public int getCurrentMissionsInQueue() {
+        return currentMissionsInQueue;
+    }
 
-/*List<DecryptTaskDTO> dtoList = new ArrayList<>();
-        Allie ally = getAllyNameByGivenAgentName(agentName);
-
-        for (int i = 0; i < amountOfMissions; i++) {
-            DecryptTaskDTO dto = ally.pollOneMission();
-            if(dto == null){
-                return dtoList;
-
-            }else {
-                dtoList.add(dto);
-            }
+    public int getTotalMissionsCompleted(){
+        int totalMissionsCompleted = 0;
+        for (Agent agent : agents) {
+            totalMissionsCompleted += agent.getMissionsFinished();
         }
 
-        return dtoList;*/
+        return totalMissionsCompleted;
+    }
+}

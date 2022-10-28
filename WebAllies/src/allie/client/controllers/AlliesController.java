@@ -35,6 +35,7 @@ public class AlliesController {
     public void setActive() {
         dashboardController.startBattleFieldListRefresher();
         dashboardController.startTableViewRefresher();
+        contestController.bindToProgress();
     }
 
     public String getCurrentUserName() {

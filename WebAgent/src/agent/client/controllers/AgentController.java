@@ -1,14 +1,17 @@
 package agent.client.controllers;
 
+import client.http.HttpClientUtil;
+import com.sun.istack.internal.NotNull;
 import dtos.DecodeStringInfo;
 import dtos.MissionDTO;
+import dtos.entities.AgentDTO;
+import dtos.web.ContestDetailsForAgentDTO;
 import dtos.web.DataToAgentEngineDTO;
 import dtos.web.DecryptTaskDTO;
 import dtos.web.ShouldStartContestDTO;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,7 +29,6 @@ import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 import okhttp3.*;
 import utils.Constants;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +41,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static utils.Constants.*;
 
@@ -46,42 +49,54 @@ public class AgentController {
 
     public static Object queueLock = new Object();
     public static Object putMissionLock = new Object();
+
     private InputStream inputStream;
     private Engine engine;
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
     private AgentMainAppController agentMainAppController;
     @FXML private Label userLabel;
+    @FXML private Label battleFieldNameLabel;
+    @FXML private Label contestLevelLabel;
+    @FXML private Label teamsLabel;
     @FXML private Label allieNameLabel;
     @FXML private FlowPane candidatesFP;
     @FXML private Label withdrawMissionAmountLabel;
     @FXML private Label missionInQueueLabel;
+    @FXML private Label contestStatusLabel;
+    @FXML private Label candidatesAmountLabel;
     private Timer contestRefresherTimer;
     private ContestStatusRefresher battleFieldListRefresher;
     BooleanProperty isActiveContest = new SimpleBooleanProperty(false);
     private int amountOfThreads;
     private int amountOfMissions;
     private String toEncode;
-    private IntegerProperty amountOfMissionsGotSoFar = new SimpleIntegerProperty();
+    private IntegerProperty amountOfMissionsInQueue = new SimpleIntegerProperty();
     private IntegerProperty amountOfCompletedMissionsSoFar = new SimpleIntegerProperty();
-
     private int amountOfDecoding = 0;
     private String allieName;
     private IsContestEndRefresher contestEndRefresher;
     private Timer contestEndTimer;
+    private IntegerProperty candidatesAmount = new SimpleIntegerProperty();
+//    private PublishAgentDetailsRefresher publishAgentDetails;
+//    private Timer agentDetailsTimer;
 
     @FXML
     public void initialize(){
 
         isActiveContest.addListener(e -> {
             if(isActiveContest.getValue()){
+                contestStatusLabel.setText("Ready");
                 startContest();
                 checkIfContestIsEnd();
+                startPublishAgentDetails();
+            }
+            else {
+                contestStatusLabel.setText("Not Ready");
             }
         });
-//        allieNameLabel.setText(agentMainAppController.getAllieName());
-//        withdrawMissionAmountLabel.textProperty().bind(amountOfCompletedMissionsSoFar.asObject().asString());
-//        missionInQueueLabel.textProperty().bind(amountOfMissionsGotSoFar.asObject().asString());
+
+
 
     }
 
@@ -90,6 +105,10 @@ public class AgentController {
         setEngine();
         startPollMissionsThread();
         threadPool.prestartAllCoreThreads();
+
+        withdrawMissionAmountLabel.textProperty().bind(amountOfCompletedMissionsSoFar.asObject().asString());
+        missionInQueueLabel.textProperty().bind(amountOfMissionsInQueue.asObject().asString());
+        candidatesAmountLabel.textProperty().bind(candidatesAmount.asObject().asString());
 
     }
 
@@ -152,21 +171,24 @@ public class AgentController {
         if(dtos != null) {
 
             int size = dtos.size();
-            amountOfMissionsGotSoFar.set(amountOfMissionsGotSoFar.get() + size);
 
             synchronized (putMissionLock) {
                 for (int i = 0; i < size; i++) {
-                    System.out.println("about to submit task into threadPool");
+//                    System.out.println("about to submit task into threadPool");
                     DecryptTaskDTO decryptTask = dtos.get(i);
                     if (decryptTask != null) {
                         threadPool.submit(new DecryptTask(
                                 (Engine) engine.clone(),
                                 decryptTask.getSizeOfMission(),
                                 toEncode,
-                                /*blockingQueue,*/
                                 decryptTask.getInitialPositions()));
                     }
                 }
+
+                Platform.runLater(() ->{
+                    amountOfMissionsInQueue.set(amountOfMissionsInQueue.get() + size);
+                });
+
             }
         }
     }
@@ -207,80 +229,6 @@ public class AgentController {
             } catch (invalidXMLfileException e) {
                 popUpError(e.getMessage());
             }
-
-        /* AllieDTO allieDTO = new AllieDTO(activeUserName);
-        String json = Constants.GSON_INSTANCE.toJson(allieDTO);
-
-        String finalUrl = HttpUrl
-                .parse(FULL_SERVER_PATH + JOIN_UBOAT)
-                .newBuilder()
-                .addQueryParameter("username", activeUserName)
-                .addQueryParameter(PARENT_NAME_PARAMETER, battleFieldNameLabel.getText())
-                .build()
-                .toString();
-
-        Request request = new Request.Builder()
-                .url(finalUrl)
-                .post(RequestBody.create(json.getBytes()))
-                .build();
-
-        Call call = new OkHttpClient().newCall(request);
-        try {
-            Response response = call.execute();
-            String respJson = response.body().string();
-
-            UBoatDTO uBoatDTO = GSON_INSTANCE.fromJson(respJson, UBoatDTO.class);
-
-            if(uBoatDTO.getMaxAmountOfAllies() == uBoatDTO.getCurrentAmountOfAllies()){
-                joinBtn.setDisable(true);
-            }
-
-//            dashboardTab.setDisable(true); //after the allie join to the uboat, we need to lock this page, so he can't join again.
-            dashboardController.setDashboardTabDisable(true);
-
-            //refresh
-            dashboardController.startBattleFieldListForContestController(uBoatDTO.getBattleName());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-        /*HttpClientUtil.runAsync(finalUrl, new Callback() {
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() -> {
-                    System.out.println("Error: " + e.getMessage());
-                    popUpError(e.getMessage());
-                });
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseBody = response.body().string();
-                if (response.code() != 200) {
-                    Platform.runLater(() -> {
-                        popUpError("Error: " + responseBody);
-
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        DataToAgentEngineDTO dto = GSON_INSTANCE.fromJson(responseBody, DataToAgentEngineDTO.class);
-
-                        inputStream = new ByteArrayInputStream(dto.getInputStreamAsString().getBytes());
-                        try {
-                            EngineLoader engineLoader = new EngineLoader();
-                            engine = engineLoader.loadEngineFromInputStream(inputStream);
-
-                            engine.initRotorIndexes(dto.getUsedRotorsOrganization());
-                            engine.initSelectedReflector(Integer.parseInt(dto.getChosenReflector()));
-
-
-                        } catch (invalidXMLfileException e) {
-                            popUpError(e.getMessage());
-                        }
-                    });
-                }
-            }
-        })*/
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -346,6 +294,7 @@ public class AgentController {
 
     public void setAllieName(String allieName){
         this.allieName = allieName;
+        allieNameLabel.setText(allieName);
 
     }
 
@@ -368,6 +317,8 @@ public class AgentController {
         private int sizeOfMission;
         private ArrayList<String> initialPositions;
         private List<MissionDTO> candidatesList = new ArrayList<>();
+
+        Consumer<Integer> consumer = amount -> updateProgressLabels(amount);
 
 
         public DecryptTask(Engine copyEngine, int sizeOfMission,
@@ -424,7 +375,10 @@ public class AgentController {
                     }
 
                     if(shouldContinueSearching){
-//                        allieNameLabel.setText("found");
+
+                        Platform.runLater(() -> {
+                            candidatesAmount.set(candidatesAmount.get() + 1);
+                        });
 
                         MissionDTO missionDTO = new MissionDTO(agentMainAppController.getCurrentUserName(),
                                 resultString, engine.getEngineFullDetails().getChosenReflector(),
@@ -443,7 +397,11 @@ public class AgentController {
                     uploadCandidates(candidatesList);
                     updateFlowPane(candidatesList);
                 }
-                amountOfCompletedMissionsSoFar.set(amountOfCompletedMissionsSoFar.get() + 1);
+
+                int update = amountOfCompletedMissionsSoFar.get() + 1;
+
+                consumer.accept(update);
+
                 //checking if the blocking queue is empty. if it is, we need to get more missions.
                 if(blockingQueue.isEmpty()) {
 
@@ -457,7 +415,6 @@ public class AgentController {
                 System.out.println("exception in decrypt task");
             }
         }
-
 
         private int getNumOfSeparates(String string) {
             int numOfSeparates = 0;
@@ -474,6 +431,13 @@ public class AgentController {
 
     }
 
+    private synchronized void updateProgressLabels(Integer amount) {
+        Platform.runLater(() -> {
+            amountOfCompletedMissionsSoFar.set(amount);
+            amountOfMissionsInQueue.set(amountOfMissionsInQueue.get() - 1);
+        });
+    }
+
     private void uploadCandidates(List<MissionDTO> candidatesList) {
 
         String finalUrl = HttpUrl
@@ -481,8 +445,6 @@ public class AgentController {
                 .newBuilder()
                 .addQueryParameter("username", agentMainAppController.getCurrentUserName())
                 .addQueryParameter("allyName", agentMainAppController.getAllieName())
-//                .addQueryParameter("status", status)
-//                .addQueryParameter("battleField", battleNameTF.getText())
                 .build()
                 .toString();
 
@@ -549,8 +511,6 @@ public class AgentController {
 
         if (missionDTO != null) {
             if (missionDTO.isWinner()) {
-//                popUpWinner(missionDTO.getAgentID() + " was the first to found!");
-//                allieNameLabel.setText("Winner");
 
                 isActiveContest.set(false);
                 contestEndTimer.cancel();
@@ -569,11 +529,117 @@ public class AgentController {
         contestEndTimer.schedule(contestEndRefresher, REFRESH_RATE, REFRESH_RATE);
     }
 
-    /*public void popUpWinner(String msg){
-        Alert winner = new Alert(Alert.AlertType.INFORMATION);
-        winner.setHeaderText("Done!");
-        winner.setContentText(msg);
-        winner.showAndWait();
+    public void getContestDetails(){
+        String finalUrl = HttpUrl
+                .parse(Constants.GET_CONTEST_DETAILS_FOR_AGENT_PATH)
+                .newBuilder()
+                .addQueryParameter("username", agentMainAppController.getCurrentUserName())
+                .build()
+                .toString();
 
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    System.out.println("Error: " + e.getMessage());
+//                    errorMessageProperty.set("Error: " + e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.code() != 200) {
+
+                    Platform.runLater(() ->
+//                            errorMessageProperty.set("Error: " + responseBody)
+                            popUpError(responseBody) //??
+                    );
+                } else {
+                    Platform.runLater(() -> {
+                        ContestDetailsForAgentDTO detailsDto = GSON_INSTANCE.fromJson(responseBody, ContestDetailsForAgentDTO.class);
+
+                        battleFieldNameLabel.setText(detailsDto.getBattleName());
+                        contestLevelLabel.setText(detailsDto.getDifficulty());
+                        teamsLabel.setText(String.valueOf(detailsDto.getAmountOfTeams()));
+                        contestStatusLabel.setText(detailsDto.getContestStatus());
+                        allieNameLabel.setText(detailsDto.getAllyName());
+
+                    });
+                }
+            }
+        });
+    }
+
+
+    /*private AgentDTO agentDetailsRefresher() {
+        Platform.runLater(() -> {
+            return publishAgentDetails();
+        });
     }*/
-}
+
+    private AgentDTO publishAgentDetails() {
+
+        AgentDTO agentDTO = new AgentDTO(agentMainAppController.getCurrentUserName(), allieName,
+                amountOfThreads, amountOfMissions, amountOfCompletedMissionsSoFar.get());
+
+        return agentDTO;
+    }
+
+    public void publishAgent(){
+        AgentDTO agentDTO = publishAgentDetails();
+
+        String finalUrl = HttpUrl
+                .parse(Constants.AGENT_POST_DETAILS_PATH)
+                .newBuilder()
+                .addQueryParameter("agentName", agentMainAppController.getCurrentUserName())
+                .build()
+                .toString();
+
+        String json = GSON_INSTANCE.toJson(agentDTO, AgentDTO.class);
+
+        HttpClientUtil.runAsyncPost(finalUrl, json, new Callback() { //logic is working. need to change the way it looks in the application.
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    System.out.println("Error: " + e.getMessage());
+//                        errorMessageProperty.set("Error: " + e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.code() != 200) {
+                    Platform.runLater(() ->
+                            popUpError("Error: " + responseBody)
+                    );
+                }
+
+            }
+        });
+    }
+    public void startPublishAgentDetails() {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isActiveContest.get()) {
+                    publishAgent();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        thread.start();
+    }
+
+    }
+
+

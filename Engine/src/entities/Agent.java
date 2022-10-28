@@ -8,6 +8,7 @@ public class Agent  {
     private String allieName;
     private int amountOfThreads;
     private int amountOfMissions;
+    private int missionsFinished;
 
     public Agent(){
     }
@@ -33,5 +34,13 @@ public class Agent  {
 
     public int getAmountOfMissions() {
         return amountOfMissions;
+    }
+
+    public void setMissionsCompletedSoFar(int missionsFinished) {
+        this.missionsFinished = missionsFinished;
+    }
+
+    public int getMissionsFinished() {
+        return missionsFinished;
     }
 }

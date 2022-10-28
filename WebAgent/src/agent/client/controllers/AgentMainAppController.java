@@ -74,11 +74,12 @@ public class AgentMainAppController {
 
     public void switchToAgentRoom() {
         setMainPanelTo(agentComponent);
-        agentController.setActive(); // start refreshing.
+        agentController.setActive();
 
         agentController.setAmountOfThreads(loginController.getAmountOfThreads());
         agentController.setAmountOfMissions(loginController.getAmountOfMissions());
         agentController.setAllieName(loginController.getAllieName());
+        agentController.getContestDetails();
         agentController.setThreadPool();
     }
 
@@ -97,18 +98,6 @@ public class AgentMainAppController {
         errorAlert.showAndWait();
 
     }
-
-    /*public void popUpWinner(String msg){
-        Alert winner = new Alert(Alert.AlertType.INFORMATION);
-        winner.setHeaderText("Done!");
-        winner.setContentText(msg);
-        winner.showAndWait();
-
-    }*/
-
-
-
-
     public String getAllieName() {
         return loginController.getAllieName();
     }

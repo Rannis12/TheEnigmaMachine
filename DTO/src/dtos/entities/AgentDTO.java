@@ -5,14 +5,16 @@ public class AgentDTO {
     private final String allie;
     private final int amountOfThreads;
     private final int amountOfMissions;
+    private int missionsFinished;
 
     private int amountOfCandidates; //important in order to update the table view in contest page.
 
-    public AgentDTO(String agentName, String allie, int amountOfThreads, int amountOfMissions) {
+    public AgentDTO(String agentName, String allie, int amountOfThreads, int amountOfMissions, int missionsFinished) {
         this.agentName = agentName;
         this.allie = allie;
         this.amountOfThreads = amountOfThreads;
         this.amountOfMissions = amountOfMissions;
+        this.missionsFinished = missionsFinished;
     }
 
     public String getAgentName() {
@@ -30,4 +32,12 @@ public class AgentDTO {
     public int getAmountOfMissions() {
         return amountOfMissions;
     }
+
+    public int getMissionsFinished() {
+        return missionsFinished;
+    }
+
+    /*public void setMissionsFinished(int missionsFinished) {
+        this.missionsFinished = missionsFinished;
+    }*/
 }

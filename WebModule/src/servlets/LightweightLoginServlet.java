@@ -5,13 +5,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import utils.ServletUtils;
-import utils.SessionUtils;
-import utils.UserManager;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.SessionUtils;
+import servlets.agent.utils.UserManager;
 
 import java.io.IOException;
 
-import static utils.Constants.PARENT_NAME_PARAMETER;
+import static servlets.agent.utils.Constants.PARENT_NAME_PARAMETER;
 
 @WebServlet(name = "LoginShortResponseServlet", urlPatterns = "/loginShortResponse")
 public class LightweightLoginServlet extends HttpServlet {

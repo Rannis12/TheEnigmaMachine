@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: agent.client.utils.AgentApplication
+Class-Path: DTO.jar Engine.jar Console.jar WebModule.jar Refresher.jar W
+ ebAllies.jar
+

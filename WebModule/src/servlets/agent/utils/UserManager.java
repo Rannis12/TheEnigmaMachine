@@ -1,4 +1,4 @@
-package utils;
+package servlets.agent.utils;
 
 import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
@@ -8,8 +8,7 @@ import dtos.web.*;
 import entities.Agent;
 import entities.Allie;
 import entities.UBoat;
-import logic.enigma.BattleField;
-import logic.enigma.Engine;
+
 
 import java.util.*;
 
@@ -21,6 +20,7 @@ of the user of this class to handle the synchronization of isUserExists with oth
 public class UserManager {
 
     private final Set<String> usersSet; //UBoats
+    private final Set<String> loggedOutUBoats;
     private final Map<String, UBoat> usernameToUBoatMap;
     private final Map<String, Allie> alliesMap;
     private final Map<String, Agent> agentsMap;
@@ -34,6 +34,7 @@ public class UserManager {
         agentsMap = new LinkedHashMap<>();
         uBoatsNameToInputStreamString = new LinkedHashMap<>();
         uBoatNameToCandidates = new LinkedHashMap<>();
+        loggedOutUBoats = new LinkedHashSet<>();
 
     }
 
@@ -46,7 +47,7 @@ public class UserManager {
                 uBoatNameToCandidates.put(name, new ArrayList<>()); //? maybe different ctor
                 break;
             case "Allie":
-                alliesMap.put(name, new Allie());
+                alliesMap.put(name, new Allie(name));
 
                 break;
             case "Agent":
@@ -89,7 +90,7 @@ public class UserManager {
         Set<ContestDetailsDTO> battleFieldNames = new LinkedHashSet<>();
 
         for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
-            UBoat uBoat= entry.getValue();
+            UBoat uBoat = entry.getValue();
             String username = entry.getKey();
 
             battleFieldNames.add(new ContestDetailsDTO(uBoat.getAlliesNames(), uBoat.getBattleName(), username, uBoat.getGameStatus(),
@@ -98,19 +99,35 @@ public class UserManager {
         return battleFieldNames;
     }
 
-    public synchronized void setUBoat(BattleField battleField, String username, Engine engine) {
+    public synchronized Set<AllieDTO> getAllies(){
+        Set<AllieDTO> allieDTOS = new LinkedHashSet<>();
+        for (Map.Entry<String,Allie> entry : alliesMap.entrySet()) {
+            allieDTOS.add(new AllieDTO(entry.getKey()));
+        }
+        return allieDTOS;
+    }
+
+  /*  public synchronized void setUBoat(BattleField battleField, String username, Engine engine) {
         UBoat uBoat = new UBoat(battleField.getBattleName(), battleField.getDifficulty(), battleField.getAmountOfAllies());
         usernameToUBoatMap.put(username, uBoat);
         uBoat.setEngine(engine);
 
-    }
+    }*/
 
-    public synchronized void setAllie(String usernameFromParameter, String parentName, AllieDTO allie) {
+    public synchronized void setAllie(String usernameFromParameter, String battleName, AllieDTO allie) {
 
-        alliesMap.put(usernameFromParameter, new Allie(allie.getAllieName()));
+ /*       UBoat uBoat = getUBoatByGivenBattleName(battleName);
+        String uBoatName = null;
+        for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
+            if(entry.getValue().getBattleName().equals(uBoat.getBattleName())){
+                uBoatName = entry.getKey();
+            }
+        }
+
+//        alliesMap.put(usernameFromParameter, new Allie(allie.getAllieName(), uBoatName)); //changed*/
 
         for (Map.Entry<String,UBoat> entry : usernameToUBoatMap.entrySet()) {
-            if(entry.getValue().getBattleName().equals(parentName)){
+            if(entry.getValue().getBattleName().equals(battleName)){
                 if(!entry.getValue().isExistInAllieSet(alliesMap.get(usernameFromParameter))) {
                     entry.getValue().addAllie(alliesMap.get(usernameFromParameter));
                     break;
@@ -145,13 +162,14 @@ public class UserManager {
 
     public synchronized void setAgent(String username, AgentDTO agentDTO) {
         agentsMap.put(username, new Agent(agentDTO.getAgentName(), agentDTO.getAllie(),
-                agentDTO.getAmountOfThreads(), agentDTO.getAmountOfMissions()));
+                agentDTO.getAmountOfThreads(), agentDTO.getAmountOfMissions(), agentDTO.getAmountOfCandidates()));
 
         for (Map.Entry<String,Allie> entry : alliesMap.entrySet()) {
             Allie allie = entry.getValue();
 
             if(allie.getAllieName().equals(agentDTO.getAllie())){
                 allie.addAgent(agentsMap.get(username));
+                agentsMap.get(username).setUBoatName(entry.getValue().getUBoatUsername());
                 break;
             }
         }
@@ -163,7 +181,7 @@ public class UserManager {
         for (Map.Entry<String,Agent> entry : agentsMap.entrySet()) {
             Agent agent = entry.getValue();
             agentDTOS.add(new AgentDTO(agent.getAgentName(), agent.getAllieName(),
-                    agent.getAmountOfThreads(), agent.getAmountOfMissions(), agent.getMissionsFinished()));
+                    agent.getAmountOfThreads(), agent.getAmountOfMissions(), agent.getMissionsFinished(), agent.getAmountOfCandidates()));
         }
         return agentDTOS;
     }
@@ -232,7 +250,7 @@ public class UserManager {
                         }
                     }
 
-                    dto = new ShouldStartContestDTO(/*ServletUtils.getToEncodeString()*/ entry.getValue().getToEncode(), true);
+                    dto = new ShouldStartContestDTO(entry.getValue().getToEncode(), true);
                     return dto;
                 }
             }
@@ -320,17 +338,6 @@ public class UserManager {
         Allie ally = getAllyNameByGivenAgentName(agentName);
 
         dtoList = ally.pollMissions(amountOfMissions);
-
-        /*
-        for (int i = 0; i < amountOfMissions; i++) {
-            DecryptTaskDTO dto = ally.pollOneMission();
-            if(dto == null){
-                return dtoList;
-
-            }else {
-                dtoList.add(dto);
-            }
-        }*/
 
         return dtoList;
     }
@@ -455,6 +462,10 @@ public class UserManager {
         Allie allie = getAllyNameByGivenAgentName(agentName); //gets the ally, not his name.
         UBoat uBoat = getUBoatByGivenAgentName(agentName);
 
+        if(uBoat == null){
+            return null;
+        }
+
         return new ContestDetailsForAgentDTO(allie.getAllieName(), uBoat.getBattleName(),
                 uBoat.getDifficulty(), uBoat.getGameStatus(), uBoat.getCurrentAmountOfAllies());
 
@@ -467,6 +478,7 @@ public class UserManager {
         for (Agent agent : agents) {
             if(agent.getAgentName().equals(agentName)){
                 agent.setMissionsCompletedSoFar(agentDTO.getMissionsFinished());
+                agent.setAmountOfCandidates(agentDTO.getAmountOfCandidates());
             }
         }
     }
@@ -480,4 +492,102 @@ public class UserManager {
                 ,ally.getTotalMissionsCompleted());
 
     }
+
+    public void removeUBoatAndDetachEntities(String uBoatName) {
+
+        usernameToUBoatMap.remove(uBoatName);
+        loggedOutUBoats.add(uBoatName);
+    }
+
+    public synchronized boolean didUBoatLoggedOut(String username, String client) {
+        String uBoatName = null;
+        boolean didUBoatLoggedOut = false;
+        if(client.equals("Ally")){
+            uBoatName = alliesMap.get(username).getUBoatUsername();
+
+        }else{ //client is Agent
+            uBoatName = getAllyNameByGivenAgentName(username).getUBoatUsername();
+
+        }
+
+
+        if(loggedOutUBoats.contains(uBoatName)){
+            if(didAllAlliesDeletedUBoatName(uBoatName)) //if all the allies told that they deleted uboat, we can remove it from this set in case the user would like to connect with the same name again.
+            {
+                loggedOutUBoats.remove(uBoatName);
+            }
+            if(client.equals("Ally")){
+                alliesMap.get(username).setStatus(false);
+            }
+            didUBoatLoggedOut = true;
+
+        }
+
+        return didUBoatLoggedOut;
+    }
+
+    private boolean didAllAgentsDeletedUBoatName(String uBoatName) {
+        for (Map.Entry<String,Agent> entry : agentsMap.entrySet()) {
+            if(entry.getValue().getUBoatName().equals(uBoatName)){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    private synchronized boolean didAllAlliesDeletedUBoatName(String uBoatName) {
+
+        for (Map.Entry<String,Allie> entry : alliesMap.entrySet()) {
+            if(entry.getValue().getUBoatUsername().equals(uBoatName)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public synchronized void addAllyToUBoat(String uBoatName, String allieName) {
+        usernameToUBoatMap.get(uBoatName).addAllie(alliesMap.get(allieName));
+        Allie ally = alliesMap.get(allieName);
+        ally.setUBoatUsername(uBoatName);
+        ally.setConfirmLogout(false);
+    }
+
+    public UBoat getUBoatByNameWork(String uBoatName) {
+        return usernameToUBoatMap.get(uBoatName);
+    }
+
+    public Agent getAgent(String username) {
+        return agentsMap.get(username);
+    }
+
+    public synchronized boolean checkIfAllAlliesConfirmClearScreen(String uBoatName) {
+
+        UBoat uBoat = usernameToUBoatMap.get(uBoatName);
+
+        for (Allie ally : uBoat.getAllies()) {
+            if(ally.getContestIsOver()){
+
+                uBoatNameToCandidates.remove(uBoatName); //removes the current candidates after contest is finished.
+                uBoatNameToCandidates.put(uBoatName, new ArrayList<>());
+               return true;
+            }
+        }
+        return false;
+    }
+
+    public synchronized void clearAgentsPossibleCandidates(String allyName) {
+        Set<Agent> agents = alliesMap.get(allyName).getAgents();
+        for (Agent agent : agents) {
+            agent.setAmountOfCandidates(0);
+        }
+
+    }
+
+   /* public void removeCandidates(String allyName) {
+        String uBoatName = alliesMap.get(allyName).getUBoatUsername();
+        if(uBoatNameToCandidates.containsKey(uBoatName)){
+            uBoatNameToCandidates.remove(uBoatName);
+        }
+    }*/
 }

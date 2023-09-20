@@ -9,14 +9,12 @@ import java.util.Map;
 import java.util.Random;
 
 public class PlugBoard implements Serializable {
-
     private Map<Character, Character> cables;
     private String initString;
 
     PlugBoard(){
         cables = new HashMap<>();
     }
-
     public void initFromUser(PlugBoardDTO plugBoardDTO){
         cables.clear();
         initString = "";
@@ -24,8 +22,6 @@ public class PlugBoard implements Serializable {
         initString = plugBoardDTO.getInitString();
         cables.putAll(plugBoardDTO.getUICables());
     }
-
-
     public char getConnection(char input){
         if(isExist(input)){
             return cables.get(input);
@@ -35,10 +31,6 @@ public class PlugBoard implements Serializable {
     public String getPlugBoardPairs() {
         return plugBoardPrintFormat();
     }
-
-
-
-
     private String plugBoardPrintFormat() {
         String cpyString = new String(initString);
         int size = cpyString.length();

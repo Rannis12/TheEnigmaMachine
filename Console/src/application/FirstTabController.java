@@ -15,12 +15,11 @@ import java.util.ResourceBundle;
 
 
 public class FirstTabController implements Initializable {
-        private RotorsIndexesDTO rotorsIndexesDTO = null;
-        private PlugBoardDTO plugBoardDTO = null;
-        private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
-        private ReflectorDTO reflectorDTO = null;
-        private MainPageController mainPageController;
-
+    private RotorsIndexesDTO rotorsIndexesDTO = null;
+    private PlugBoardDTO plugBoardDTO = null;
+    private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
+    private ReflectorDTO reflectorDTO = null;
+    private MainPageController mainPageController;
     @FXML private Label rotorsDetails;
     @FXML private Label decodedStrings;
     @FXML private Label chooseReflectorLabel;
@@ -154,11 +153,8 @@ public class FirstTabController implements Initializable {
     }
 
     public void showDetails(EngineMinimalDetailsDTO engineMinimalDetailsDTO) {
-
         rotorsDetails.setText("used/possible : " + engineMinimalDetailsDTO.getUsedAmountOfRotors() + "/" + engineMinimalDetailsDTO.getRotorsAmount());
         reflectorsAmount.setText(String.valueOf(engineMinimalDetailsDTO.getReflectorsAmount()));
-        //decodedStrings.setText(String.valueOf(engineMinimalDetailsDTO.getAmountOfDecodedStrings())); // solved with bind
-
     }
     public void setMainController(MainPageController mainPageController) {
         this.mainPageController = mainPageController;

@@ -1,8 +1,5 @@
 package client.http;
-
-import dtos.entities.AgentDTO;
 import okhttp3.*;
-
 import java.util.function.Consumer;
 
 public class HttpClientUtil {

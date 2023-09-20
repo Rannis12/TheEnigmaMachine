@@ -1,7 +1,6 @@
 package allie.client.controllers;
 
 import client.http.HttpClientUtil;
-import com.sun.deploy.util.BlackList;
 import com.sun.istack.internal.NotNull;
 import dtos.MissionDTO;
 import dtos.TeamInformationDTO;
@@ -30,16 +29,13 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-import static utils.Constants.*;
+import static servlets.agent.utils.Constants.*;
 
 public class ContestController {
 
@@ -56,13 +52,14 @@ public class ContestController {
     @FXML private TextField currentTeamsTF;
     @FXML private FlowPane teamInformationFP;
     @FXML private Button readyBtn;
+    @FXML private Button finishBtn;
+    @FXML private Button clearBtn;
     @FXML private TextField missionSizeTF;
     @FXML private TextField toEncodeTF;
     @FXML private TableView<AgentDTO> agentsTable;
     @FXML private TextField totalMissionsAmountTF;
     @FXML private TextField missionsInQueueTF;
     @FXML private TextField totalMissionsFinishedTF;
-
 
     @FXML private TableColumn<?, ?> agentNameCol;
     @FXML private TableColumn<?, ?> missionsCol;
@@ -74,13 +71,16 @@ public class ContestController {
     @FXML private TableColumn<?, ?> rotorsCol;
     @FXML private TableColumn<?, ?> reflectorCol;
     @FXML private TableColumn<?, ?> agentCol;
-
+    @FXML private Label winnerMessage;
 
     private Timer teamInformationTimer;
     private Timer tableViewTimer;
     private Timer contestRefresherTimer;
     BooleanProperty isAllieReady = new SimpleBooleanProperty();
     private BooleanProperty isContestStart = new SimpleBooleanProperty();
+    private BooleanProperty isLogoutClicked = new SimpleBooleanProperty();
+
+    private BooleanProperty didUBoatLoggedOut = new SimpleBooleanProperty();
     private Timer candidatesTimer;
     private IsContestEndRefresher contestEndRefresher;
     private Timer contestEndTimer;
@@ -90,7 +90,8 @@ public class ContestController {
     private IntegerProperty missionsInQueue;
     private IntegerProperty totalMissionsFinished;
 
-
+    private DidUBoatLoggedOutRefresher logoutRefresher;
+    private Timer logoutTimer;
 
     public ContestController(){
 
@@ -116,10 +117,18 @@ public class ContestController {
             if(isContestStart.getValue()) {
                 readyBtn.setDisable(true);
 
+                getContestDetails();
                 startCreatingMissions();
                 startGetCandidatesRefresher();
                 checkIfContestIsEnd();
-                getContestDetails();
+            }
+        });
+
+        didUBoatLoggedOut.addListener(e -> {
+            if (didUBoatLoggedOut.getValue()){
+                finishBtn.setVisible(true);
+                clearBtn.setVisible(false);
+
             }
         });
 
@@ -131,6 +140,46 @@ public class ContestController {
         initCandidatesTable();
     }
 
+    private void resetContestController() {
+
+        isContestStart.set(false);
+        isAllieReady.set(false);
+        readyBtn.setDisable(false);
+        finishBtn.setVisible(false);
+        clearBtn.setVisible(false);
+
+        unbindToProgressAndClearTF();
+
+        winnerMessage.setText("");
+
+        missionSizeTF.clear();
+        toEncodeTF.clear();
+
+        if(isLogoutClicked.get()) {
+            clearContestDetails();
+            isLogoutClicked.set(false);
+        }
+
+        candidatesDataObservableList.clear();
+        agentsDataObservableList.clear();
+    }
+
+    private void clearContestDetails() {
+        battleNameTF.clear();
+        usernameTF.clear();
+        statusTF.clear();
+        levelTF.clear();
+        currentTeamsTF.clear();
+    }
+
+    public void unbindToProgressAndClearTF(){
+        totalMissionsAmountTF.textProperty().unbind();
+        totalMissionsAmountTF.clear();
+        missionsInQueueTF.textProperty().unbind();
+        missionsInQueueTF.clear();
+        totalMissionsFinishedTF.textProperty().unbind();
+        totalMissionsFinishedTF.clear();
+    }
     public void bindToProgress() {
         totalMissionsAmountTF.textProperty().bind(totalMissionsAmount.asObject().asString());
         missionsInQueueTF.textProperty().bind(missionsInQueue.asObject().asString());
@@ -153,7 +202,13 @@ public class ContestController {
     @FXML
     void readyBtnListener(ActionEvent event) {
 
-        try {
+            try {
+                try {
+                    Integer.parseInt(missionSizeTF.getText());
+                }catch(InputMismatchException | NumberFormatException e){
+                    throw new invalidInputException("Please enter a Positive number.");
+                }
+
             if (battleNameTF.getText().equals("")) { //yet registered to uboat
                 throw new invalidInputException("Please select a tournament first.");
             }
@@ -207,6 +262,84 @@ public class ContestController {
         }
 
     }
+
+    @FXML
+    void finishBtnListener(ActionEvent event) {
+
+        isLogoutClicked.set(true);
+        String finalUrl = HttpUrl
+                .parse(Constants.CONFIRMED_LOGOUT_PATH)
+                .newBuilder()
+                .addQueryParameter("allyName", alliesController.getCurrentUserName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    System.out.println("Error: " + e.getMessage());
+                    alliesController.popUpError(e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.code() != 200) {
+                    Platform.runLater(() -> {
+                        alliesController.popUpError("Error: " + responseBody);
+                    });
+                } else {
+                Platform.runLater(() -> {
+                    resetContestController();
+                    alliesController.resetDashboardController();
+                });
+                 }
+            }
+        });
+
+    }
+
+    @FXML
+    void clearBtnListener(ActionEvent event) {
+
+        String finalUrl = HttpUrl
+                .parse(Constants.CONFIRMED_CLEAR_PATH)
+                .newBuilder()
+                .addQueryParameter("allyName", alliesController.getCurrentUserName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    System.out.println("Error: " + e.getMessage());
+                    alliesController.popUpError(e.getMessage());
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.code() != 200) {
+                    Platform.runLater(() -> {
+                        alliesController.popUpError("Error: " + responseBody);
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        resetContestController();
+                        alliesController.startBattleFieldListForContestController(battleNameTF.getText()); // may cause problems
+//                        alliesController.resetDashboardController();
+                    });
+                }
+            }
+        });
+    }
+
 
     private String fromBooleanToString(Boolean value) {
         if(value){
@@ -359,7 +492,8 @@ public class ContestController {
                 isContestStart.set(true);
                 //stop refreshing some components after everyone is ready.
                 contestRefresherTimer.cancel();
-                teamInformationTimer.cancel();
+//                teamInformationTimer.cancel();
+                battleFieldListRefresher.cancel();
                 tableViewTimer.cancel();
             }
         }
@@ -431,18 +565,24 @@ public class ContestController {
     }
 
 
-
     private void isThereAWinner(MissionDTO missionDTO) {
 
         if (missionDTO != null) {
             if (missionDTO.isWinner()) {
 
-//                popUpWinner(missionDTO.getAgentID() + " was the first to found!");
                 contestEndTimer.cancel();
+//                battleFieldListRefresher.cancel();
                 timer.cancel();
+
+                winnerMessage.setText(missionDTO.getAgentID() + " was the first to found!");
+
                 candidatesTimer.cancel();
+
+                contestProgress.cancel();
                 contestProgressTimer.cancel();
 
+                clearBtn.setVisible(true);
+                startCheckIfUBoatLoggedOut();
             }
         }
     }
@@ -457,15 +597,11 @@ public class ContestController {
     }
 
 
-
-
     private void ContestProgressRefresher(ContestProgressDTO contestProgressDTO) {
         Platform.runLater(() -> {
             updateContestProgress(contestProgressDTO);
         });
     }
-
-
 
     private void updateContestProgress(ContestProgressDTO contestProgressDTO) {
 
@@ -473,7 +609,7 @@ public class ContestController {
 
             totalMissionsAmount.set(contestProgressDTO.getTotalAmountOfMissions());
             missionsInQueue.set(contestProgressDTO.getMissionsInQueue());
-            totalMissionsFinished.set(contestProgressDTO.getTotalMissionsFinished());
+            totalMissionsFinished.set(totalMissionsAmount.getValue() - missionsInQueue.getValue());
         }
     }
 
@@ -486,13 +622,32 @@ public class ContestController {
     }
 
 
+    private void DidUBoatLoggedOutRefresher(boolean value) {
+        Platform.runLater(() -> {
+            loggedOutAction(value);
+        });
+    }
+
+    private void loggedOutAction(boolean value) {
+        if (value) {
+            didUBoatLoggedOut.set(true);
+//            battleFieldListRefresher.cancel();
+            logoutRefresher.cancel();
+            logoutTimer.cancel();
+        }
+    }
+
+    public void startCheckIfUBoatLoggedOut() {
+        logoutRefresher = new DidUBoatLoggedOutRefresher(
+                this::DidUBoatLoggedOutRefresher,
+                alliesController.getCurrentUserName(),
+                "Ally");
+        logoutTimer = new Timer();
+        logoutTimer.schedule(logoutRefresher, 1000, 1000);
+    }
 
 
- /*   public void popUpWinner(String msg) {
-        Alert winner = new Alert(Alert.AlertType.INFORMATION);
-        winner.setHeaderText("Done!");
-        winner.setContentText(msg);
-        winner.showAndWait();
-    }*/
-
+    public void stateReadyButton(boolean b) {
+        readyBtn.setDisable(b);
+    }
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Allie  {
 
     private Set<Agent> agents;
-    private String username; // maybe we won't need it.
+    private String uBoatUsername;
     private String allieName;
     private int missionSize;
     private boolean status;
@@ -23,15 +23,24 @@ public class Allie  {
     private int currentMissionsInQueue;
     private DecryptionManager decryptionManager;
     private BlockingQueue<DecryptTaskDTO> blockingQueue = new LinkedBlockingQueue<>(1000);
+    private boolean confirmLogout;
+    private boolean contestIsOver;
 
-    public Allie(){
-
-    }
-
-    public Allie(String allieName) {
+    public Allie(String allieName){
         this.allieName = allieName;
         this.status = false;
         this.agents = new LinkedHashSet<>();
+        confirmLogout = false;
+        contestIsOver = false;
+    }
+
+    public Allie(String allieName, String uBoatUsername) {
+        this.allieName = allieName;
+        this.status = false;
+        this.agents = new LinkedHashSet<>();
+        this.uBoatUsername = uBoatUsername;
+        confirmLogout = false;
+        contestIsOver = false;
     }
 
     public Set<Agent> getAgents() {
@@ -51,8 +60,8 @@ public class Allie  {
         return agents.size();
     }
 
-    public String getUsername() {
-        return username;
+    public String getUBoatUsername() {
+        return uBoatUsername;
     }
 
     public String getAllieName() {
@@ -118,5 +127,29 @@ public class Allie  {
         }
 
         return totalMissionsCompleted;
+    }
+
+    public void initUBoatName() {
+        uBoatUsername = "";
+    }
+
+    public void setUBoatUsername(String uBoatName) {
+        this.uBoatUsername = uBoatName;
+    }
+
+    public void setConfirmLogout(boolean b) {
+        confirmLogout = b;
+    }
+
+    public boolean isConfirmLogout() {
+        return confirmLogout;
+    }
+
+    public void setContestIsOver(boolean b) {
+        this.contestIsOver = b;
+    }
+
+    public boolean getContestIsOver() {
+        return this.contestIsOver;
     }
 }

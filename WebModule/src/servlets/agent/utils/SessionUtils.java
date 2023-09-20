@@ -1,4 +1,4 @@
-package utils;
+package servlets.agent.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

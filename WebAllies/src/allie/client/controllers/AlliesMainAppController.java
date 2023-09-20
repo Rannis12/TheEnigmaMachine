@@ -13,8 +13,8 @@ import allie.client.login.LoginController;
 import java.io.IOException;
 import java.net.URL;
 
-import static utils.Constants.ALLIES_LOGIN_PAGE_FXML_RESOURCE_LOCATION;
-import static utils.Constants.ALLIES_ROOM_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.ALLIES_LOGIN_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.ALLIES_ROOM_PAGE_FXML_RESOURCE_LOCATION;
 
 
 public class AlliesMainAppController {

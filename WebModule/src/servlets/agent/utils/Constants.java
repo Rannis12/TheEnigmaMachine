@@ -1,4 +1,4 @@
-package utils;
+package servlets.agent.utils;
 
 import com.google.gson.Gson;
 
@@ -6,7 +6,6 @@ public class Constants {
 
     //Server resources locations
     public final static String BASE_DOMAIN = "localhost";
-
 
 
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
@@ -30,6 +29,9 @@ public class Constants {
     public final static String ALLY_POST_HIS_STATUS_PATH = FULL_SERVER_PATH + "/ready-status";
     public static final String START_CREATE_MISSIONS_PATH = FULL_SERVER_PATH + "/create-missions";
     public static final String GET_CONTEST_PROGRESS_PATH = FULL_SERVER_PATH + "/get-progress";
+    public static final String GET_ALLIES_LIST_PATH = FULL_SERVER_PATH + "/get-allies";
+    public static final String CONFIRMED_LOGOUT_PATH = FULL_SERVER_PATH + "/confirmed-logout";
+    public static final String CONFIRMED_CLEAR_PATH = FULL_SERVER_PATH + "/confirm-clear";
     public final static String CONTEST_DATA_PAGE_FXML_RESOURCE_LOCATION = "/allie/client/resources/contestData.fxml";
 
     public final static int REFRESH_RATE = 2000;
@@ -38,6 +40,7 @@ public class Constants {
     public final static String JHON_DOE = "<Anonymous>";
     public final static String GET_CANDIDATES_PATH = FULL_SERVER_PATH + "/get-candidates";
     public final static String IS_THERE_A_WINNER_PATH = FULL_SERVER_PATH + "/is-contest-end";
+    public final static String LOGOUT_UBOAT_PATH = FULL_SERVER_PATH + "/logout";
 
     // fxml locations
     public final static String UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION = "/uboat/client/resources/uboat-template.fxml";
@@ -61,6 +64,9 @@ public class Constants {
     public final static String AGENT_POST_CANDIDATES_PATH = FULL_SERVER_PATH + "/agent-post-candidates";
     public final static String GET_CONTEST_DETAILS_FOR_AGENT_PATH = FULL_SERVER_PATH + "/details-for-agent";
     public final static String AGENT_POST_DETAILS_PATH = FULL_SERVER_PATH + "/agent-post-details";
+    public static final String DID_FINISH_BUTTON_CLICKED = FULL_SERVER_PATH + "/did-finishBtn-clicked";
+    public final static String DID_UBOAT_LOGGED_OUT_PATH = FULL_SERVER_PATH + "/did-uboat-logged-out";
+    public static final String DID_CLEAR_BTN_CLICKED = FULL_SERVER_PATH + "/did-clearBtn-clicked";
 
     //GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

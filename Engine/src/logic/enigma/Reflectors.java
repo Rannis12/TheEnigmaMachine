@@ -77,17 +77,6 @@ public class Reflectors implements Serializable {
         }
         requestedReflector = rand;
     }
-
-    /*public ArrayList<Integer> getReflectorsIDs(){
-        ArrayList<Integer> arrOfIDs = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            if(reflectorsMap.containsKey(i)){
-                arrOfIDs.add(i + 1);
-            }
-        }
-        return arrOfIDs;
-    }*/////////////////////////////////////////////////////////////////////////////////////
     public int getReflectorsIDs(){
         int amount = 0;
 
@@ -121,8 +110,6 @@ public class Reflectors implements Serializable {
 
             ID = cteReflector.getId();
         }
-
-
         public int getConnection(int val) {
             return  (wiring.get(val));
         }
@@ -130,5 +117,4 @@ public class Reflectors implements Serializable {
             return ID;
         }
     }
-
 }

@@ -6,6 +6,8 @@ public class AllieDTO {
 
 //    private String username; //maybe we don't need username.
     private String allieName;
+    private int amountOfAgents;
+    private int missionSize;
 
     public AllieDTO(String allieName) {
         this.allieName = allieName;

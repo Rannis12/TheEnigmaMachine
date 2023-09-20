@@ -35,6 +35,7 @@ public class AlliesController {
     public void setActive() {
         dashboardController.startBattleFieldListRefresher();
         dashboardController.startTableViewRefresher();
+
         contestController.bindToProgress();
     }
 
@@ -51,6 +52,7 @@ public class AlliesController {
         contestController.startTeamInformationRefresher(battleName); //refreshed team information component
         contestController.startAgentsTableViewRefresher(); //refreshed active agent component
         contestController.startShouldStartContestRefresher(battleName);
+        contestController.stateReadyButton(false);
     }
 
     public void popUpError(String errorMsg) {
@@ -59,5 +61,14 @@ public class AlliesController {
         errorAlert.setContentText(errorMsg);
         errorAlert.showAndWait();
     }
+
+    public void resetDashboardController() {
+        dashboardTab.setDisable(false);
+        dashboardController.resetController();
+    }
+
+  /*  public void setContestControllerActive(String battleFieldName) {
+        contestController.setActive(battleFieldName);
+    }*/
 }
 

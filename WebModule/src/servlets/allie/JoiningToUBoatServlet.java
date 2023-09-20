@@ -8,14 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.ServletUtils;
-import utils.UserManager;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.UserManager;
 
 import java.io.IOException;
 import java.io.Reader;
 
-import static utils.Constants.GSON_INSTANCE;
-import static utils.Constants.PARENT_NAME_PARAMETER;
+import static servlets.agent.utils.Constants.GSON_INSTANCE;
+import static servlets.agent.utils.Constants.PARENT_NAME_PARAMETER;
 
 @WebServlet(name = "JoinToUBoatServlet", urlPatterns = "/join-uboat")
 public class JoiningToUBoatServlet extends HttpServlet {
@@ -36,8 +36,11 @@ public class JoiningToUBoatServlet extends HttpServlet {
         AllieDTO allieDto = GSON_INSTANCE.fromJson(jsonManualData, AllieDTO.class);
 
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        userManager.setAllie(usernameFromParameter, uBoatName, allieDto);
-        UBoat uBoat = userManager.getUBoatByName(uBoatName);
+//        userManager.setAllie(usernameFromParameter, uBoatName, allieDto);
+
+        userManager.addAllyToUBoat(uBoatName, allieDto.getAllieName());
+
+        UBoat uBoat = userManager.getUBoatByNameWork(uBoatName);
         UBoatDTO uBoatDTO = new UBoatDTO(uBoat.getBattleName(), uBoat.getDifficulty(), uBoat.getGameStatus(),
                 uBoat.getMaxAmountOfAllies(), uBoat.getCurrentAmountOfAllies());
 

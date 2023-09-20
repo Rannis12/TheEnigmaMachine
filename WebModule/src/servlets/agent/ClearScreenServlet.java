@@ -1,0 +1,41 @@
+package servlets.agent;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import servlets.agent.utils.Constants;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.UserManager;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(name = "ClearScreenServlet", urlPatterns = "/did-clearBtn-clicked")
+public class ClearScreenServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
+        String allyName = req.getParameter("allyName");
+        String client = req.getParameter("client");
+        String uBoatName = req.getParameter("uBoatName");
+
+        boolean shouldClearScreen = false;
+
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        if(client.equals("Agent")) {
+            shouldClearScreen = userManager.getAlly(allyName).getContestIsOver();
+        }else{ //client is UBoat
+           shouldClearScreen = userManager.checkIfAllAlliesConfirmClearScreen(uBoatName);
+        }
+
+        String json = Constants.GSON_INSTANCE.toJson(shouldClearScreen, Boolean.class);
+        out.println(json);
+        out.flush();
+
+    }
+}

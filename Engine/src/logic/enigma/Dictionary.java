@@ -11,12 +11,10 @@ public class Dictionary implements Serializable {
     private Set<String> dictionary;
     private String excludedCharacters;
 
-
     public Dictionary(Set<String> dictionary, String excludedCharacters){
         this.dictionary = dictionary;
         this.excludedCharacters = excludedCharacters;
     }
-
     Dictionary(KeyBoard keyBoard, CTEDictionary cteDictionary) {
         dictionary = new HashSet<>();
         excludedCharacters = cteDictionary.getExcludeChars();
@@ -52,11 +50,9 @@ public class Dictionary implements Serializable {
             }
         }
     }
-
     public String getExcludedCharacters(){
         return excludedCharacters;
     }
-
     public boolean isExistInDictionary(String string) {
         for (String str : dictionary) {
             if(str.equals(string)){
@@ -65,7 +61,6 @@ public class Dictionary implements Serializable {
         }
         return false;
     }
-
     public ArrayList<String> searchForSubStrings(String prefix) {
         ArrayList<String> wordsInDictionary = new ArrayList<>();
         for (String word : dictionary) {
@@ -80,7 +75,6 @@ public class Dictionary implements Serializable {
 
         return wordsInDictionary;
     }
-
     public Set<String> getDictionary() {
         return dictionary;
     }

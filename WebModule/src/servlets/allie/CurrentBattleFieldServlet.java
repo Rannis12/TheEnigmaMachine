@@ -7,8 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.ServletUtils;
-import utils.UserManager;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.UserManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;

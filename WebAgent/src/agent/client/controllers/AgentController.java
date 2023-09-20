@@ -22,40 +22,36 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
-import logic.ContestStatusRefresher;
-import logic.IsContestEndRefresher;
+import logic.*;
 import logic.enigma.Dictionary;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 import okhttp3.*;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import static utils.Constants.*;
+import static servlets.agent.utils.Constants.*;
 
 public class AgentController {
 
     public static Object queueLock = new Object();
     public static Object putMissionLock = new Object();
-
     private InputStream inputStream;
     private Engine engine;
     private ThreadPoolExecutor threadPool;
-    private BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>(1000);
+    private BlockingQueue<Runnable> blockingQueue;
     private AgentMainAppController agentMainAppController;
     @FXML private Label userLabel;
+    @FXML private Label winnerMessage;
     @FXML private Label battleFieldNameLabel;
     @FXML private Label contestLevelLabel;
     @FXML private Label teamsLabel;
@@ -78,32 +74,66 @@ public class AgentController {
     private IsContestEndRefresher contestEndRefresher;
     private Timer contestEndTimer;
     private IntegerProperty candidatesAmount = new SimpleIntegerProperty();
+    private TimerTask logoutRefresher;
+    private Timer logoutTimer;
+    private BooleanProperty allyConfirmToDelete = new SimpleBooleanProperty();
+    private TimerTask detailsRefresher;
+    private Timer detailsTimer;
+    private TimerTask clearRefresher;
+    private Timer clearTimer;
 //    private PublishAgentDetailsRefresher publishAgentDetails;
 //    private Timer agentDetailsTimer;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
 
         isActiveContest.addListener(e -> {
-            if(isActiveContest.getValue()){
+            if (isActiveContest.getValue()) {
                 contestStatusLabel.setText("Ready");
                 startContest();
                 checkIfContestIsEnd();
                 startPublishAgentDetails();
-            }
-            else {
+            } else {
                 contestStatusLabel.setText("Not Ready");
             }
         });
 
+        allyConfirmToDelete.addListener(e -> {
+            if (allyConfirmToDelete.getValue()) {
+//                System.out.println(":)");
+                resetController();
 
+                startGetContestDetails();
+                startShouldStartContestRefresher();
+            }
+        });
+    }
 
+    private void resetController() {
+        isActiveContest.set(false);
+        allyConfirmToDelete.set(false);
+        amountOfMissionsInQueue.set(0);
+        amountOfCompletedMissionsSoFar.set(0);
+        candidatesAmount.set(0);
+
+        clearAllLabels();
+
+        startShouldStartContestRefresher();
+    }
+
+    private void clearAllLabels() {
+        battleFieldNameLabel.setText("");
+        contestStatusLabel.setText("");
+        contestLevelLabel.setText("");
+        teamsLabel.setText("");
     }
 
     private void startContest() {
 
         setEngine();
+        setThreadPool();
         startPollMissionsThread();
+
         threadPool.prestartAllCoreThreads();
 
         withdrawMissionAmountLabel.textProperty().bind(amountOfCompletedMissionsSoFar.asObject().asString());
@@ -116,15 +146,15 @@ public class AgentController {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(isActiveContest.get()){
-                    synchronized (queueLock){
-                        System.out.println("about to poll some missions.");
+                while (isActiveContest.get()) {
+                    synchronized (queueLock) {
+//                        System.out.println("about to poll some missions.");
                         pollMissions();
-                        if(!blockingQueue.isEmpty()){
-                            try{
-                                System.out.println("now waiting.");
+                        if (!blockingQueue.isEmpty()) {
+                            try {
+//                                System.out.println("now waiting.");
                                 queueLock.wait();
-                            }catch (InterruptedException e){
+                            } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                         }
@@ -168,7 +198,7 @@ public class AgentController {
 
 
     private void putMissionsInThreadPool(List<DecryptTaskDTO> dtos) {
-        if(dtos != null) {
+        if (dtos != null) {
 
             int size = dtos.size();
 
@@ -185,10 +215,9 @@ public class AgentController {
                     }
                 }
 
-                Platform.runLater(() ->{
+                Platform.runLater(() -> {
                     amountOfMissionsInQueue.set(amountOfMissionsInQueue.get() + size);
                 });
-
             }
         }
     }
@@ -265,7 +294,8 @@ public class AgentController {
                 toEncode = contestDTO.getToEncode();
                 isActiveContest.set(true);
                 //stop refreshing some components after everyone is ready.
-                contestRefresherTimer.cancel();
+//                contestRefresherTimer.cancel();
+                battleFieldListRefresher.cancel();
 
             }
         }
@@ -281,24 +311,44 @@ public class AgentController {
     }
 
     public void setActive() {
+        getContestDetails();
         startShouldStartContestRefresher();
+
     }
+
+   /* private void getContestDetailsThread() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!isActiveContest.get() || battleFieldNameLabel.getText().equals("")) {
+                    getContestDetails();
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        thread.start();
+    }*/
 
     public void setAmountOfThreads(int amountOfThreads) {
         this.amountOfThreads = amountOfThreads;
     }
 
-    public void setAmountOfMissions(int amountOfMissions){
+    public void setAmountOfMissions(int amountOfMissions) {
         this.amountOfMissions = amountOfMissions;
     }
 
-    public void setAllieName(String allieName){
+    public void setAllieName(String allieName) {
         this.allieName = allieName;
         allieNameLabel.setText(allieName);
 
     }
 
     public void setThreadPool() {
+        blockingQueue = new LinkedBlockingQueue<>(1000);
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads, 20, TimeUnit.SECONDS, blockingQueue);
     }
 
@@ -322,7 +372,7 @@ public class AgentController {
 
 
         public DecryptTask(Engine copyEngine, int sizeOfMission,
-                           String toEncodeString, ArrayList<String> initialPositions){
+                           String toEncodeString, ArrayList<String> initialPositions) {
 
             engine = copyEngine;
 
@@ -337,22 +387,22 @@ public class AgentController {
             }
         }
 
-        /**In here the Agent should try to decode the String that the ThreadPool gave him.
+        /**
+         * In here the Agent should try to decode the String that the ThreadPool gave him.
          * Pay attention!
          * if mission's size is 4, then the Agent should do the WHOLE options.
          * for example, if the Rotors first positions is A,A,A ,
          * then the agent should do A,A,E , A,A,F, A,A,G , A,A,H - so each time he will start from different configuration,
          * in order to cover all possible cases.
-         *
          */
 
         //the decryption here is without plugboard! therefor, we need to create a new method (not decodeStr),
         //or add boolean value inside this method.
         @Override
-        public void run(){
+        public void run() {
             try {
 
-                System.out.println("about to start a decrypt task");
+//                System.out.println("about to start a decrypt task");
                 for (int i = 0; i < sizeOfMission; i++) {
 
                     boolean shouldContinueSearching = true;
@@ -374,7 +424,7 @@ public class AgentController {
                         }
                     }
 
-                    if(shouldContinueSearching){
+                    if (shouldContinueSearching) {
 
                         Platform.runLater(() -> {
                             candidatesAmount.set(candidatesAmount.get() + 1);
@@ -390,22 +440,22 @@ public class AgentController {
 //                    amountOfMissionsLeftInThreadPool.set(amountOfMissionsLeftInThreadPool.get() - 1);
 
                     amountOfDecoding++;
-                    System.out.println("amount of time i decoded so far is: " + amountOfDecoding);
+//                    System.out.println("amount of time i decoded so far is: " + amountOfDecoding);
                 }
 
-                if(candidatesList.size() > 0) {
+                if (candidatesList.size() > 0) {
                     uploadCandidates(candidatesList);
                     updateFlowPane(candidatesList);
                 }
+
 
                 int update = amountOfCompletedMissionsSoFar.get() + 1;
 
                 consumer.accept(update);
 
                 //checking if the blocking queue is empty. if it is, we need to get more missions.
-                if(blockingQueue.isEmpty()) {
-
-                    System.out.println("about to poll missions");
+                if (blockingQueue.isEmpty()) {
+//                    System.out.println("about to poll missions");
                     pollMissions();
 
                     queueLock.notifyAll();
@@ -461,14 +511,6 @@ public class AgentController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        /*try {
-            Response response = call.execute();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-*/
-
     }
 
     private void updateFlowPane(List<MissionDTO> missionsList) {
@@ -477,7 +519,7 @@ public class AgentController {
 
             for (MissionDTO dto : missionsList) {
 
-                if(dto != null){
+                if (dto != null) {
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     URL url = getClass().getResource(POTENTIALLY_DECRYPT_DATA_PAGE_FXML_RESOURCE_LOCATION);
                     fxmlLoader.setLocation(url);
@@ -512,10 +554,15 @@ public class AgentController {
         if (missionDTO != null) {
             if (missionDTO.isWinner()) {
 
+                winnerMessage.setText(missionDTO.getAgentID() + " was the first to found!");
                 isActiveContest.set(false);
-                contestEndTimer.cancel();
+//                contestEndTimer.cancel();
+                contestEndRefresher.cancel();
+
 
                 threadPool.shutdownNow();
+                startCheckAllyConfirmedEndOfCompetition();
+                startCheckIfClearBtnClicked();
             }
         }
     }
@@ -529,7 +576,8 @@ public class AgentController {
         contestEndTimer.schedule(contestEndRefresher, REFRESH_RATE, REFRESH_RATE);
     }
 
-    public void getContestDetails(){
+
+    public void getContestDetails() {
         String finalUrl = HttpUrl
                 .parse(Constants.GET_CONTEST_DETAILS_FOR_AGENT_PATH)
                 .newBuilder()
@@ -554,7 +602,7 @@ public class AgentController {
 
                     Platform.runLater(() ->
 //                            errorMessageProperty.set("Error: " + responseBody)
-                            popUpError(responseBody) //??
+                                    popUpError(responseBody) //??
                     );
                 } else {
                     Platform.runLater(() -> {
@@ -573,21 +621,15 @@ public class AgentController {
     }
 
 
-    /*private AgentDTO agentDetailsRefresher() {
-        Platform.runLater(() -> {
-            return publishAgentDetails();
-        });
-    }*/
-
     private AgentDTO publishAgentDetails() {
 
         AgentDTO agentDTO = new AgentDTO(agentMainAppController.getCurrentUserName(), allieName,
-                amountOfThreads, amountOfMissions, amountOfCompletedMissionsSoFar.get());
+                amountOfThreads, amountOfMissions, amountOfCompletedMissionsSoFar.get(), candidatesAmount.get());
 
         return agentDTO;
     }
 
-    public void publishAgent(){
+    public void publishAgent() {
         AgentDTO agentDTO = publishAgentDetails();
 
         String finalUrl = HttpUrl
@@ -599,7 +641,7 @@ public class AgentController {
 
         String json = GSON_INSTANCE.toJson(agentDTO, AgentDTO.class);
 
-        HttpClientUtil.runAsyncPost(finalUrl, json, new Callback() { //logic is working. need to change the way it looks in the application.
+        HttpClientUtil.runAsyncPost(finalUrl, json, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -621,6 +663,7 @@ public class AgentController {
             }
         });
     }
+
     public void startPublishAgentDetails() {
 
         Thread thread = new Thread(new Runnable() {
@@ -640,6 +683,92 @@ public class AgentController {
         thread.start();
     }
 
+    private void DidAllyConfirmedEndOfCompetition(boolean value) {
+        Platform.runLater(() -> {
+            endOfCompetition(value);
+        });
+    }
+
+    private void endOfCompetition(boolean value) {
+        if (value) {
+            allyConfirmToDelete.set(true);
+            candidatesFP.getChildren().clear();
+
+//            logoutTimer.cancel();
+//            clearTimer.cancel();
+            clearRefresher.cancel();
+            logoutRefresher.cancel();
+        }
+    }
+
+    public void startCheckAllyConfirmedEndOfCompetition() {
+        logoutRefresher = new FinishBtnRefresher(
+                this::DidAllyConfirmedEndOfCompetition,
+                allieName);
+        logoutTimer = new Timer();
+        logoutTimer.schedule(logoutRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+
+    private void getContestDetailsRefresher(ContestDetailsForAgentDTO detailsDto) {
+        Platform.runLater(() -> {
+            updateContestDetails(detailsDto);
+        });
+    }
+
+    private void updateContestDetails(ContestDetailsForAgentDTO detailsDto) {
+
+        if (detailsDto != null) {
+            battleFieldNameLabel.setText(detailsDto.getBattleName());
+            contestLevelLabel.setText(detailsDto.getDifficulty());
+            teamsLabel.setText(String.valueOf(detailsDto.getAmountOfTeams()));
+            contestStatusLabel.setText(detailsDto.getContestStatus());
+            allieNameLabel.setText(detailsDto.getAllyName());
+
+//            detailsTimer.cancel();
+            detailsRefresher.cancel();
+            /*if(!detailsDto.getBattleName().equals("")) {
+                startShouldStartContestRefresher();
+            }*/
+        }
+    }
+
+    public void startGetContestDetails() {
+        detailsRefresher = new GetContestDetailsForAgentRefresher(
+                this::getContestDetailsRefresher,
+                agentMainAppController.getCurrentUserName());
+        detailsTimer = new Timer();
+        detailsTimer.schedule(detailsRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    private void ShouldClearScreen(boolean value) {
+        Platform.runLater(() -> {
+            clearScreen(value);
+        });
+    }
+
+    private void clearScreen(boolean value) {
+        if (value) {
+            allyConfirmToDelete.set(true);
+            candidatesFP.getChildren().clear();
+
+            winnerMessage.setText("");
+//            clearTimer.cancel();
+            clearRefresher.cancel();
+            logoutRefresher.cancel();
+//            logoutTimer.cancel();
+        }
+    }
+
+    public void startCheckIfClearBtnClicked() {
+        clearRefresher = new ShouldClearScreenRefresher(
+                this::ShouldClearScreen,
+                allieName,
+                "Agent",
+                "");
+        clearTimer = new Timer();
+        clearTimer.schedule(clearRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
 }
 
 

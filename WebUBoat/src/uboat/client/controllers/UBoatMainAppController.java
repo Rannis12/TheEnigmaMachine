@@ -13,7 +13,7 @@ import uboat.client.login.LoginController;
 import java.io.IOException;
 import java.net.URL;
 
-import static utils.Constants.*;
+import static servlets.agent.utils.Constants.*;
 
 public class UBoatMainAppController {
 
@@ -81,5 +81,9 @@ public class UBoatMainAppController {
 
     public String getUserName() {
         return currentUserName.get();
+    }
+
+    public void switchToLoginRoom() {
+        setMainPanelTo(loginComponent);
     }
 }

@@ -10,16 +10,14 @@ import java.io.*;
 import java.util.*;
 
 public class EngineLoader {
-    private String  FileDestination;
+    private String FileDestination;
     private static final String JAXB_XML_GAME_PACKAGE_NAME = "resources.jaxb.generated";
     public EngineLoader(String fileDestination) {
         this.FileDestination = fileDestination;
     }
-
     public EngineLoader(){
 
     }
-
     public Engine loadEngineFromXml(String filePath) throws invalidXMLfileException {
         CTEEnigma cteEnigma = null;
         try {
@@ -32,7 +30,6 @@ public class EngineLoader {
 
         return convertToEngine(cteEnigma);
     }
-
     public Engine loadEngineFromInputStream(InputStream in) throws invalidXMLfileException {
         CTEEnigma cteEnigma = null;
         try {
@@ -44,20 +41,12 @@ public class EngineLoader {
 
         return convertToEngine(cteEnigma);
     }
-
-
-
-
-
-
-
     public static CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return (CTEEnigma) u.unmarshal(in);
     }
-
-    private Engine convertToEngine(CTEEnigma cteEnigma/*, Dictionary dictionary*/) throws invalidXMLfileException {
+    private Engine convertToEngine(CTEEnigma cteEnigma) throws invalidXMLfileException {
         Engine newEngine = null;
         String alphaBetFromCTE = cteEnigma.getCTEMachine().getABC();
         alphaBetFromCTE = alphaBetFromCTE.trim();
@@ -112,7 +101,6 @@ public class EngineLoader {
             return false;
 
     }
-
     private boolean checkRotors(List<CTERotor> cteRotorsLIST, String alphaBetFromCTE) throws invalidXMLfileException {
 
         Set<Integer> set = new HashSet<>();
@@ -210,7 +198,6 @@ public class EngineLoader {
             throw new invalidXMLfileException(fullPath +" isn't a xml file.");
         }
     }
-
     //needs to check validation only in xml file, since we supposed to use a combo box in the application,
     public static boolean checkDifficultyValidation(String value){
         boolean isValid = false;
@@ -224,8 +211,6 @@ public class EngineLoader {
         }
         return isValid;
     }
-
-
     public static void main(String[] args) {
         System.out.println(checkDifficultyValidation("Insane1"));
     }

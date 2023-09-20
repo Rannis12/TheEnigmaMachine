@@ -7,13 +7,13 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static utils.Constants.GSON_INSTANCE;
+import static servlets.agent.utils.Constants.GSON_INSTANCE;
 
 public class SoloBattleFieldRefresher extends TimerTask {
     private final Consumer<ContestDetailsDTO> userListConsumer;

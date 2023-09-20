@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: WebModule.jar Refresher.jar DTO.jar
+Main-Class: allie.client.util.AlliesApplication
+

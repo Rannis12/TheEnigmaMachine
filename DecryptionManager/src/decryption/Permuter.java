@@ -50,6 +50,5 @@ public class Permuter {
         } while (movingPerm > 0);
         return null;
     }
-
 }
 

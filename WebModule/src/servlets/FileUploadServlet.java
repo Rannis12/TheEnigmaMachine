@@ -3,7 +3,6 @@ package servlets;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
-import com.google.gson.Gson;
 import dtos.engine.EngineMinimalDetailsDTO;
 import entities.UBoat;
 import jakarta.servlet.ServletException;
@@ -15,10 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
-import utils.Constants;
-import utils.ServletUtils;
+import servlets.agent.utils.Constants;
+import servlets.agent.utils.ServletUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;

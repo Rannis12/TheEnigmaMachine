@@ -42,12 +42,18 @@
                                     <InnerShadow />
                                  </effect>
                               </Button>
+                              <Button fx:id="finishBtn" mnemonicParsing="false" onAction="#finishBtnListener" text="Finish" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="clearBtn" layoutX="296.0" layoutY="10.0" mnemonicParsing="false" onAction="#clearBtnListener" text="Clear" visible="false" />
                            </children>
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </HBox>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="196.0" text="Waiting for more agents / Running" textFill="RED" />
+                        <Label fx:id="winnerMessage" alignment="CENTER" prefHeight="17.0" prefWidth="196.0" textFill="RED" />
                         <Label text="Decrypted string:">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -56,7 +62,7 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="toEncodeTF" alignment="CENTER">
+                        <TextField fx:id="toEncodeTF" alignment="CENTER" editable="false">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" />
                            </VBox.margin>
@@ -81,7 +87,7 @@
                             <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Totall mission amount:">
+                              <Label text="Total mission amount:">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -91,14 +97,14 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label text="Totall mission finished:" GridPane.rowIndex="2">
+                              <Label text="Total mission finished:" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="totalMissionsAmountTF" GridPane.columnIndex="1" />
-                              <TextField fx:id="missionsInQueueTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField fx:id="totalMissionsFinishedTF" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="totalMissionsAmountTF" editable="false" GridPane.columnIndex="1" />
+                              <TextField fx:id="missionsInQueueTF" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="totalMissionsFinishedTF" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>
@@ -125,7 +131,7 @@
                         </Label>
                         <ScrollPane prefHeight="170.0" prefWidth="159.0" VBox.vgrow="ALWAYS">
                            <content>
-                              <FlowPane fx:id="teamInformationFP" prefHeight="168.0" prefWidth="184.0" />
+                              <FlowPane fx:id="teamInformationFP" alignment="CENTER" prefHeight="168.0" prefWidth="184.0" />
                            </content>
                         </ScrollPane>
                      </children>

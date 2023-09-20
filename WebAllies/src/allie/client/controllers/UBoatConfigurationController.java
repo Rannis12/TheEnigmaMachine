@@ -8,15 +8,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import okhttp3.*;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 
 import java.io.IOException;
 
-import static utils.Constants.*;
+import static servlets.agent.utils.Constants.*;
 
 public class UBoatConfigurationController {
 
     private DashboardController dashboardController;
+    private ContestController contestController;
     @FXML private Label battleFieldNameLabel;
     @FXML private Label usernameLabel;
     @FXML private Label statusLabel;
@@ -71,7 +72,7 @@ public class UBoatConfigurationController {
                 .parse(FULL_SERVER_PATH + JOIN_UBOAT)
                 .newBuilder()
                 .addQueryParameter("username", activeUserName)
-                .addQueryParameter(PARENT_NAME_PARAMETER, battleFieldNameLabel.getText())
+                .addQueryParameter(PARENT_NAME_PARAMETER, usernameLabel.getText())
                 .build()
                 .toString();
 
@@ -94,7 +95,7 @@ public class UBoatConfigurationController {
 //            dashboardTab.setDisable(true); //after the allie join to the uboat, we need to lock this page, so he can't join again.
             dashboardController.setDashboardTabDisable(true);
 
-            //refresh
+            //refreshing all contest page
             dashboardController.startBattleFieldListForContestController(uBoatDTO.getBattleName());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,5 +109,9 @@ public class UBoatConfigurationController {
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+    }
+
+    public void setContestController(ContestController contestController){
+        this.contestController = contestController;
     }
 }

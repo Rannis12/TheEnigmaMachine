@@ -35,11 +35,9 @@ public class KeyBoard implements Serializable {
     public int getAmountOfLetters() {
         return rowToChar.size();
     }
-
     public String getAlphaBet() {
         return alphaBet;
     }
-
     public boolean isExist(char ch){
         return (charToRow.containsKey(ch));
     }

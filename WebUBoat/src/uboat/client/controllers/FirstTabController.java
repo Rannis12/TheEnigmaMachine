@@ -17,12 +17,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static utils.Constants.FULL_SERVER_PATH;
+import static servlets.agent.utils.Constants.FULL_SERVER_PATH;
 
 
 public class FirstTabController implements Initializable {
     private RotorsIndexesDTO rotorsIndexesDTO = null;
-    private PlugBoardDTO plugBoardDTO = null;
+    private PlugBoardDTO plugBoardDTO = new PlugBoardDTO();
     private RotorsFirstPositionDTO rotorsFirstPositionDTO = null;
     private ReflectorDTO reflectorDTO = null;
     private UBoatController uBoatController;
@@ -42,8 +42,8 @@ public class FirstTabController implements Initializable {
     @FXML
     private TextField userInitPlaces;
 
-    @FXML
-    private TextField userInitPlugBoard;
+/*    @FXML
+    private TextField userInitPlugBoard;*/
 
     @FXML
     private Label chooseReflectorLabel;
@@ -78,8 +78,11 @@ public class FirstTabController implements Initializable {
         try {
             int chosenReflector = (Integer) reflectorChoiceBox.getValue();
             reflectorDTO = new ReflectorDTO(chosenReflector);
+            plugBoardDTO.setInitString("");
+
             InitializeEngineToJsonDTO initializeEngineToJsonDTO = new InitializeEngineToJsonDTO(rotorsFirstPositionDTO, plugBoardDTO,
                     reflectorDTO, rotorsIndexesDTO);
+
 
             Gson gson = new Gson();
             String json = gson.toJson(initializeEngineToJsonDTO, InitializeEngineToJsonDTO.class);
@@ -139,7 +142,7 @@ public class FirstTabController implements Initializable {
                 "from left to right divided by comma. for example 23,542,231");
 
         userInitPlaces.setDisable(true);
-        userInitPlugBoard.setDisable(true);
+//        userInitPlugBoard.setDisable(true);
 
         machineInitializeLabel.setTextFill(Color.valueOf("faf2f2"));
     }
@@ -169,7 +172,9 @@ public class FirstTabController implements Initializable {
             rotorsFirstPositionDTO = new RotorsFirstPositionDTO(rotorsFirstPositions);
             userInitPlaces.setDisable(true);
 
-            userInitPlugBoard.setDisable(false);
+//            userInitPlugBoard.setDisable(false);
+            reflectorChoiceBox.setVisible(true);
+            setMachineBtn.setDisable(false);
 
             instructionTF.setText("Enter contiguous string of characters that forming pairs in plugboard. For example [DK49 !]");
         } catch (invalidInputException ex) {
@@ -177,7 +182,7 @@ public class FirstTabController implements Initializable {
             uBoatController.popUpError(ex.getMessage());
         }
     }
-    @FXML
+    /*@FXML
     void userInitPlugBoardListener(ActionEvent event){
         try {
             String tmpString = userInitPlugBoard.getText();
@@ -196,7 +201,7 @@ public class FirstTabController implements Initializable {
             userInitPlugBoard.clear();
             uBoatController.popUpError(ex.getMessage());
         }
-    }
+    }*/
 
 
     public void setReflectorsCB(int amount){
@@ -247,18 +252,26 @@ public class FirstTabController implements Initializable {
     public void clearAllUsersTextFields(){
         userInitPlaces.clear();
         userRotorsInput.clear();
-        userInitPlugBoard.clear();
+//        userInitPlugBoard.clear();
         instructionTF.clear();
     }
 
 
 
     public void clearConfigurationTextFields() {
-//        initializeConfigurationTF.clear();
+        currentConfigurationTF.textProperty().unbind();
         currentConfigurationTF.clear();
     }
 
     public TextField getConfigurationTF() {
         return currentConfigurationTF;
+    }
+
+    public void clearFirstTab() {
+        randomBtn.setDisable(true);
+        manualBtn.setDisable(true);
+        rotorsDetails.setText("...");
+        reflectorsAmount.setText("...");
+
     }
 }

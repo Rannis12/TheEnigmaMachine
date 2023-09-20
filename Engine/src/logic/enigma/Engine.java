@@ -17,18 +17,14 @@ public class Engine implements Serializable, Cloneable {
     private MachineStatisticsDTO machineStatisticsDTO;
     private int agentMaxAmount;
     private int amountOfDecodedStrings;
-    private Dictionary dictionary;        //engine shouldn't include Dictionary.
-
-//    private UBoat uBoat;
+    private Dictionary dictionary;
     private BattleField battleField;
-    //agentMaxAmount field no required anymore.
+
     Engine(List <CTEReflector> cteReflectors, List<CTERotor> cteRotors, int rotorCountFromCTE,
-           String alphaBetFromCTE/*, int agentMaxAmount*/, CTEDictionary cteDictionary, CTEBattlefield cteBattlefield) {
+           String alphaBetFromCTE, CTEDictionary cteDictionary, CTEBattlefield cteBattlefield) {
 
         keyBoard = new KeyBoard(alphaBetFromCTE);
         dictionary = new Dictionary(keyBoard, cteDictionary);
-        /*this.agentMaxAmount = agentMaxAmount;*/
-
         reflectors = new Reflectors(cteReflectors);
         rotors = new Rotors(cteRotors, rotorCountFromCTE);
         plugBoard = new PlugBoard();
@@ -41,7 +37,7 @@ public class Engine implements Serializable, Cloneable {
     }
 
     public Engine (){
-//        tmp = new HashSet<>();
+
     }
 
     @Override
@@ -71,8 +67,6 @@ public class Engine implements Serializable, Cloneable {
     public KeyBoard getKeyBoard() {
         return keyBoard;
     }
-
-
     public DecodeStringInfo decodeStr(String toEncodeString) throws invalidInputException {
         toEncodeString = toEncodeString.toUpperCase();
         checkStringValidity(toEncodeString);
@@ -135,21 +129,15 @@ public class Engine implements Serializable, Cloneable {
                 throw new invalidInputException("The letters " + invalidCharacters + " doesn't exist in the language. Please try again.\n");
         }
     }
-
     public void checkRotorsFirstPositionsValidity(String firstPositions, KeyBoard keyBoard) throws invalidInputException {
         rotors.checkRotorsFirstPositionsValidity(firstPositions, keyBoard);
     }
-
     public void checkSelectedReflectorValidity(String reflectorID) throws invalidInputException {
         reflectors.checkReflectorFromUserValidity(reflectorID);
     }
-
     public void checkPlugBoardValidity(String plugBoardString, Map<Character, Character> uiCables) throws invalidInputException {
         plugBoard.checkPlugBoardStringValidity(plugBoardString, keyBoard, uiCables);
     }
-
-
-
     public void setNewMachine(RotorsFirstPositionDTO rotorsFirstPositionDTO, PlugBoardDTO plugBoardDTO, ReflectorDTO reflectorDTO, RotorsIndexesDTO rotorsIndexesDTO) {
 
         initRotorIndexes(rotorsIndexesDTO.getUIRotorsIndexes());
@@ -169,11 +157,9 @@ public class Engine implements Serializable, Cloneable {
     public void resetEngineToUserInitChoice() {
         rotors.resetRotorsFirstPositions();
     }
-
     public int getReflectorsIDs(){
         return reflectors.getReflectorsIDs();
     }
-
     public MachineStatisticsDTO getMachineStatistics() {
         return machineStatisticsDTO;
     }
@@ -204,7 +190,6 @@ public class Engine implements Serializable, Cloneable {
         DictionaryDTO dictionaryDTO = new DictionaryDTO(dictionary.getDictionary(), dictionary.getExcludedCharacters());
         return new EngineMinimalDetailsDTO(usedAmountOfRotors, rotorsAmount, reflectorsAmount, amountOfDecodedStrings, dictionaryDTO);
     }
-
     public int getAgentMaxAmount() {
         return agentMaxAmount;
     }
@@ -212,11 +197,9 @@ public class Engine implements Serializable, Cloneable {
         machineStatisticsDTO.resetStatistics();
         amountOfDecodedStrings = 0;
     }
-
     public void steerRotors() {
         rotors.steerRotors();
     }
-
     public String saveEnigmaToString(Engine engine) throws invalidInputException {
         try
         {
@@ -231,7 +214,6 @@ public class Engine implements Serializable, Cloneable {
             throw new invalidInputException("Error in saving a file\n");
         }
     }
-
     public Engine loadEnigmaFromString(String s) throws invalidInputException {
         try {
             byte[] data = Base64.getDecoder().decode(s);
@@ -244,19 +226,15 @@ public class Engine implements Serializable, Cloneable {
             throw new invalidInputException("Error in loading a file\n");
         }
     }
-
     public Dictionary getDictionary() {
         return this.dictionary;
     }
-
     public void initRotorsPositions(String initString) {
         rotors.initRotorsPosition(initString);
     }
-
     public ArrayList<Integer> getAllExistingReflectors(){
         return reflectors.getAllExistingReflectors();
     }
-
     public DecodeStringInfo decodeStrWithoutPG(String toEncodeString) throws invalidInputException {
         toEncodeString = toEncodeString.toUpperCase();
         checkStringValidity(toEncodeString);
@@ -273,7 +251,6 @@ public class Engine implements Serializable, Cloneable {
 
         return new DecodeStringInfo(toEncodeString, decodedString, end - start);
     }
-
     public char decodeCharWithoutPG(Character toDecode) {
         int rowNum;
         char newChar;
@@ -292,29 +269,12 @@ public class Engine implements Serializable, Cloneable {
 
         return newChar;
     }
-
     public ArrayList<Integer> getRotorsIndexes(){
         return rotors.getUsedRotorsIndexes();
     }
-
     public int getSelectedReflector(){
         return reflectors.getSelectedReflector();
     }
-
-/*    public String getRotorsIndexesString() {
-        ArrayList<Integer> rotorsIndexes = rotors.getUsedRotorsIndexes();
-        String rotorsIndexesString = "";
-
-        for (int i = 0; i < rotorsIndexes.size(); i++) {
-            if(i == rotorsIndexes.size() - 1)
-                rotorsIndexesString += String.valueOf(rotorsIndexes.get(i));
-            else
-                rotorsIndexesString += String.valueOf(rotorsIndexes.get(i)) + ',';
-
-        }
-        return rotorsIndexesString;
-    }*/
-
     public static String makeCodeForm(ArrayList<Integer> notchesPlaces, ArrayList<Integer> RotorsOrganization,
                                       String rotorsPositions, String chosenReflector) {
 
@@ -340,17 +300,9 @@ public class Engine implements Serializable, Cloneable {
         }*/
         return finalInfoToPrint;
     }
-
-    /*public UBoat getUBoat() {
-        uBoat.setEngine(this);
-        return uBoat;
-    }*/
-
-
     public void setNotchesCurrentPlaces(ArrayList<Integer> notchesCurrentPlaces){
         rotors.setNotchesCurrentPlaces(notchesCurrentPlaces, keyBoard);
     }
-
     public BattleField getBattleField() {
         return battleField;
     }

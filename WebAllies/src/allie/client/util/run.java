@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-import static utils.Constants.ALLIES_MAIN_PAGE_FXML_RESOURCE_LOCATION;
-
 public class run extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {

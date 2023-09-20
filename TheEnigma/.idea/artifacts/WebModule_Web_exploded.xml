@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="WebModule:Web exploded">
+  <artifact type="exploded-war" build-on-make="true" name="WebModule:Web exploded">
     <output-path>$PROJECT_DIR$/../out/artifacts/WebModule_Web_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">

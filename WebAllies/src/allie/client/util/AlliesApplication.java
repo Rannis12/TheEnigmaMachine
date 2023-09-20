@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-import static utils.Constants.ALLIES_MAIN_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.ALLIES_MAIN_PAGE_FXML_RESOURCE_LOCATION;
 
 
 public class AlliesApplication extends Application {

@@ -67,7 +67,6 @@
                               </HBox>
                               <TextField fx:id="userRotorsInput" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userRotorsInputListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
                               <TextField fx:id="userInitPlaces" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlacesListener" prefHeight="25.0" prefWidth="381.0" promptText="Rotors first positions input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
-                              <TextField fx:id="userInitPlugBoard" alignment="CENTER" disable="true" maxWidth="1.7976931348623157E308" onAction="#userInitPlugBoardListener" prefHeight="25.0" prefWidth="381.0" promptText="Plugboard input" style="-fx-border-color: #1C2833; -fx-border-radius: 5px;" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER">

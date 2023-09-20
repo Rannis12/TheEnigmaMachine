@@ -1,6 +1,5 @@
 package uboat.client.controllers;
 
-import dtos.*;
 import dtos.engine.*;
 import exceptions.invalidInputException;
 import exceptions.invalidXMLfileException;
@@ -14,16 +13,15 @@ import javafx.stage.Stage;
 import logic.enigma.Engine;
 import logic.enigma.EngineLoader;
 import okhttp3.*;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static logic.enigma.Engine.makeCodeForm;
-import static utils.Constants.FULL_SERVER_PATH;
-import static utils.Constants.RANDOM_CONFIGURATION;
+import static servlets.agent.utils.Constants.FULL_SERVER_PATH;
+import static servlets.agent.utils.Constants.RANDOM_CONFIGURATION;
 
 public class UBoatController {
     private UBoatMainAppController uBoatMainAppController;
@@ -45,6 +43,9 @@ public class UBoatController {
             secondTabController.setMainPageController(this);
         }
     }
+
+
+
     @FXML
     void loadFile(MouseEvent event) throws IOException {
 
@@ -53,36 +54,40 @@ public class UBoatController {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
 
-            uploadFileToServer(file);
+            EngineLoader engineLoader = new EngineLoader(file.getAbsolutePath());
+            try {
+                //checking engine validity before uploading it to server.
+                engineLoader.loadEngineFromXml(file.getAbsolutePath());
 
-//            if(loadFileFromXml(file.getAbsolutePath())) {
-//                setAgentAmountSlider();
+                uploadFileToServer(file);
+                firstTabController.setReflectorsCB(getReflectorsIDs());
 
-            firstTabController.setReflectorsCB(getReflectorsIDs());
+                xmlPathLabel.setText(file.getAbsolutePath() + " selected");
+                secondTabController.setDecodingButtonsDisable(true);
+                firstTabController.showDetails(engine.getEngineMinimalDetails());
+                firstTabController.enableButtons();
+                firstTabController.clearConfigurationTextFields();
 
-            xmlPathLabel.setText(file.getAbsolutePath() + " selected");
-            secondTabController.setDecodingButtonsDisable(true);
-            firstTabController.showDetails(engine.getEngineMinimalDetails());
-            firstTabController.enableButtons();
-            firstTabController.clearConfigurationTextFields();
+                secondTabController.disableAllButtonsAndTextFields();
+                secondTabController.clearCurrentConfigurationTA();
 
-            secondTabController.disableAllButtonsAndTextFields();
-            secondTabController.clearCurrentConfigurationTA();
+                secondTabController.setVisibleLogoutButton(false);
+                secondTabController.disableReadyButton();
 
-            secondTabController.setVisibleLogoutButton(false);
-            secondTabController.enableReadyButton();
+                /*thirdTabController.DisableAllButtonsAndTextFields();*/
 
-            /*thirdTabController.DisableAllButtonsAndTextFields();*/
+                amountOfDecodedStrings.unbind();
+                configuration.unbind();
+                configuration.set("");
 
-            amountOfDecodedStrings.unbind();
-            configuration.unbind();
+                bindingsToConfigurationsControllers();
 
-            bindingsToConfigurationsControllers();
-
-            amountOfDecodedStrings = new SimpleIntegerProperty(0);
-
+                amountOfDecodedStrings = new SimpleIntegerProperty(0);
+            } catch (invalidXMLfileException e) {
+                popUpError(e.getMessage());
             }
         }
+    }
 
 
     private void bindingsToConfigurationsControllers() {
@@ -137,6 +142,9 @@ public class UBoatController {
             throw new RuntimeException("couldn't init engine in uBoat.");
         }
     }
+
+
+
 
 
    /* private void setAgentAmountSlider() {
@@ -290,6 +298,24 @@ public class UBoatController {
         winner.setHeaderText("Done!");
         winner.setContentText(msg);
         winner.showAndWait();
+    }
+
+    public void moveToLoginPage() {
+        uBoatMainAppController.switchToLoginRoom();
+    }
+
+    public void clearFirstTab() {
+
+        firstTabController.clearFirstTab();
+        amountOfDecodedStrings.unbind();
+        configuration.unbind();
+        xmlPathLabel.setText("Please insert an XML file:");
+        firstTabController.clearConfigurationTextFields();
+
+    }
+
+    public void operationsAfterValidInput(){
+        firstTabController.operationsAfterValidInput();
     }
 }
 

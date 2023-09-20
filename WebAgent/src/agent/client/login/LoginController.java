@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static utils.Constants.GSON_INSTANCE;
-import static utils.Constants.REFRESH_RATE;
+import static servlets.agent.utils.Constants.GSON_INSTANCE;
 
 public class LoginController {
 
@@ -74,7 +73,7 @@ public class LoginController {
             }
 
             AgentDTO agentDTO = new AgentDTO(nameTF.getText(), allieName,
-                    threadsSpinner.getValue(), missionsSpinner.getValue(), 0);
+                    threadsSpinner.getValue(), missionsSpinner.getValue(), 0, 0);
 
             //request to join the allie team.
 

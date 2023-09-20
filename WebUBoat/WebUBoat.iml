@@ -10,16 +10,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.11" level="application_server_libraries" />
     <orderEntry type="module" module-name="DTO" />
     <orderEntry type="module" module-name="Engine" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../okHttp" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../../okHttp" recursive="false" />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="Console" />
     <orderEntry type="module" module-name="WebModule" />
     <orderEntry type="module-library">
@@ -33,5 +23,6 @@
     </orderEntry>
     <orderEntry type="module" module-name="Refresher" />
     <orderEntry type="module" module-name="WebAllies" />
+    <orderEntry type="library" exported="" name="okhttp" level="project" />
   </component>
 </module>

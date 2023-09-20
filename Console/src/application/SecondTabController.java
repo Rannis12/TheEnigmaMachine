@@ -16,10 +16,8 @@ import java.io.IOException;
 
 
 public class SecondTabController {
-
     private MainPageController mainPageController;
     private boolean shouldDecodeLine; //false = should decode char
-
     @FXML private TextField currentConfiguration;
     @FXML private TextField decodeResultTF;
     @FXML private Button processBtn;
@@ -32,7 +30,6 @@ public class SecondTabController {
     @FXML private TextField charInputTF;
     @FXML private TextArea statisticsTA;
 
-    private final static String BASE_URL = "http://localhost:8080";
         @FXML
         void processBtnListener(ActionEvent event) {
             mainPageController.setDecodedCorrectly(false);
@@ -48,8 +45,6 @@ public class SecondTabController {
 
                     mainPageController.setAmountOfDecodedStrings(mainPageController.getAmountOfDecodedStrings() + 1);
 
-    //                appendToStatistics("   " + mainPageController.getCurrConfigurationDecodedAmount() +
-    //                        ". <" + newInfo.getToEncodeString() + "> ----> <" + newInfo.getDecodedString() + "> (" + newInfo.getTimeInMilli() + " nano seconds)\n");
                 } catch (invalidInputException e) {
                     mainPageController.popUpError(e.getMessage());
                 }
@@ -78,7 +73,6 @@ public class SecondTabController {
         lineInputTF.setDisable(true);
         processBtn.setDisable(true);
         decodeResultTF.setText("Reset has been made successfully!!");
-
     }
 
     @FXML
@@ -95,7 +89,6 @@ public class SecondTabController {
         }
 
         clearEncryptTextFields();
-
     }
 
     @FXML
@@ -149,14 +142,12 @@ public class SecondTabController {
         currentConfiguration.setText(currConfiguration);
     }
 
-
     public void setDecodingButtonsDisable(boolean setToDisable) {
         decodeLineBtn.setDisable(setToDisable);
         decodeCharBtn.setDisable(setToDisable);
         resetBtn.setDisable(setToDisable);
 
     }
-
 
     public void clearEncryptTextFields(){
         charInputTF.clear();

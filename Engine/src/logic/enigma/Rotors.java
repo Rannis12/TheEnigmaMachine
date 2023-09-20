@@ -24,7 +24,6 @@ public class Rotors implements Serializable {
         Comparator <Rotor> sortByID = (r1, r2) ->  r1.getRotorID() - r2.getRotorID();//sort Rotor by id
         rotors.sort(sortByID);
     }
-
     public void initRotorsFirstPositions(String rotorsFirstPositionsString){
         this.rotorsFirstPositionsString = rotorsFirstPositionsString;
 
@@ -103,9 +102,6 @@ public class Rotors implements Serializable {
         }
         return usedRotorsOrganization;
     }
-
-
-
     public void randomRotorsConfiguration(KeyBoard keyBoard) {
         rotorsIndexes.clear();
 
@@ -201,7 +197,6 @@ public class Rotors implements Serializable {
                 throw new invalidInputException("Rotor's ID doesn't exists in xml file. Please try again.");
             }
         }
-
     }
     public void checkRotorsFirstPositionsValidity(String firstPositions, KeyBoard keyBoard) throws invalidInputException {
         if(usedRotors != firstPositions.length()) {
@@ -220,12 +215,9 @@ public class Rotors implements Serializable {
             rotors.get(rotorsIndexes.get(i) - 1).initRotor(initString.charAt(i));
         }
     }
-
     public ArrayList<Integer> getUsedRotorsIndexes() {
         return rotorsIndexes;
     }
-
-
     private class Rotor implements Serializable{
         private LinkedList<Positioning> wiring;
         private Positioning notch;
@@ -267,9 +259,6 @@ public class Rotors implements Serializable {
                 wiring.addLast(wiring.removeFirst());
             }
         }
-
-
-
         public int getRotorID() {
             return rotorID;
         }
@@ -316,9 +305,6 @@ public class Rotors implements Serializable {
         private int getNotchFirstPos(){
             return notchFirstPos;
         }
-
-
-
         private char rotorCurrentPlace(){
             return wiring.getFirst().getRight();
         }

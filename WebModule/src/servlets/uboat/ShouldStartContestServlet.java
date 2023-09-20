@@ -7,8 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.Constants;
-import utils.ServletUtils;
+import servlets.agent.utils.Constants;
+import servlets.agent.utils.ServletUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,17 +30,18 @@ public class ShouldStartContestServlet extends HttpServlet {
                     .doesEveryOneReady(battleName);
         }else if (client.equals("Agent")){
             UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoatByGivenAgentName(agentName);
-            Dto = ServletUtils.getUserManager(getServletContext()).
-                    doesEveryOneReady(uBoat.getBattleName());
+            if(uBoat == null){
+                Dto = null;
+            }else {
+                Dto = ServletUtils.getUserManager(getServletContext()).
+                        doesEveryOneReady(uBoat.getBattleName());
+            }
         }else { //is a uBoat
             UBoat uBoat = ServletUtils.getUserManager(getServletContext()).getUBoatByGivenBattleName(battleName);
             Dto = ServletUtils.getUserManager(getServletContext()).
                     doesEveryOneReady(uBoat.getBattleName());
         }
 
-//        if(Dto.isShouldStart()){
-//            ServletUtils.getUserManager(getServletContext()).startCreateMissions(uBoat.getBattleName()); //start create all the missions. - need to check how to make this method occur only one time. todo
-//        }
 
         String json = Constants.GSON_INSTANCE.toJson(Dto, ShouldStartContestDTO.class);
         try(PrintWriter out = resp.getWriter()){

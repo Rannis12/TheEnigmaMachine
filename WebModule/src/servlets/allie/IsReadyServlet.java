@@ -6,8 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.Constants;
-import utils.ServletUtils;
+import servlets.agent.utils.Constants;
+import servlets.agent.utils.ServletUtils;
 
 import java.io.IOException;
 import java.io.Reader;

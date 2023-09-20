@@ -14,8 +14,8 @@ import agent.client.login.LoginController;
 import java.io.IOException;
 import java.net.URL;
 
-import static utils.Constants.AGENT_LOGIN_PAGE_FXML_RESOURCE_LOCATION;
-import static utils.Constants.AGENT_ROOM_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.AGENT_LOGIN_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.AGENT_ROOM_PAGE_FXML_RESOURCE_LOCATION;
 
 public class AgentMainAppController {
 
@@ -79,8 +79,8 @@ public class AgentMainAppController {
         agentController.setAmountOfThreads(loginController.getAmountOfThreads());
         agentController.setAmountOfMissions(loginController.getAmountOfMissions());
         agentController.setAllieName(loginController.getAllieName());
-        agentController.getContestDetails();
-        agentController.setThreadPool();
+
+//        agentController.setThreadPool();
     }
 
     public void updateUserName(String userName) {
@@ -100,5 +100,11 @@ public class AgentMainAppController {
     }
     public String getAllieName() {
         return loginController.getAllieName();
+    }
+
+    public void switchToLoginRoom() {
+        setMainPanelTo(loginComponent);
+        loginController.startBattleFieldListRefresher();
+
     }
 }

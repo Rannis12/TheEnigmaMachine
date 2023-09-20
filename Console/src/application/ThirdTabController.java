@@ -66,8 +66,6 @@ public class ThirdTabController {
     private DecryptionManager decryptionManager;
     private Dictionary dictionary = null;
     private Consumer<MissionDTO> consumer = missionDTO -> showGoodDecryptedString(missionDTO);
-
-    //private Consumer<ProgressUpdateDTO> progressConsumer = progressUpdateDTO -> updateProgressBar(progressUpdateDTO);
     private BooleanProperty isSystemPause = new SimpleBooleanProperty();
     private BooleanProperty isStopBtnClicked = new SimpleBooleanProperty();
 
@@ -141,7 +139,6 @@ public class ThirdTabController {
                 mainPageController.popUpError(e.getMessage());
             }
         }
-
     }
 
     private void appendToStatistics(String statisticNewString) {
@@ -231,7 +228,7 @@ public class ThirdTabController {
 
             DecryptionManagerDTO decryptionManagerDTO = new DecryptionManagerDTO(agentAmount, tasksSize, outputTF.getText().toUpperCase(), difficulty);
             decryptionManager = new DecryptionManager(decryptionManagerDTO, (Engine)tabThreeEngine.clone(),
-                                                        consumer/*, progressConsumer*/,
+                                                        consumer,
                                                           isSystemPause, isStopBtnClicked,
                                                             totalTimeTF);
 
@@ -240,8 +237,6 @@ public class ThirdTabController {
             amountOfTasksTF.setText(String.valueOf(decryptionManager.getAmountOfMissions()));
             amountOfTasksTF.setVisible(true);
 
-
-//            decryptionManager.bindingsToUI(tasksProgressBar, percentageLabel);
             //start running tasks
             decryptionManager.encode();
         }
@@ -251,13 +246,10 @@ public class ThirdTabController {
             taskSizeTF.clear();
             mainPageController.popUpError("Please choose size(number) of each task.");
         }
-
     }
 
     @FXML
     void stopBtnListener(ActionEvent event) {
-
-//        decryptionManager.stopAllAgents(); //shutdown all threads.
 
         totalTimeTF.clear();
         amountOfTasksLabel.setVisible(false);
@@ -276,10 +268,9 @@ public class ThirdTabController {
         searchStoppedLabel.setVisible(false);
         amountOfTasksLabel.setVisible(false);
         amountOfTasksTF.setVisible(false);
-        totalTimeResult();//why is this here
+        totalTimeResult();
 
         unbind();
-
 
         tasksProgressBar.setProgress(0);
         percentageLabel.setText(Double.toString(progressBarValue) + "%");
@@ -300,18 +291,6 @@ public class ThirdTabController {
     public void setCurrentConfigurationTF(String currConfiguration) {
         currentConfiguration.setText(currConfiguration);
     }
-
-    /*public void updateProgressBar(ProgressUpdateDTO progressUpdateDTO) { //need to make changes!! - now not working.
-        //....
-        //update progress bar by the overall tasks amount and then
-        progressBarValue = progressUpdateDTO.getProgress() / progressUpdateDTO.getAllPossibleMissions();
-
-        tasksProgressBar.setProgress(progressBarValue);
-
-        if(tasksProgressBar.getProgress() == 100)
-            searchingSolutionsLabel.setVisible(false);
-
-    }*/
 
     public void DisableAllButtonsAndTextFields() {
         processBtn.setDisable(true);
@@ -357,7 +336,6 @@ public class ThirdTabController {
                     configurationController.setRotorsPositionsAndOrderLabel(missionDTO.getRotorsPositionsAndOrder());
 
                     configurationController.setAgentIDLabel(missionDTO.getAgentID());
-
 
                     candidatesFP.getChildren().add(root);
                 } catch (IOException e) {

@@ -24,10 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import logic.ContestStatusRefresher;
-import logic.GetCandidatesRefresher;
-import logic.IsContestEndRefresher;
-import logic.TeamInformationRefresher;
+import logic.*;
 import logic.enigma.Dictionary;
 import okhttp3.*;
 
@@ -38,7 +35,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static utils.Constants.*;
+import static servlets.agent.utils.Constants.*;
 
 
 public class SecondTabController {
@@ -52,6 +49,7 @@ public class SecondTabController {
     private Timer contestEndTimer;
     private TimerTask candidatesRefresher;
     private TimerTask contestStatusRefresher;
+
     @FXML
     private TextField currentConfiguration;
     @FXML
@@ -89,6 +87,8 @@ public class SecondTabController {
 
     private BooleanProperty isContestStart = new SimpleBooleanProperty(false);
     private IsContestEndRefresher contestEndRefresher;
+    private TimerTask clearRefresher;
+    private Timer clearTimer;
 
 
     @FXML
@@ -223,6 +223,61 @@ public class SecondTabController {
     @FXML
     void logoutBtnListener(ActionEvent event) {
 
+        String finalUrl = HttpUrl
+                .parse(LOGOUT_UBOAT_PATH)
+                .newBuilder()
+                .addQueryParameter("username", uBoatController.getUserName())
+                .build()
+                .toString();
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .get()
+                .build();
+
+        Call call = new OkHttpClient().newCall(request);
+
+        Response response = null;
+        try {
+            response = call.execute();
+
+            resetSecondTab();
+            clearCurrentConfigurationTA();
+            uBoatController.clearFirstTab();
+            uBoatController.moveToLoginPage();
+            currentConfiguration.clear();
+            try{
+                contestRefresherTimer.cancel();
+                candidatesRefresher.cancel();
+                battleFieldListRefresher.cancel();
+                clearRefresher.cancel();
+
+            }catch (Exception exception){
+
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    private void resetSecondTab() {
+        isUBoatReady.set(false);
+        isStringDecrypted.set(false);
+        isContestStart.set(false);
+        logoutBtn.setVisible(false);
+
+        EncryptBtn.setDisable(true);
+        resetBtn.setDisable(true);
+        resetBtn.setDisable(true);
+        clearEncryptTextFields();
+        searchInDictionaryTF.clear();
+        dictionaryTA.clear();
+        teamsFP.getChildren().clear();
+        candidatesDataObservableList.clear();
+
     }
 
     @FXML
@@ -297,9 +352,9 @@ public class SecondTabController {
         this.uBoatController = uBoatController;
     }
 
-    public void setCurrentConfigurationTF(String currConfiguration) {
+    /*public void setCurrentConfigurationTF(String currConfiguration) {
         currentConfiguration.setText(currConfiguration);
-    }
+    }*/
 
     public void setDecodingButtonsDisable(boolean setToDisable) {
         resetBtn.setDisable(setToDisable);
@@ -312,6 +367,7 @@ public class SecondTabController {
     }
 
     public void clearCurrentConfigurationTA() {
+        currentConfiguration.textProperty().unbind();
         currentConfiguration.clear();
     }
     public void enableEncryptFunction() {
@@ -476,6 +532,10 @@ public class SecondTabController {
 
                 uBoatController.popUpWinner(missionDTO.getAgentID() + " was the first to found!");
                 logoutBtn.setVisible(true);
+
+                isUBoatReady.set(false);
+                readyBtn.setDisable(false);
+                startCheckIfClearBtnClicked();
             }
         }
     }
@@ -493,9 +553,36 @@ public class SecondTabController {
         logoutBtn.setVisible(b);
     }
 
-    public void enableReadyButton() {
-        readyBtn.setDisable(false);
+    public void disableReadyButton() {
+        readyBtn.setDisable(true);
     }
+
+    private void ShouldClearScreen(boolean value) {
+        Platform.runLater(() -> {
+            clearScreen(value);
+        });
+    }
+
+    private void clearScreen(boolean value) {
+        if (value) {
+            resetSecondTab();
+            logoutBtn.setVisible(false);
+            clearTimer.cancel();
+            uBoatController.operationsAfterValidInput();
+//            disableAllButtonsAndTextFields();
+        }
+    }
+
+    public void startCheckIfClearBtnClicked() {
+        clearRefresher = new ShouldClearScreenRefresher(
+                this::ShouldClearScreen,
+                "",
+                "UBoat",
+                uBoatController.getUserName());
+        clearTimer = new Timer();
+        clearTimer.schedule(clearRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+}
 
 
 
@@ -550,4 +637,5 @@ public class SecondTabController {
     /*    public TextArea getStatisticsTA(){
         return statisticsTA;
     }*/
-}
+
+

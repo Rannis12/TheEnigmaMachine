@@ -12,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import logic.enigma.Engine;
 
-import utils.Constants;
-import utils.ServletUtils;
-import utils.UserManager;
+import servlets.agent.utils.Constants;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.UserManager;
 
 import java.io.IOException;
 

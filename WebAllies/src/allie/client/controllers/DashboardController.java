@@ -5,7 +5,6 @@ import dtos.web.ContestDetailsDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,8 +20,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static utils.Constants.CONTEST_DATA_PAGE_FXML_RESOURCE_LOCATION;
-import static utils.Constants.REFRESH_RATE;
+import static servlets.agent.utils.Constants.CONTEST_DATA_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.REFRESH_RATE;
 
 public class DashboardController {
 
@@ -33,9 +32,6 @@ public class DashboardController {
     private Timer timer;
 
     @FXML private FlowPane activeContestsFP;
-    @FXML private ChoiceBox<String> ContestsCB;
-    @FXML private Button readyBtn;
-    @FXML private Label errorLabel;
     @FXML private TableView<AgentDTO> agentsTV;
     @FXML private TableColumn<?, ?> agentNameCol;
     @FXML private TableColumn<?, ?> threadsCol;
@@ -56,13 +52,7 @@ public class DashboardController {
 
         agentsTV.setItems(agentsDataObservableList);
 
-        ContestsCB.setItems(battleFieldNames); //maybe cause problems.
-    }
-    @FXML
-    void readyBtnListener(ActionEvent event) {
-
-
-
+//        ContestsCB.setItems(battleFieldNames); //maybe cause problems.
     }
 
     public void setAlliesController(AlliesController alliesController) {
@@ -117,7 +107,6 @@ public class DashboardController {
 
     public void startBattleFieldListRefresher() {
         battleFieldListRefresher = new BattleFieldRefresher(
-                /*autoUpdate,*/
                 this::updateBattleFieldList);
         timer = new Timer();
         timer.schedule(battleFieldListRefresher, REFRESH_RATE, REFRESH_RATE);
@@ -126,10 +115,6 @@ public class DashboardController {
     public void setDashboardTabDisable(boolean b) {
         alliesController.setDashboardTabDisable(b);
     }
-
-    /*public void setContestControllerActive(UBoatDTO uBoatDTO, String username) {
-        alliesController.showContestDetails(uBoatDTO, username);
-    }*/
 
     public void startBattleFieldListForContestController(String battleName) {
         alliesController.startBattleFieldListForContestController(battleName);
@@ -160,5 +145,9 @@ public class DashboardController {
     }
 
 
+    public void resetController() { // maybe need more?
+        agentsDataObservableList.clear();
+        activeContestsFP.getChildren().clear();
 
+    }
 }

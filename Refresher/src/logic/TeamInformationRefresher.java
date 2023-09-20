@@ -3,21 +3,19 @@ package logic;
 import client.http.HttpClientUtil;
 import com.sun.istack.internal.NotNull;
 import dtos.TeamInformationDTO;
-import dtos.web.ContestDetailsDTO;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import utils.Constants;
+import servlets.agent.utils.Constants;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static utils.Constants.GSON_INSTANCE;
+import static servlets.agent.utils.Constants.GSON_INSTANCE;
 
 public class TeamInformationRefresher extends TimerTask {
     private final Consumer<List<TeamInformationDTO>> userListConsumer;
@@ -33,7 +31,6 @@ public class TeamInformationRefresher extends TimerTask {
 
     @Override
     public void run() {
-
 
         String finalUrl = HttpUrl
                 .parse(Constants.ALLIES_BELONGS_TO_BATTLE_FIELD)

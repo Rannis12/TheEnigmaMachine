@@ -10,12 +10,9 @@ public class Positioning implements Serializable {
         this.left = left;
         this.right = right;
     }
-
-
     public char getLeft() {
         return left;
     }
-
     public char getRight() {
         return right;
     }

@@ -115,8 +115,8 @@ public class Producer extends Task {
 
         producerEngine.initRotorsPositions(initString);
 
-        for (int i = 0; i < calculateOptionOnePossibleMissions() && */
-/*!isStopBtnClicked.get()*//*
+        for (int i = 0; i < calculateOptionOnePossibleMissions() &&
+!isStopBtnClicked.get()
 ; i++) {
 //            isPauseRunningTask(); //checks if user clicked "pause";
 
@@ -213,8 +213,7 @@ public class Producer extends Task {
     }
 
 
-    */
-/*private void isPauseRunningTask(){
+private void isPauseRunningTask(){
         if(isSystemPause.get()){
             synchronized (pauseLock){
                 if(isSystemPause.get()){
@@ -226,11 +225,12 @@ public class Producer extends Task {
                 }
             }
         }
-    }*//*
+    }
 
     @Override
     protected Object call() throws Exception {
         createMissions();
         return 0;
     }
-}*/
+}
+*/

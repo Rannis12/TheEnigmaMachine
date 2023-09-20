@@ -1,7 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5777fa5f-63c5-4d98-aa47-9aa4f01f9954" name="Changes" comment="" />
+    <list default="true" id="5777fa5f-63c5-4d98-aa47-9aa4f01f9954" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Refresher/src/logic/AlliesRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Refresher/src/logic/DidUBoatLoggedOutRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Refresher/src/logic/FinishBtnRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Refresher/src/logic/GetContestDetailsForAgentRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Refresher/src/logic/ShouldClearScreenRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebModule_Web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TheEnigma/.idea/libraries/okhttp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebAgent/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebAllies/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/IsUboatLoggedOutServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/LogoutServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/ClearScreenServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/DidFinishBtnClickedServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetAlliesList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/AllyConfirmLogoutServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/ClearBtnClickedServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebUBoat/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTO/src/dtos/entities/AgentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/DTO/src/dtos/entities/AgentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTO/src/dtos/entities/AllieDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/DTO/src/dtos/entities/AllieDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DecryptionManager/src/decryption/dm/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/DecryptionManager/src/decryption/dm/Producer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engine/src/entities/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/src/entities/Agent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engine/src/entities/Allie.java" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/src/entities/Allie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engine/src/entities/UBoat.java" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/src/entities/UBoat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/AgentsRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/AgentsRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/BattleFieldRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/BattleFieldRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/ContestStatusRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/ContestStatusRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/GetCandidatesRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/GetCandidatesRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/GetContestProgressRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/GetContestProgressRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/IsContestEndRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/IsContestEndRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/SoloBattleFieldRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/SoloBattleFieldRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Refresher/src/logic/TeamInformationRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/Refresher/src/logic/TeamInformationRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/Console_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/Console_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/DTO_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/DTO_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/DecryptionManager_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/DecryptionManager_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/Engine_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/Engine_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebAgent_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebAgent_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebAllies_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebAllies_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebModule_Web_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebModule_Web_exploded.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebUBoat_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TheEnigma/.idea/artifacts/WebUBoat_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAgent/src/agent/client/controllers/AgentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAgent/src/agent/client/controllers/AgentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAgent/src/agent/client/controllers/AgentMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAgent/src/agent/client/controllers/AgentMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAgent/src/agent/client/login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAgent/src/agent/client/login/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAgent/src/agent/client/resources/agentMainPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/WebAgent/src/agent/client/resources/agentMainPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAgent/src/agent/client/utils/AgentApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAgent/src/agent/client/utils/AgentApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/AlliesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/AlliesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/AlliesMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/AlliesMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/ContestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/ContestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/DashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/UBoatConfigurationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/controllers/UBoatConfigurationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/resources/contest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/resources/contest.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/resources/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/resources/dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/util/AlliesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/util/AlliesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebAllies/src/allie/client/util/run.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebAllies/src/allie/client/util/run.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/DecodedStringServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/DecodedStringServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/FileUploadServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/FileUploadServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/GetCandidatesServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/GetCandidatesServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/IsContestEndServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/IsContestEndServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/LightweightLoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/LightweightLoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/ManualConfServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/ManualConfServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/RandomConfServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/RandomConfServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/ResetEngineSettingsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/ResetEngineSettingsServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPollingMissionsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPollingMissionsServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPostCandidatesServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPostCandidatesServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPostDetailsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/AgentPostDetailsServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetAgentsListServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetAgentsListServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetContestDetailsForAgentServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetContestDetailsForAgentServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetFileContentServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/GetFileContentServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/agent/PostAgentServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/PostAgentServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/BattleFieldListServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/BattleFieldListServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/CurrentBattleFieldServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/CurrentBattleFieldServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/GetBattleFieldAlliesServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/GetBattleFieldAlliesServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/GetContestProgressServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/GetContestProgressServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/IsReadyServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/IsReadyServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/JoiningToUBoatServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/JoiningToUBoatServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/allie/StartCreateMissionsServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/allie/StartCreateMissionsServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/uboat/ShouldStartContestServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/uboat/ShouldStartContestServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/servlets/uboat/UBoatUpdatesStatusServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/uboat/UBoatUpdatesStatusServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/utils/ServletUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/utils/ServletUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/utils/SessionUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/utils/SessionUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebModule/src/utils/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebModule/src/servlets/agent/utils/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/WebUBoat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/WebUBoat.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/FirstTabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/FirstTabController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/SecondTabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/SecondTabController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/UBoatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/UBoatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/UBoatMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/controllers/UBoatMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/resources/FirstTab.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/resources/FirstTab.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebUBoat/src/uboat/client/util/UBoatApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebUBoat/src/uboat/client/util/UBoatApplication.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +115,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/OFEK/IdeaProjects/EnigmaGit/TheEnigma"
+    "last_opened_file_path": "C:/Work/Java/Enigma/TheEnigma"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -39,6 +128,7 @@
       <updated>1659770352860</updated>
       <workItem from="1659770354190" duration="31000" />
       <workItem from="1665527669909" duration="73000" />
+      <workItem from="1673866996371" duration="16000" />
     </task>
     <servers />
   </component>

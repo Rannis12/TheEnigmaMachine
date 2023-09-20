@@ -1,6 +1,5 @@
 package uboat.client.util;
 
-import exceptions.invalidInputException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-import static utils.Constants.UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION;
+import static servlets.agent.utils.Constants.UBOAT_MAIN_PAGE_FXML_RESOURCE_LOCATION;
 
 public class UBoatApplication extends Application {
 

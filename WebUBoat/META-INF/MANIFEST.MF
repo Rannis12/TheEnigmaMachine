@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: DTO.jar Engine.jar Console.jar WebModule.jar Refresher.jar W
+ ebAllies.jar
+Main-Class: uboat.client.util.UBoatApplication
+

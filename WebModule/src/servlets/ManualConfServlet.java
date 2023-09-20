@@ -9,15 +9,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.enigma.Engine;
-import utils.ServletUtils;
-import utils.UserManager;
+import servlets.agent.utils.ServletUtils;
+import servlets.agent.utils.UserManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 
 import static logic.enigma.Engine.makeCodeForm;
-import static utils.Constants.GSON_INSTANCE;
+import static servlets.agent.utils.Constants.GSON_INSTANCE;
 
 //import static controllers.UBoatController.makeCodeForm;
 //import static util.Constants.GSON_INSTANCE;

@@ -66,8 +66,6 @@ public class MainPageController {
                 amountOfDecodedStrings.addListener(e -> {
                     updateConfigurationLabel();
                 });
-
-
             }
         }
     }
